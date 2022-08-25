@@ -1,0 +1,72 @@
+.woodcutting-box {
+    width: 21.1rem;
+    height: 15rem;
+    background-color: rgb(71, 71, 71);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1rem;
+    color: whitesmoke;
+    font-size: 18px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    text-align: center;
+    box-shadow: 0 3px 1px -2px #0003, 0 2px 2px #00000024, 0 1px 5px #0000001f;
+    border-radius: 5px;
+    border-top: 3px solid green;
+}
+
+.woodcutting-box:hover {
+    -webkit-transform: scale(1.05);
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+.progress-bar {
+    flex-direction: column;
+    height: 20px;
+}
+
+.progress-bar-skill-level {
+    display: flex;
+    flex-direction: row;
+    width: 98%;
+    height: 10px;
+    border-radius: 5px;
+    background-color: rgb(71, 71, 71);
+}
+
+.skill-information {
+    box-shadow: 0 1px 2px rgb(33 34 35/50%),0 1px 2px rgb(26 26 27/50%);
+    border-radius: 5px;
+    border-top: 3px solid green;
+    background-color: rgb(71, 71, 71);
+    color: #f5f5f5;
+    display: relative;
+    font-size: .875rem;
+    height: 6rem;
+}
+
+.level{
+    background-color: forestgreen;
+    border-radius: 5px;
+    padding: 0.3rem;
+    margin-right: 25vw;
+}
+
+.xp{
+    background-color: rgb(0, 179, 179);
+    border-radius: 5px;
+    padding: 0.3rem;
+}
+
+::ng-deep .mat-progress-bar-fill::after {
+    background-color: #bcd100;
+}
+
+::ng-deep .mat-progress-bar-buffer {
+    background-color: rgb(85, 85, 85);
+}
+
+::ng-deep .mat-progress-bar {
+    border-radius: 2px;
+}

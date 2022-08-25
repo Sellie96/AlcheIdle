@@ -1,0 +1,9 @@
+<div style="flex-direction: column; width: 100%;">
+    <div>
+      <h1>{{ tree.name | titlecase }}</h1>
+    </div>
+    <img style="width: 75px;" src="./assets/trees/{{ tree.name }}.png" />
+    <p>Requires Level: {{ tree.level }}</p>
+    <p>XP: {{ tree.xp }}</p>
+    <p>Cutting time: {{ tree.time }}</p>
+  </div>

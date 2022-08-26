@@ -1,28 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; color: #f5f5f5; }
+body { margin: 0; font-family: sans-serif; color: #f5f5f5; }
 
-::-webkit-scrollbar {
-    border-right: 5px solid rgb(78, 78, 78);
-    width: 10px;
-    border-right: none;
-    padding-right: 0;
-
-  }
   
-  /* Track */
-  ::-webkit-scrollbar-track {
-    background-color: rgb(117, 0, 0);
-  }
-   
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background-color: rgb(117, 0, 0);
-    border-radius: 10px;
-  }
-  
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(196, 3, 3);
-  }

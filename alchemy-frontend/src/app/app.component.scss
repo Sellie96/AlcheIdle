@@ -50,10 +50,15 @@
   display: flex;
   align-items: center;
   flex-direction: column;
+  overflow:hidden;
+}
+
+.side-nav-list:hover {
+  overflow-y:scroll;
 }
 
 .woodcutting {
-  background-color: green;
+  background-color: #358f12;
   color: whitesmoke;
 }
 

@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { NgxsModule } from '@ngxs/store';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgxsReduxDevtoolsPluginModule } from "@ngxs/devtools-plugin";
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -27,6 +26,8 @@ import { HerbloreComponent } from './Modules/skills/herblore/herblore.component'
 import { environment } from 'src/environments/environment';
 import { CharacterState } from './stateManagement/character.state';
 import { ConstructionComponent } from './Modules/skills/construction/construction.component';
+import { LockedTreeComponent } from './Modules/skills/woodcutting/locked-tree/locked-tree.component';
+import { ToastService, AngularToastifyModule } from 'angular-toastify';
 
 @NgModule({
   declarations: [
@@ -46,10 +47,12 @@ import { ConstructionComponent } from './Modules/skills/construction/constructio
     FletchingComponent,
     CraftingComponent,
     HerbloreComponent,
-    ConstructionComponent
+    ConstructionComponent,
+    LockedTreeComponent
   ],
   imports: [
     BrowserModule,
+    AngularToastifyModule,
     NgxsModule.forRoot([CharacterState], {
       developmentMode: !environment.production
     }),
@@ -60,7 +63,7 @@ import { ConstructionComponent } from './Modules/skills/construction/constructio
     GraphQLModule,
     environment.production ? [] : NgxsReduxDevtoolsPluginModule.forRoot(),
   ],
-  providers: [],
+  providers: [ToastService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -27,7 +27,7 @@
 }
 
 .main-content {
-  background-image: url("../assets/general/earth-bg.png");
+  background-image: url("../assets/background.jpg");
   background-position: center; /* Center the image */
   background-repeat: no-repeat; /* Do not repeat the image */
   background-size: cover; /* Resize the background image to cover the entire container */
@@ -168,7 +168,6 @@
   margin: 0;
   text-align: center;
   font-size: 1.5rem;
-  border-bottom:black 1px solid;
   font-family: Trebuchet MS;
   background-image: url("../assets/general/fire-bg.png");
   background-position: center; /* Center the image */
@@ -177,17 +176,30 @@
 }
 
 .opacityBackground {
-  background-color: rgba(3, 0, 0, 0.6);
+  background-color: rgba(35, 42, 53, 0.9);
   padding: 0;
   margin: 0;
   width: 100%;
 }
 
 .opacityBackgroundMain {
-  background-color: rgba(3, 0, 0, 0.8);
+  background-color: rgba(35, 42, 53, 0.3);
   padding: 0;
   margin: 0;
   min-width: 100%;
   min-height: 100vh;
   top: 0;
+}
+
+.mainHeading {
+  background-color: rgb(75, 75, 75);
+  box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
+  margin-bottom: 0.3rem;
+}
+
+.subHeading {
+  margin-top: 0;
+  background-color: rgb(75, 75, 75);
+  box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
+  color: rgb(156, 156, 156);;
 }

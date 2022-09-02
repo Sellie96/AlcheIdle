@@ -1,6 +1,39 @@
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
-body { margin: 0; font-family: sans-serif; color: #f5f5f5; }
+body { margin: 0; font-family: sans-serif; color: #f5f5f5; overflow: overlay; }
 
+.mat-drawer-inner-container::-webkit-scrollbar {
+    display: none;
+}
+
+.mat-drawer-side {
+    border-right: none;
+}
+
+/* width */
+::-webkit-scrollbar {
+    background-color: transparent;
+    width: 10px;
+    border-radius: 5px;
+  }
   
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #363636;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: rgb(119, 119, 119);
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(119, 119, 119);
+  }
+/* Importing Bootstrap SCSS file. */
+@import "~bootstrap/scss/bootstrap";
+
+/* Importing Datepicker SCSS file. */
+@import "node_modules/ngx-bootstrap/datepicker/bs-datepicker";

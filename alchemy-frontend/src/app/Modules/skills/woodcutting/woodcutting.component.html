@@ -2,12 +2,16 @@
   <mat-toolbar class="skill-information">
     <mat-toolbar-row>
       <div style="width: 100%">
-        <span style="margin-left: 1rem">Skill Progress</span>
-        <br />
         <span>
           <div style="margin-left: 1rem">
             Skill Level
-            <span class="level"> {{ woodcuttingLevel }} / 99 </span> Skill XP
+            <span class="level"> {{ woodcuttingLevel }} / 99 </span>
+
+            Active: 
+            <span class="level">
+              {{ activeTree || "None" | titlecase }}
+            </span>
+            Skill XP
             <span class="xp">
               {{ woodcuttingXp }} / {{ woodcuttingLevel * 10 }}
             </span>
@@ -32,26 +36,52 @@
     <div class="woodcutting-box" (click)="startTimer(trees.tree)">
       <app-tree-spot [tree]="trees.tree"></app-tree-spot>
     </div>
-    <div class="woodcutting-box" (click)="startTimer(trees.oak)">
+    <div *ngIf="this.woodcuttingLevel >= 2" class="woodcutting-box" (click)="startTimer(trees.oak)">
       <app-tree-spot [tree]="trees.oak"></app-tree-spot>
     </div>
-    <div class="woodcutting-box" (click)="startTimer(trees.willow)">
+    <div *ngIf="this.woodcuttingLevel >= 5" class="woodcutting-box" (click)="startTimer(trees.willow)">
       <app-tree-spot [tree]="trees.willow"></app-tree-spot>
     </div>
-    <div class="woodcutting-box" (click)="startTimer(trees.bonsai)">
+    <div *ngIf="this.woodcuttingLevel >= 10" class="woodcutting-box" (click)="startTimer(trees.bonsai)">
       <app-tree-spot [tree]="trees.bonsai"></app-tree-spot>
     </div>
-    <div class="woodcutting-box" (click)="startTimer(trees.yew)">
+    <div *ngIf="this.woodcuttingLevel >= 12" class="woodcutting-box" (click)="startTimer(trees.yew)">
       <app-tree-spot [tree]="trees.yew"></app-tree-spot>
     </div>
-    <div class="woodcutting-box" (click)="startTimer(trees.magic)">
+    <div *ngIf="this.woodcuttingLevel >= 14" class="woodcutting-box" (click)="startTimer(trees.magic)">
       <app-tree-spot [tree]="trees.magic"></app-tree-spot>
     </div>
-    <div class="woodcutting-box" (click)="startTimer(trees.demon)">
+    <div *ngIf="this.woodcuttingLevel >= 15" class="woodcutting-box" (click)="startTimer(trees.demon)">
       <app-tree-spot [tree]="trees.demon"></app-tree-spot>
     </div>
-    <div class="woodcutting-box" (click)="startTimer(trees.divine)">
+    <div *ngIf="this.woodcuttingLevel >= 18" class="woodcutting-box" (click)="startTimer(trees.divine)">
       <app-tree-spot [tree]="trees.divine"></app-tree-spot>
     </div>
+    <div *ngIf="this.woodcuttingLevel < 2" class="locked">
+      <app-locked-tree [level]="2"></app-locked-tree>
+    </div>
+    <div *ngIf="this.woodcuttingLevel >= 2 && this.woodcuttingLevel < 5" class="locked">
+      <app-locked-tree [level]="5"></app-locked-tree>
+    </div>
+    <div *ngIf="this.woodcuttingLevel >= 5 && this.woodcuttingLevel < 10" class="locked">
+      <app-locked-tree [level]="10"></app-locked-tree>
+    </div>
+    <div *ngIf="this.woodcuttingLevel >= 10 && this.woodcuttingLevel < 12" class="locked">
+      <app-locked-tree [level]="12"></app-locked-tree>
+    </div>
+    <div *ngIf="this.woodcuttingLevel >= 12 && this.woodcuttingLevel < 14" class="locked">
+      <app-locked-tree [level]="14"></app-locked-tree>
+    </div>
+
+    <div *ngIf="this.woodcuttingLevel >= 14 && this.woodcuttingLevel < 15" class="locked">
+      <app-locked-tree [level]="15"></app-locked-tree>
+    </div>
+
+    <div *ngIf="this.woodcuttingLevel >= 15 && this.woodcuttingLevel < 18" class="locked">
+      <app-locked-tree [level]="18"></app-locked-tree>
+    </div>
   </div>
+
+  <lib-toastify-toast-container></lib-toastify-toast-container>
 </div>
+

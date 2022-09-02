@@ -7,6 +7,7 @@ import { UpdateWoodcutting } from 'src/app/stateManagement/character.actions';
 import { CharacterState } from 'src/app/stateManagement/character.state';
 import { PlayerData } from 'src/app/stateManagement/CharacterDataTypes';
 import { Logs, logTypes, Tree, Trees, treeTypes } from './Trees';
+import { ToastrService } from 'ngx-toastr';
 
 
 @UntilDestroy()
@@ -25,6 +26,7 @@ export class WoodcuttingComponent implements OnInit {
   sub: any;
   treeActive: boolean = false;
   playerCharacter!: PlayerData;
+  activeTree: string= '';
 
   trees = treeTypes;
 
@@ -40,6 +42,7 @@ export class WoodcuttingComponent implements OnInit {
   }
 
   startTimer(tree: Tree) {
+    this.activeTree = tree.name;
     if (this.woodcuttingLevel >= tree.level) {
       if (this.sub) {
         this.sub.unsubscribe();

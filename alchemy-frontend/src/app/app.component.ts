@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { Select, Store } from '@ngxs/store';
-import { Observable } from 'rxjs';
-import { CreateCharacter } from './stateManagement/character.actions';
+import { Store } from '@ngxs/store';
 import { CharacterState } from './stateManagement/character.state';
 import { PlayerData } from './stateManagement/CharacterDataTypes';
-import { AccountService } from './_services/account.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 
@@ -46,7 +43,6 @@ export class AppComponent implements OnInit {
     .pipe(untilDestroyed(this))
     .subscribe((character: PlayerData) => {
       this.playerCharacter = { ...character };
-
     });
   }
 }

@@ -1,9 +1,14 @@
 <div>
     <mat-drawer-container class="sidebar" style="position: relative;">
-      <mat-drawer #sidenav mode="side" [(opened)]="opened" style="width: 15rem;" class="mat-elevation-z8" mode="side">
+      <mat-drawer #sidenav mode="side" [(opened)]="opened" style="width: 15rem;   overflow-y: hidden;" class="mat-elevation-z8" mode="side">
         <mat-nav-list class="side-nav-list heading opacityBackground">
           <div class="opacityBackground">
-          <h1 class="nav-item">Alche Idle</h1>
+            <div>
+              <h1 class="nav-item mainHeading">Alche Idle</h1>
+            </div>
+            <div>
+              <h2 class="nav-item subHeading">V0.0.1</h2>
+            </div>
           <mat-list-item [routerLinkActive]="['is-active']" (click)="setTitle('adventure')" [routerLink]="'/adventure'" class="nav-item"><img class="icon" src="../assets/menu-icons/adventure.png">Adventure</mat-list-item>
           <mat-list-item [routerLinkActive]="['is-active']" (click)="setTitle('shop')" [routerLink]="'/shop'" class="nav-item"><img class="icon" src="../assets/menu-icons/shop.png">Shop</mat-list-item>
           <mat-list-item [routerLinkActive]="['is-active']" (click)="setTitle('town')" [routerLink]="'/town'" class="nav-item"><img class="icon" src="../assets/menu-icons/town.png">Town</mat-list-item>

@@ -7,6 +7,8 @@ exports.saveInlineSnapshots = saveInlineSnapshots;
 
 var path = _interopRequireWildcard(require('path'));
 
+var _types = require('@babel/types');
+
 var fs = _interopRequireWildcard(require('graceful-fs'));
 
 var _semver = _interopRequireDefault(require('semver'));
@@ -59,111 +61,38 @@ function _interopRequireWildcard(obj, nodeInterop) {
   return newObj;
 }
 
-var global = (function () {
-  if (typeof globalThis !== 'undefined') {
-    return globalThis;
-  } else if (typeof global !== 'undefined') {
-    return global;
-  } else if (typeof self !== 'undefined') {
-    return self;
-  } else if (typeof window !== 'undefined') {
-    return window;
-  } else {
-    return Function('return this')();
-  }
-})();
-
-var Symbol = global['jest-symbol-do-not-touch'] || global.Symbol;
-
-var global = (function () {
-  if (typeof globalThis !== 'undefined') {
-    return globalThis;
-  } else if (typeof global !== 'undefined') {
-    return global;
-  } else if (typeof self !== 'undefined') {
-    return self;
-  } else if (typeof window !== 'undefined') {
-    return window;
-  } else {
-    return Function('return this')();
-  }
-})();
-
-var Symbol = global['jest-symbol-do-not-touch'] || global.Symbol;
-
-var global = (function () {
-  if (typeof globalThis !== 'undefined') {
-    return globalThis;
-  } else if (typeof global !== 'undefined') {
-    return global;
-  } else if (typeof self !== 'undefined') {
-    return self;
-  } else if (typeof window !== 'undefined') {
-    return window;
-  } else {
-    return Function('return this')();
-  }
-})();
-
+var Symbol = globalThis['jest-symbol-do-not-touch'] || globalThis.Symbol;
+var Symbol = globalThis['jest-symbol-do-not-touch'] || globalThis.Symbol;
 var jestWriteFile =
-  global[Symbol.for('jest-native-write-file')] || fs.writeFileSync;
-
-var global = (function () {
-  if (typeof globalThis !== 'undefined') {
-    return globalThis;
-  } else if (typeof global !== 'undefined') {
-    return global;
-  } else if (typeof self !== 'undefined') {
-    return self;
-  } else if (typeof window !== 'undefined') {
-    return window;
-  } else {
-    return Function('return this')();
-  }
-})();
-
-var Symbol = global['jest-symbol-do-not-touch'] || global.Symbol;
-
-var global = (function () {
-  if (typeof globalThis !== 'undefined') {
-    return globalThis;
-  } else if (typeof global !== 'undefined') {
-    return global;
-  } else if (typeof self !== 'undefined') {
-    return self;
-  } else if (typeof window !== 'undefined') {
-    return window;
-  } else {
-    return Function('return this')();
-  }
-})();
-
+  globalThis[Symbol.for('jest-native-write-file')] || fs.writeFileSync;
+var Symbol = globalThis['jest-symbol-do-not-touch'] || globalThis.Symbol;
 var jestReadFile =
-  global[Symbol.for('jest-native-read-file')] || fs.readFileSync;
+  globalThis[Symbol.for('jest-native-read-file')] || fs.readFileSync;
 
 // prettier-ignore
 const babelTraverse = // @ts-expect-error requireOutside Babel transform
 require(require.resolve('@babel/traverse', {
-  [(global['jest-symbol-do-not-touch'] || global.Symbol).for('jest-resolve-outside-vm-option')]: true
+  [(globalThis['jest-symbol-do-not-touch'] || globalThis.Symbol).for('jest-resolve-outside-vm-option')]: true
 })).default; // prettier-ignore
 
-const generate = require(require.resolve('@babel/generator', { // @ts-expect-error requireOutside Babel transform
-  [(global['jest-symbol-do-not-touch'] || global.Symbol).for(
-    'jest-resolve-outside-vm-option'
-  )]: true
-})).default; // @ts-expect-error requireOutside Babel transform
+const generate = // @ts-expect-error requireOutside Babel transform
+  require(require.resolve('@babel/generator', {
+    [(globalThis['jest-symbol-do-not-touch'] || globalThis.Symbol).for(
+      'jest-resolve-outside-vm-option'
+    )]: true
+  })).default; // @ts-expect-error requireOutside Babel transform
 
 const {file, templateElement, templateLiteral} = require(require.resolve(
   '@babel/types',
   {
-    [(global['jest-symbol-do-not-touch'] || global.Symbol).for(
+    [(globalThis['jest-symbol-do-not-touch'] || globalThis.Symbol).for(
       'jest-resolve-outside-vm-option'
     )]: true
   }
 )); // @ts-expect-error requireOutside Babel transform
 
 const {parseSync} = require(require.resolve('@babel/core', {
-  [(global['jest-symbol-do-not-touch'] || global.Symbol).for(
+  [(globalThis['jest-symbol-do-not-touch'] || globalThis.Symbol).for(
     'jest-resolve-outside-vm-option'
   )]: true
 }));
@@ -175,7 +104,7 @@ function saveInlineSnapshots(snapshots, prettierPath) {
     try {
       // @ts-expect-error requireOutside Babel transform
       prettier = require(require.resolve(prettierPath, {
-        [(global['jest-symbol-do-not-touch'] || global.Symbol).for(
+        [(globalThis['jest-symbol-do-not-touch'] || globalThis.Symbol).for(
           'jest-resolve-outside-vm-option'
         )]: true
       }));
@@ -392,7 +321,7 @@ const runPrettier = (
       })
     : null; // Detect the parser for the test file.
   // For older versions of Prettier, fallback to a simple parser detection.
-  // @ts-expect-error
+  // @ts-expect-error - `inferredParser` is `string`
 
   const inferredParser = prettier.getFileInfo
     ? prettier.getFileInfo.sync(sourceFilePath).inferredParser
@@ -428,7 +357,7 @@ const createFormattingParser =
     options.parser = inferredParser;
     const ast = resolveAst(parsers[inferredParser](text, options));
     babelTraverse(ast, {
-      CallExpression({node: {arguments: args, callee}}) {
+      CallExpression({node: {arguments: args, callee}, parent}) {
         var _options$tabWidth, _options$tabWidth2;
 
         if (
@@ -457,17 +386,21 @@ const createFormattingParser =
           return;
         }
 
+        const startColumn =
+          (0, _types.isAwaitExpression)(parent) && parent.loc
+            ? parent.loc.start.column
+            : callee.loc.start.column;
         const useSpaces = !options.useTabs;
         snapshot = indent(
           snapshot,
           Math.ceil(
             useSpaces
-              ? callee.loc.start.column /
+              ? startColumn /
                   ((_options$tabWidth = options.tabWidth) !== null &&
                   _options$tabWidth !== void 0
                     ? _options$tabWidth
-                    : 1)
-              : callee.loc.start.column / 2 // Each tab is 2 characters.
+                    : 1) // Each tab is 2 characters.
+              : startColumn / 2
           ),
           useSpaces
             ? ' '.repeat(

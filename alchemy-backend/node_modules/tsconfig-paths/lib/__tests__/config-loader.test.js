@@ -14,9 +14,6 @@ describe("config-loader", function () {
             cwd: "/baz",
         });
         var successResult = result;
-        // assert.equal(successResult.resultType, "success");
-        // assert.equal(successResult.absoluteBaseUrl, "/foo/bar");
-        // assert.equal(successResult.paths["asd"][0], "asd");
         expect(successResult.resultType).toBe("success");
         expect(successResult.absoluteBaseUrl).toBe("/foo/bar");
         expect(successResult.paths["asd"][0]).toBe("asd");
@@ -32,8 +29,6 @@ describe("config-loader", function () {
             cwd: "/baz",
         });
         var successResult = result;
-        // assert.equal(successResult.resultType, "success");
-        // assert.equal(successResult.absoluteBaseUrl, join("/baz", "bar/"));
         expect(successResult.resultType).toBe("success");
         expect(successResult.absoluteBaseUrl).toBe((0, path_1.join)("/baz", "bar/"));
     });
@@ -41,35 +36,28 @@ describe("config-loader", function () {
         var result = (0, config_loader_1.configLoader)({
             explicitParams: undefined,
             cwd: "/baz",
-            // tslint:disable-next-line:no-any
-            tsConfigLoader: function (_) { return ({
+            tsConfigLoader: function () { return ({
                 tsConfigPath: "/baz/tsconfig.json",
                 baseUrl: "./src",
                 paths: {},
             }); },
         });
         var successResult = result;
-        // assert.equal(successResult.resultType, "success");
-        // assert.equal(successResult.absoluteBaseUrl, join("/baz", "src"));
         expect(successResult.resultType).toBe("success");
         expect(successResult.absoluteBaseUrl).toBe((0, path_1.join)("/baz", "src"));
     });
-    it("should show an error message when baseUrl is missing", function () {
+    it("should tolerate a missing baseUrl", function () {
         var result = (0, config_loader_1.configLoader)({
             explicitParams: undefined,
             cwd: "/baz",
-            // tslint:disable-next-line:no-any
-            tsConfigLoader: function (_) { return ({
+            tsConfigLoader: function () { return ({
                 tsConfigPath: "/baz/tsconfig.json",
                 baseUrl: undefined,
                 paths: {},
             }); },
         });
         var failResult = result;
-        // assert.equal(failResult.resultType, "failed");
-        // assert.isTrue(failResult.message.indexOf("baseUrl") > -1);
-        expect(failResult.resultType).toBe("failed");
-        expect(failResult.message.indexOf("baseUrl") > -1).toBeTruthy();
+        expect(failResult.resultType).toBe("success");
     });
     it("should presume cwd to be a tsconfig file when loadConfig is called with absolute path to tsconfig.json", function () {
         // using tsconfig-named.json to ensure that future changes to fix
@@ -79,10 +67,21 @@ describe("config-loader", function () {
         var configFile = (0, path_1.join)(__dirname, "tsconfig-named.json");
         var result = (0, config_loader_1.loadConfig)(configFile);
         var successResult = result;
-        // assert.equal(successResult.resultType, "success");
-        // assert.equal(successResult.configFileAbsolutePath, configFile);
         expect(successResult.resultType).toBe("success");
         expect(successResult.configFileAbsolutePath).toBe(configFile);
+    });
+    it("should allow an absolute baseUrl in tsconfig.json", function () {
+        var result = (0, config_loader_1.configLoader)({
+            explicitParams: undefined,
+            cwd: "/baz",
+            tsConfigLoader: function () { return ({
+                tsConfigPath: "/baz/tsconfig.json",
+                baseUrl: "/baz",
+                paths: {},
+            }); },
+        });
+        var successResult = result;
+        expect(successResult.absoluteBaseUrl).toEqual("/baz");
     });
 });
 //# sourceMappingURL=config-loader.test.js.map

@@ -5,13 +5,12 @@ import * as yargs from "yargs";
 export declare class MigrationRunCommand implements yargs.CommandModule {
     command: string;
     describe: string;
-    aliases: string;
     builder(args: yargs.Argv): yargs.Argv<{
-        connection: string;
+        dataSource: unknown;
     } & {
         transaction: string;
     } & {
-        config: string;
+        fake: boolean;
     }>;
     handler(args: yargs.Arguments): Promise<void>;
 }

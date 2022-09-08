@@ -11,6 +11,7 @@ import { TableExclusion } from "./TableExclusion";
  * Table in the database represented in this class.
  */
 export declare class Table {
+    readonly "@instanceof": symbol;
     /**
      * Database name that this table resides in if it applies.
      */
@@ -55,6 +56,10 @@ export declare class Table {
      * for new tables.
      */
     justCreated: boolean;
+    /**
+     * Enables Sqlite "WITHOUT ROWID" modifier for the "CREATE TABLE" statement
+     */
+    withoutRowid?: boolean;
     /**
      * Table engine.
      */

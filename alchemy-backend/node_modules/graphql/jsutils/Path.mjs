@@ -1,10 +1,11 @@
 /**
  * Given a Path and a key, return a new Path containing the new key.
  */
-export function addPath(prev, key) {
+export function addPath(prev, key, typename) {
   return {
-    prev: prev,
-    key: key
+    prev,
+    key,
+    typename,
   };
 }
 /**
@@ -12,8 +13,8 @@ export function addPath(prev, key) {
  */
 
 export function pathToArray(path) {
-  var flattened = [];
-  var curr = path;
+  const flattened = [];
+  let curr = path;
 
   while (curr) {
     flattened.push(curr.key);

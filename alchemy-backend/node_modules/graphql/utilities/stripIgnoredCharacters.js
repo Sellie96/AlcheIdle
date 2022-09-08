@@ -1,21 +1,17 @@
-"use strict";
+'use strict';
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
+Object.defineProperty(exports, '__esModule', {
+  value: true,
 });
 exports.stripIgnoredCharacters = stripIgnoredCharacters;
 
-var _inspect = _interopRequireDefault(require("../jsutils/inspect"));
+var _blockString = require('../language/blockString.js');
 
-var _source = require("../language/source");
+var _lexer = require('../language/lexer.js');
 
-var _tokenKind = require("../language/tokenKind");
+var _source = require('../language/source.js');
 
-var _lexer = require("../language/lexer");
-
-var _blockString = require("../language/blockString");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _tokenKind = require('../language/tokenKind.js');
 
 /**
  * Strips characters that are not significant to the validity or execution
@@ -39,6 +35,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  *
  * Query example:
  *
+ * ```graphql
  * query SomeQuery($foo: String!, $bar: String) {
  *   someField(foo: $foo, bar: $bar) {
  *     a
@@ -48,13 +45,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  *     }
  *   }
  * }
+ * ```
  *
  * Becomes:
  *
+ * ```graphql
  * query SomeQuery($foo:String!$bar:String){someField(foo:$foo bar:$bar){a b{c d}}}
+ * ```
  *
  * SDL example:
  *
+ * ```graphql
  * """
  * Type description
  * """
@@ -64,44 +65,51 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  *   """
  *   bar: String
  * }
+ * ```
  *
  * Becomes:
  *
+ * ```graphql
  * """Type description""" type Foo{"""Field description""" bar:String}
+ * ```
  */
 function stripIgnoredCharacters(source) {
-  var sourceObj = typeof source === 'string' ? new _source.Source(source) : source;
-
-  if (!(sourceObj instanceof _source.Source)) {
-    throw new TypeError("Must provide string or Source. Received: ".concat((0, _inspect.default)(sourceObj)));
-  }
-
-  var body = sourceObj.body;
-  var lexer = (0, _lexer.createLexer)(sourceObj);
-  var strippedBody = '';
-  var wasLastAddedTokenNonPunctuator = false;
+  const sourceObj = (0, _source.isSource)(source)
+    ? source
+    : new _source.Source(source);
+  const body = sourceObj.body;
+  const lexer = new _lexer.Lexer(sourceObj);
+  let strippedBody = '';
+  let wasLastAddedTokenNonPunctuator = false;
 
   while (lexer.advance().kind !== _tokenKind.TokenKind.EOF) {
-    var currentToken = lexer.token;
-    var tokenKind = currentToken.kind;
+    const currentToken = lexer.token;
+    const tokenKind = currentToken.kind;
     /**
      * Every two non-punctuator tokens should have space between them.
      * Also prevent case of non-punctuator token following by spread resulting
      * in invalid token (e.g. `1...` is invalid Float token).
      */
 
-    var isNonPunctuator = !(0, _lexer.isPunctuatorToken)(currentToken);
+    const isNonPunctuator = !(0, _lexer.isPunctuatorTokenKind)(
+      currentToken.kind,
+    );
 
     if (wasLastAddedTokenNonPunctuator) {
-      if (isNonPunctuator || currentToken.kind === _tokenKind.TokenKind.SPREAD) {
+      if (
+        isNonPunctuator ||
+        currentToken.kind === _tokenKind.TokenKind.SPREAD
+      ) {
         strippedBody += ' ';
       }
     }
 
-    var tokenBody = body.slice(currentToken.start, currentToken.end);
+    const tokenBody = body.slice(currentToken.start, currentToken.end);
 
     if (tokenKind === _tokenKind.TokenKind.BLOCK_STRING) {
-      strippedBody += dedentBlockString(tokenBody);
+      strippedBody += (0, _blockString.printBlockString)(currentToken.value, {
+        minimize: true,
+      });
     } else {
       strippedBody += tokenBody;
     }
@@ -110,24 +118,4 @@ function stripIgnoredCharacters(source) {
   }
 
   return strippedBody;
-}
-
-function dedentBlockString(blockStr) {
-  // skip leading and trailing triple quotations
-  var rawStr = blockStr.slice(3, -3);
-  var body = (0, _blockString.dedentBlockStringValue)(rawStr);
-  var lines = body.split(/\r\n|[\n\r]/g);
-
-  if ((0, _blockString.getBlockStringIndentation)(lines) > 0) {
-    body = '\n' + body;
-  }
-
-  var lastChar = body[body.length - 1];
-  var hasTrailingQuote = lastChar === '"' && body.slice(-4) !== '\\"""';
-
-  if (hasTrailingQuote || lastChar === '\\') {
-    body += '\n';
-  }
-
-  return '"""' + body + '"""';
 }

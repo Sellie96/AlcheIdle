@@ -1,11 +1,11 @@
 /**
  * Contains all information about entity's foreign key.
  */
-var ForeignKeyMetadata = /** @class */ (function () {
+export class ForeignKeyMetadata {
     // ---------------------------------------------------------------------
     // Constructor
     // ---------------------------------------------------------------------
-    function ForeignKeyMetadata(options) {
+    constructor(options) {
         /**
          * Array of columns of this foreign key.
          */
@@ -29,6 +29,7 @@ var ForeignKeyMetadata = /** @class */ (function () {
         this.onDelete = options.onDelete || "NO ACTION";
         this.onUpdate = options.onUpdate || "NO ACTION";
         this.deferrable = options.deferrable;
+        this.givenName = options.name;
         if (options.namingStrategy)
             this.build(options.namingStrategy);
     }
@@ -39,14 +40,14 @@ var ForeignKeyMetadata = /** @class */ (function () {
      * Builds some depend foreign key properties.
      * Must be called after all entity metadatas and their columns are built.
      */
-    ForeignKeyMetadata.prototype.build = function (namingStrategy) {
-        this.columnNames = this.columns.map(function (column) { return column.databaseName; });
-        this.referencedColumnNames = this.referencedColumns.map(function (column) { return column.databaseName; });
+    build(namingStrategy) {
+        this.columnNames = this.columns.map((column) => column.databaseName);
+        this.referencedColumnNames = this.referencedColumns.map((column) => column.databaseName);
         this.referencedTablePath = this.referencedEntityMetadata.tablePath;
-        this.name = namingStrategy.foreignKeyName(this.entityMetadata.tableName, this.columnNames, this.referencedEntityMetadata.tableName, this.referencedColumnNames);
-    };
-    return ForeignKeyMetadata;
-}());
-export { ForeignKeyMetadata };
+        this.name = this.givenName
+            ? this.givenName
+            : namingStrategy.foreignKeyName(this.entityMetadata.tableName, this.columnNames, this.referencedEntityMetadata.tableName, this.referencedColumnNames);
+    }
+}
 
 //# sourceMappingURL=ForeignKeyMetadata.js.map

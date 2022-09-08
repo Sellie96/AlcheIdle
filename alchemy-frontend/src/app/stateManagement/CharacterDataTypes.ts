@@ -50,6 +50,6 @@ export interface PlayerData {
   stats: PlayerStats;
   currencies: AllCurrencies;
   skills: AllSkills;
-  backpack: object[];
-  equipment: object[];
+  backpack: any[];
+  equipment: any[];
 }

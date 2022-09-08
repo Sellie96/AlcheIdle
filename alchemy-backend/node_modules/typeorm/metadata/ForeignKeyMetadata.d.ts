@@ -42,6 +42,8 @@ export declare class ForeignKeyMetadata {
     referencedTablePath: string;
     /**
      * Gets foreign key name.
+     * If unique constraint name was given by a user then it stores givenName.
+     * If unique constraint name was not given then its generated.
      */
     name: string;
     /**
@@ -52,6 +54,10 @@ export declare class ForeignKeyMetadata {
      * Gets array of referenced column names.
      */
     referencedColumnNames: string[];
+    /**
+     * User specified unique constraint name.
+     */
+    givenName?: string;
     constructor(options: {
         entityMetadata: EntityMetadata;
         referencedEntityMetadata: EntityMetadata;
@@ -61,6 +67,7 @@ export declare class ForeignKeyMetadata {
         onDelete?: OnDeleteType;
         onUpdate?: OnUpdateType;
         deferrable?: DeferrableType;
+        name?: string;
     });
     /**
      * Builds some depend foreign key properties.

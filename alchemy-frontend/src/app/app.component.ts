@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Store } from '@ngxs/store';
-import { CharacterState } from './stateManagement/character.state';
+import { CharacterState, CharacterStateModel } from './stateManagement/character.state';
 import { PlayerData } from './stateManagement/CharacterDataTypes';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Observable } from 'rxjs';
 
 
 @UntilDestroy()
@@ -13,6 +14,9 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
+
+  player$: Observable<CharacterStateModel> = this.store.select(CharacterState);
+
   title: string = 'Home';
   opened: boolean = true;
   playerCharacter!: PlayerData;

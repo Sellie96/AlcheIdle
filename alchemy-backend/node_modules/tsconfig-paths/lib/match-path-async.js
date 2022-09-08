@@ -40,7 +40,10 @@ function findFirstExistingMainFieldMappedFile(packageJson, mainFields, packageJs
     var tryNext = function () {
         return findFirstExistingMainFieldMappedFile(packageJson, mainFields, packageJsonPath, fileExistsAsync, doneCallback, index + 1);
     };
-    var mainFieldMapping = packageJson[mainFields[index]];
+    var mainFieldSelector = mainFields[index];
+    var mainFieldMapping = typeof mainFieldSelector === "string"
+        ? packageJson[mainFieldSelector]
+        : mainFieldSelector.reduce(function (obj, key) { return obj[key]; }, packageJson);
     if (typeof mainFieldMapping !== "string") {
         // Skip mappings that are not pointers to replacement files
         return tryNext();

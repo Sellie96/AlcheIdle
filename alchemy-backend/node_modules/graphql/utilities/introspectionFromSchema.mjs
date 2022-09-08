@@ -1,8 +1,7 @@
-import invariant from '../jsutils/invariant';
-import isPromise from '../jsutils/isPromise';
-import { parse } from '../language/parser';
-import { execute } from '../execution/execute';
-import { getIntrospectionQuery } from './introspectionQuery';
+import { invariant } from '../jsutils/invariant.mjs';
+import { parse } from '../language/parser.mjs';
+import { executeSync } from '../execution/execute.mjs';
+import { getIntrospectionQuery } from './getIntrospectionQuery.mjs';
 /**
  * Build an IntrospectionQuery from a GraphQLSchema
  *
@@ -14,10 +13,18 @@ import { getIntrospectionQuery } from './introspectionQuery';
  */
 
 export function introspectionFromSchema(schema, options) {
-  var queryAST = parse(getIntrospectionQuery(options));
-  var result = execute(schema, queryAST);
-
-  /* istanbul ignore next */
-  !isPromise(result) && !result.errors && result.data || invariant(0);
+  const optionsWithDefaults = {
+    specifiedByUrl: true,
+    directiveIsRepeatable: true,
+    schemaDescription: true,
+    inputValueDeprecation: true,
+    ...options,
+  };
+  const document = parse(getIntrospectionQuery(optionsWithDefaults));
+  const result = executeSync({
+    schema,
+    document,
+  });
+  (!result.errors && result.data) || invariant(false);
   return result.data;
 }

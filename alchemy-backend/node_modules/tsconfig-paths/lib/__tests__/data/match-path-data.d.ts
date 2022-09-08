@@ -6,7 +6,7 @@ export interface OneTest {
     readonly paths: {
         [key: string]: Array<string>;
     };
-    readonly mainFields?: string[];
+    readonly mainFields?: (string | string[])[];
     readonly addMatchAll?: boolean;
     readonly existingFiles: ReadonlyArray<string>;
     readonly requestedModule: string;

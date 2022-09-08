@@ -15,18 +15,20 @@ function fileExistsSync(path) {
 exports.fileExistsSync = fileExistsSync;
 /**
  * Reads package.json from disk
+ *
  * @param file Path to package.json
  */
-// tslint:disable-next-line:no-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function readJsonFromDiskSync(packageJsonPath) {
     if (!fs.existsSync(packageJsonPath)) {
         return undefined;
     }
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     return require(packageJsonPath);
 }
 exports.readJsonFromDiskSync = readJsonFromDiskSync;
 function readJsonFromDiskAsync(path, 
-// tslint:disable-next-line:no-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 callback) {
     fs.readFile(path, "utf8", function (err, result) {
         // If error, assume file did not exist

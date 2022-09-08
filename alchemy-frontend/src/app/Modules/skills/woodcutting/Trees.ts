@@ -39,19 +39,35 @@ export const logTypes = {
   divine: 0,
 };
 
+export enum TreeNames {
+  tree = 'tree',
+  oak = 'oak',
+  willow = 'willow',
+  bonsai = 'bonsai',
+  yew = 'yew',
+  magic = 'magic',
+  demon = 'demon',
+  divine = 'divine',
+ }
+
+ export enum LogNames {
+  logs = 'Logs',
+  oak = 'Oak logs',
+  willow = 'Willow logs',
+  bonsai = 'Bonsai logs',
+  yew = 'Yew logs',
+  magic = 'Magic logs',
+  demon = 'Demon logs',
+  divine = 'Divine logs',
+ }
+
 export const treeTypes: Trees = {
-  tree: { name: 'tree', level: 1, xp: 4, logs: 'Logs', time: 5 },
-  oak: { name: 'oak', level: 2, xp: 10, logs: 'Oak Logs', time: 10 },
-  willow: { name: 'willow', level: 5, xp: 30, logs: 'Willow Logs', time: 15 },
-  bonsai: { name: 'bonsai', level: 10, xp: 45, logs: 'Bonsai Logs', time: 20 },
-  yew: { name: 'yew', level: 12, xp: 60, logs: 'Yew Logs', time: 25 },
-  magic: { name: 'magic', level: 14, xp: 75, logs: 'Magic Logs', time: 45 },
-  demon: { name: 'demon', level: 15, xp: 85, logs: 'Demon Logs', time: 55 },
-  divine: {
-    name: 'divine',
-    level: 18,
-    xp: 150,
-    logs: 'Divine Logs',
-    time: 120,
-  },
+  tree: { name: TreeNames.tree, level: 1, xp: 10, logs: LogNames.logs, time: 3 },
+  oak: { name: TreeNames.oak, level: 10, xp: 15, logs: LogNames.oak, time: 4 },
+  willow: { name: TreeNames.willow, level: 30, xp: 25, logs: LogNames.willow, time: 5 },
+  bonsai: { name: TreeNames.bonsai, level: 45, xp: 45, logs: LogNames.bonsai, time: 6 },
+  yew: { name: TreeNames.yew, level: 60, xp: 60, logs: LogNames.yew, time: 8 },
+  magic: { name: TreeNames.magic, level: 75, xp: 75, logs: LogNames.magic, time: 45 },
+  demon: { name: TreeNames.demon, level: 80, xp: 85, logs: LogNames.demon, time: 55 },
+  divine: { name: TreeNames.divine, level: 90, xp: 150, logs: LogNames.divine, time: 120 },
 };

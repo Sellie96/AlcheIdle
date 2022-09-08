@@ -135,6 +135,17 @@ exports.tests = [
         expectedPath: (0, path_1.join)("/root", "location", "mylibjs", "kalle.js"),
     },
     {
+        name: "should resolve nested main fields",
+        absoluteBaseUrl: "/root/",
+        paths: { "lib/*": ["location/*"] },
+        mainFields: [["esnext", "main"]],
+        packageJson: { esnext: { main: "./main.js" } },
+        existingFiles: [(0, path_1.join)("/root", "location", "mylibjs", "main.js")],
+        extensions: [".ts", ".js"],
+        requestedModule: "lib/mylibjs",
+        expectedPath: (0, path_1.join)("/root", "location", "mylibjs", "main.js"),
+    },
+    {
         name: "should ignore advanced field mappings in package.json",
         absoluteBaseUrl: "/root/",
         paths: { "lib/*": ["location/*"] },

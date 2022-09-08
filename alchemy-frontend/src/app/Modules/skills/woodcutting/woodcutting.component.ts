@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngxs/store';
+import { ToastrService } from 'ngx-toastr';
 import { interval } from 'rxjs';
 import { UpdateWoodcutting } from 'src/app/stateManagement/character.actions';
 import { CharacterState } from 'src/app/stateManagement/character.state';
 import { PlayerData } from 'src/app/stateManagement/CharacterDataTypes';
-import { Logs, logTypes, Tree, Trees, treeTypes } from './Trees';
-import { ToastrService } from 'ngx-toastr';
+import { ChatService } from '../../chat/chat.service';
+import { LogNames, logTypes, Tree, TreeNames, Trees, treeTypes } from './Trees';
 
 
 @UntilDestroy()
@@ -21,16 +22,15 @@ export class WoodcuttingComponent implements OnInit {
   curSec: number = 0;
   type: string = '';
   woodcuttingXp: number = 0;
-  woodcuttingLevel: number = 1;
   logTypes = logTypes;
   sub: any;
   treeActive: boolean = false;
   playerCharacter!: PlayerData;
-  activeTree: string= '';
+  activeTree: string = '';
 
   trees = treeTypes;
 
-  constructor(private snackBar: MatSnackBar, private store: Store) {}
+  constructor(private store: Store, private toastr: ToastrService, private chatService: ChatService) {}
 
   ngOnInit(): void {
     this.store
@@ -43,13 +43,12 @@ export class WoodcuttingComponent implements OnInit {
 
   startTimer(tree: Tree) {
     this.activeTree = tree.name;
-    if (this.woodcuttingLevel >= tree.level) {
+    if (this.playerCharacter.skills.woodcutting.level >= tree.level) {
       if (this.sub) {
         this.sub.unsubscribe();
       }
       const time = tree.time * 10;
       const timer$ = interval(100);
-      this.type = tree.name;
 
       this.sub = timer$.subscribe((sec) => {
         this.treeProgress = 100 - (sec * 100) / time;
@@ -65,37 +64,56 @@ export class WoodcuttingComponent implements OnInit {
   completeWoodcutting(tree: Tree) {
     this.woodcuttingXp += tree.xp;
     switch (tree.name) {
-      case 'tree':
-        this.logTypes.logs ++;
+      case TreeNames.tree:
+        if(this.playerCharacter.backpack.some(logs => logs.name === LogNames.logs)) {
+
+          let indexOfItem = this.playerCharacter.backpack.findIndex(logs => logs.name === LogNames.logs);
+
+          this.playerCharacter.backpack.push({name: LogNames.logs, amount: this.playerCharacter.backpack[indexOfItem].amount += 1, type: LogNames.logs});
+
+          this.playerCharacter.backpack.splice(indexOfItem, 1);
+
+      } else {
+        this.playerCharacter.backpack.push({
+          name: LogNames.logs,
+          amount: 1,
+          type: LogNames.logs,
+        });
+      }
         break;
-      case 'oak':
+      case TreeNames.oak:
         this.logTypes.oak ++;
         break;
-      case 'willow':
+      case TreeNames.willow:
         this.logTypes.willow ++;
         break;
-      case 'bonsai':
+      case TreeNames.bonsai:
         this.logTypes.bonsai ++;
         break;
-      case 'yew':
+      case TreeNames.yew:
         this.logTypes.yew ++;
         break;
-      case 'magic':
+      case TreeNames.magic:
         this.logTypes.magic ++;
         break;
-      case 'demon':
+      case TreeNames.demon:
         this.logTypes.demon ++;
         break;
-      case 'divine':
+      case TreeNames.divine:
         this.logTypes.divine ++;
         break;
       default:
         break;
     }
-    this.snackBar.open('+' + tree.xp + ' XP' + '  ' + 1 + tree.logs, 'Close');
-    if (this.woodcuttingXp >= 10 * this.woodcuttingLevel) {
-      this.woodcuttingLevel++;
-      this.playerCharacter.skills.woodcutting.level = this.woodcuttingLevel
+    this.toastr.info('+' + tree.xp + ' XP' + '  ' + 1 + tree.logs, 'Reward' ,{
+      timeOut: 2000,
+      positionClass: 'toast-bottom-right',
+      progressBar: true,
+      progressAnimation: 'increasing'
+    });
+    if (this.woodcuttingXp >= 10 * this.playerCharacter.skills.woodcutting.level) {
+      this.playerCharacter.skills.woodcutting.level++;
+      this.chatService.sendSkillUpdate(`Test just advanced to level ${this.playerCharacter.skills.woodcutting.level} Woodcutting!`);
       this.store.dispatch(new UpdateWoodcutting(this.playerCharacter));
       this.woodcuttingXp = 0;
     }

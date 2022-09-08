@@ -13,7 +13,7 @@ export declare class CascadesSubjectBuilder {
     build(subject: Subject, operationType: "save" | "remove" | "soft-remove" | "recover"): void;
     /**
      * Finds subject where entity like given subject's entity.
-     * Comparision made by entity id.
+     * Comparison made by entity id.
      */
     protected findByPersistEntityLike(entityTarget: Function | string, entity: ObjectLiteral): Subject | undefined;
 }

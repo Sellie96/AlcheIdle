@@ -51,6 +51,10 @@ export interface TableOptions {
      */
     justCreated?: boolean;
     /**
+     * Enables Sqlite "WITHOUT ROWID" modifier for the "CREATE TABLE" statement
+     */
+    withoutRowid?: boolean;
+    /**
      * Table engine.
      */
     engine?: string;

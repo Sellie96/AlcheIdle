@@ -10,4 +10,8 @@ export interface PrimaryGeneratedColumnUUIDOptions {
      * Column comment. Not supported by all database types.
      */
     comment?: string;
+    /**
+     * Name of the primary key constraint.
+     */
+    primaryKeyConstraintName?: string;
 }

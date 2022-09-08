@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { NgxsModule } from '@ngxs/store';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgxsReduxDevtoolsPluginModule } from "@ngxs/devtools-plugin";
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -27,7 +28,13 @@ import { environment } from 'src/environments/environment';
 import { CharacterState } from './stateManagement/character.state';
 import { ConstructionComponent } from './Modules/skills/construction/construction.component';
 import { LockedTreeComponent } from './Modules/skills/woodcutting/locked-tree/locked-tree.component';
-import { ToastService, AngularToastifyModule } from 'angular-toastify';
+import { ToastrModule } from 'ngx-toastr';
+import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
+import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
+import { ChatComponent } from './Modules/chat/chat.component';
+import { ReactiveFormsModule } from '@angular/forms';
+
+const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 
 @NgModule({
   declarations: [
@@ -48,22 +55,25 @@ import { ToastService, AngularToastifyModule } from 'angular-toastify';
     CraftingComponent,
     HerbloreComponent,
     ConstructionComponent,
-    LockedTreeComponent
+    LockedTreeComponent,
+    ChatComponent
   ],
   imports: [
     BrowserModule,
-    AngularToastifyModule,
-    NgxsModule.forRoot([CharacterState], {
+    [NgxsModule.forRoot([CharacterState], {
       developmentMode: !environment.production
-    }),
+    }), NgxsStoragePluginModule.forRoot()],
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    ToastrModule.forRoot(),
+    SocketIoModule.forRoot(config),
     MaterialUI,
     GraphQLModule,
+    ReactiveFormsModule,
     environment.production ? [] : NgxsReduxDevtoolsPluginModule.forRoot(),
   ],
-  providers: [ToastService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,0 +1,45 @@
+.chat-ui {
+  position: relative;
+  width: 100%;
+  height: 300px;
+}
+
+.chat-ui-text-area {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.chat-text {
+  font-size: 0.75rem;
+  text-shadow: 2px 2px 5px black;
+  color: white;
+}
+
+.chat-text-server {
+  color: rgb(0, 0, 0);
+}
+
+.chat-text-action {
+  color: rgb(247, 20, 20);
+}
+
+.chat-input {
+  background: rgba(0, 0, 0, 0);
+  width: 100%;
+}
+
+.chat-box {
+  margin: 0.5rem;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.Server {
+    color: rgb(255, 0, 0);
+    font-size: 0.85rem;
+    text-shadow: none;
+}

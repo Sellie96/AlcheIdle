@@ -13,15 +13,19 @@ const app_service_1 = require("./app.service");
 const typeorm_1 = require("@nestjs/typeorm");
 const messages_service_1 = require("./messages/messages.service");
 const messages_gateway_1 = require("./messages/messages.gateway");
+const config_1 = require("@nestjs/config");
+const user_entity_1 = require("./user/user.entity");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            config_1.ConfigModule.forRoot(),
             typeorm_1.TypeOrmModule.forRoot({
                 type: 'mongodb',
-                url: 'mongodb+srv://GAMEADMIN:Ikdx9139@cluster0.ty5ph.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+                url: process.env.DATABASE_URL,
                 synchronize: true,
+                entities: [user_entity_1.User],
                 useUnifiedTopology: true,
             })
         ],

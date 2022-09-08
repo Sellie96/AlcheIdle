@@ -1,6 +1,6 @@
 export declare class User {
-    _id: string;
-    id: string;
-    name: string;
-    characters: string[];
+    id: number;
+    firstName: string;
+    lastName: string;
+    asActive: boolean;
 }

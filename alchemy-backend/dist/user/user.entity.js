@@ -14,21 +14,21 @@ const typeorm_1 = require("typeorm");
 let User = class User {
 };
 __decorate([
-    (0, typeorm_1.ObjectIdColumn)(),
-    __metadata("design:type", String)
-], User.prototype, "_id", void 0);
-__decorate([
-    (0, typeorm_1.PrimaryColumn)(),
-    __metadata("design:type", String)
+    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    __metadata("design:type", Number)
 ], User.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], User.prototype, "name", void 0);
+], User.prototype, "firstName", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
-    __metadata("design:type", Array)
-], User.prototype, "characters", void 0);
+    __metadata("design:type", String)
+], User.prototype, "lastName", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: true }),
+    __metadata("design:type", Boolean)
+], User.prototype, "asActive", void 0);
 User = __decorate([
     (0, typeorm_1.Entity)()
 ], User);

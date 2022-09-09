@@ -11,6 +11,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MessagesGateway = void 0;
 const websockets_1 = require("@nestjs/websockets");
@@ -24,19 +33,25 @@ let MessagesGateway = class MessagesGateway {
         this.messagesService = messagesService;
         this.users = 0;
     }
-    async handleConnection(client) {
-        this.users++;
-        const message = this.messagesService.findAll();
-        this.server.emit('findAllMessages', message);
-        this.server.emit('users', this.users);
+    handleConnection(client) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.users++;
+            const message = this.messagesService.findAll();
+            this.server.emit('findAllMessages', message);
+            this.server.emit('users', this.users);
+        });
     }
-    async handleDisconnect() {
-        this.users--;
-        this.server.emit('users', this.users);
+    handleDisconnect() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.users--;
+            this.server.emit('users', this.users);
+        });
     }
-    async create(createMessageDto) {
-        const message = await this.messagesService.create(createMessageDto);
-        this.server.emit('findAllMessages', message);
+    create(createMessageDto) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const message = yield this.messagesService.create(createMessageDto);
+            this.server.emit('findAllMessages', message);
+        });
     }
     findAll(client) {
         const message = this.messagesService.findAll();
@@ -45,9 +60,11 @@ let MessagesGateway = class MessagesGateway {
     update(updateMessageDto) {
         return this.messagesService.update(updateMessageDto.id, updateMessageDto);
     }
-    async typing(isTyping, client) {
-        const name = this.messagesService.getClientName(client.id);
-        client.broadcast.emit('typing', { name, isTyping });
+    typing(isTyping, client) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const name = this.messagesService.getClientName(client.id);
+            client.broadcast.emit('typing', { name, isTyping });
+        });
     }
 };
 __decorate([

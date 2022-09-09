@@ -1,0 +1,46 @@
+<div>
+  <mat-toolbar class="toolbar-register mat-elevation-z8" style="height: 4.3rem">
+    <mat-toolbar-row>
+      <h1>
+        {{ "Register" | titlecase }}
+      </h1>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+  <div class="register-form">
+    <h2>
+      {{ "Register" | titlecase }}
+    </h2>
+
+    <p>
+      Welcome to Alchemy! Please fill out the form below to create your account.
+    </p>
+    <mat-form-field appearance="fill">
+      <mat-label>Username</mat-label>
+      <input matInput />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Password</mat-label>
+      <input type="password" matInput />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Confirm Password</mat-label>
+      <input type="password" matInput />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input matInput />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Gamemode</mat-label>
+      <mat-select>
+        <mat-option value="normal">Normal</mat-option>
+        <mat-option value="hardcore">Harcore</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>

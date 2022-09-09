@@ -1,16 +1,11 @@
+import { AllCurrencies } from "./currencies/currencies.entity";
+import { AllSkills } from "./skills/skills.entity";
 export declare class Character {
-    _id: string;
-    id: string;
-    level: Number;
-    hpMax: Number;
-    hpCurrent: Number;
-    xpMax: Number;
-    xpCurrent: Number;
-    damage: Number;
-    accuracy: Number;
-    armour: Number;
-    evasion: Number;
-    critChance: Number;
-    gold: Number;
-    user: string;
+    id?: number;
+    characterName: string;
+    characterAlignment: string;
+    currencies: AllCurrencies;
+    skills: AllSkills;
+    backpack: object[];
+    equipment: object[];
 }

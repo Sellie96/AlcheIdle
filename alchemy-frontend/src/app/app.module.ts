@@ -33,6 +33,8 @@ import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { ChatComponent } from './Modules/chat/chat.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { RegisterComponent } from './register/register.component';
+import { LoginComponent } from './login/login.component';
 
 const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 
@@ -56,7 +58,9 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
     HerbloreComponent,
     ConstructionComponent,
     LockedTreeComponent,
-    ChatComponent
+    ChatComponent,
+    RegisterComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

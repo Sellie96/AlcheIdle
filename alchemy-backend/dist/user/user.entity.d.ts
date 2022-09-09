@@ -1,6 +1,8 @@
+import { Character } from 'src/character/Character.entity';
 export declare class User {
-    id: number;
-    firstName: string;
-    lastName: string;
+    id?: number;
+    username: string;
+    password: string;
     asActive: boolean;
+    character: Character;
 }

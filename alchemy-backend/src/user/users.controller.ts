@@ -15,8 +15,9 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { AuthService } from 'src/auth/auth.service';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { LocalAuthGuard } from 'src/auth/local-auth.guard';
+import { JwtAuthGuard } from 'src/auth/strategies/jwt-auth.guard';
+import { LocalAuthGuard } from 'src/auth/strategies/local-auth.guard';
+
 import { RegisterData } from './register.interface';
 import { User } from './user.entity';
 import { UsersService } from './users.service';
@@ -33,7 +34,6 @@ export class UsersController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   login(@Request() req): any {
-    console.log(req.user);
     return this.authService.login(req.user);
   }
 
@@ -50,6 +50,17 @@ export class UsersController {
        this.usersService.register(createUser);
        return res.status(200).send({message: 'User registered'});
     }
+  }
+
+  @Post('profile')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Get player data' })
+  @ApiResponse({     
+    status: 200,
+    description: 'User Returned'
+  })
+  async getPlayerData(@Res() res,  @Body() body: any): Promise<User> {
+    return res.status(200).send({playerData: await this.usersService.findOneByUsername(body.username)});
   }
 
   @Get(':id')

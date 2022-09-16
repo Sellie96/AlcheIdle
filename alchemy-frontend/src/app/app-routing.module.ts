@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MainpageComponent } from './mainpage/mainpage.component';
+
 import { AdventureComponent } from './Modules/general/adventure/adventure.component';
+import { MainpageComponent } from './Modules/mainpage/mainpage.component';
 import { AgilityComponent } from './Modules/skills/agility/agility.component';
 import { AlchemyComponent } from './Modules/skills/alchemy/alchemy.component';
 import { CookingComponent } from './Modules/skills/cooking/cooking.component';

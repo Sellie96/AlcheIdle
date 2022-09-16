@@ -2,8 +2,9 @@ import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular
 import { FormControl } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngxs/store';
-import { CharacterState } from 'src/app/stateManagement/character.state';
-import { PlayerData } from 'src/app/stateManagement/CharacterDataTypes';
+import { CharacterState } from 'src/app/stateManagement/character/character.state';
+import { PlayerData } from 'src/app/stateManagement/character/CharacterDataTypes';
+
 import { ChatService } from './chat.service';
 
 
@@ -30,12 +31,6 @@ export class ChatComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    this.chatService.getUsers().subscribe((users: any) => {
-      this.users = users;
-    });
-
-
     this.chatService.receiveChat().subscribe((messages: any) => {
       this.messages = messages;
       this.messages.reverse();

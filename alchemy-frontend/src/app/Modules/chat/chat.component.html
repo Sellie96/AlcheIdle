@@ -2,7 +2,7 @@
   <div class="chat-ui-text-area">
     <div class="chat-box">
       <div tabindex="1" #chatDiv class="chat-text {{item.name}}" *ngFor="let item of messages">
-        [{{item.date}}] {{item.name}}: {{ item.message }}
+        [{{item.date || item.time}}] {{item.name}}: {{ item.message }}
       </div>
     </div>
       <mat-form-field style="width: 100%; margin: 0; padding: 0; color: whitesmoke;">

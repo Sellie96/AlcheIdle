@@ -10,7 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
-const Character_entity_1 = require("../character/Character.entity");
+const character_entity_1 = require("../Modules/character/character.entity");
 const typeorm_1 = require("typeorm");
 let User = class User {
 };
@@ -31,8 +31,8 @@ __decorate([
     __metadata("design:type", Boolean)
 ], User.prototype, "asActive", void 0);
 __decorate([
-    (0, typeorm_1.Column)((type) => Character_entity_1.Character),
-    __metadata("design:type", Character_entity_1.Character)
+    (0, typeorm_1.Column)((type) => character_entity_1.Character),
+    __metadata("design:type", character_entity_1.Character)
 ], User.prototype, "character", void 0);
 User = __decorate([
     (0, typeorm_1.Entity)()

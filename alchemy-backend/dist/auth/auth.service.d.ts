@@ -10,4 +10,5 @@ export declare class AuthService {
         userData: import("../user/user.entity").User;
         message: string;
     }>;
+    verifyJwt(jwt: string): Promise<any>;
 }

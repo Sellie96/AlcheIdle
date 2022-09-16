@@ -8,5 +8,6 @@ export declare class UsersController {
     constructor(usersService: UsersService, authService: AuthService);
     login(req: any): any;
     create(res: any, createUser: RegisterData): Promise<User>;
+    getPlayerData(res: any, body: any): Promise<User>;
     findOne(id: string): Promise<User>;
 }

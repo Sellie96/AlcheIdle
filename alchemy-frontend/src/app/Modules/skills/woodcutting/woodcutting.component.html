@@ -2,30 +2,43 @@
   <mat-toolbar class="skill-information">
     <mat-toolbar-row>
       <div style="width: 100%">
+        <span> {{ +woodcutters }} Users Woodcutting </span>
+        <span style="margin-left: 25rem;"> Current Bonus: {{ 1 + (0.001 * woodcutters) }}x </span>
         <span>
           <div style="margin-left: 1rem">
             Skill Level
-            <span class="level"> {{ this.playerCharacter.character.skills.woodcutting.level }} / 99 </span>
+            <span class="level">
+              {{ this.playerCharacter.character.skills.woodcutting.level }} / 99
+            </span>
 
-            Active: 
+            Active:
             <span class="level">
               {{ activeTree || "None" | titlecase }}
             </span>
             Skill XP
             <span class="xp">
-              {{ woodcuttingXp }} / {{ this.playerCharacter.character.skills.woodcutting.level * 10 }}
+              {{
+                this.playerCharacter.character.skills.woodcutting.xpCurrent
+              }}
+              /
+              {{ this.playerCharacter.character.skills.woodcutting.level * 10 }}
             </span>
           </div>
           <mat-progress-bar
             class="progress-bar-skill-level"
             mode="determinate"
-            [value]="(woodcuttingXp / (this.playerCharacter.character.skills.woodcutting.level * 10)) * 100"
+            [value]="
+              (this.playerCharacter.character.skills.woodcutting.xpCurrent /
+                (this.playerCharacter.character.skills.woodcutting.level *
+                  10)) *
+              100
+            "
           ></mat-progress-bar>
         </span>
       </div>
     </mat-toolbar-row>
   </mat-toolbar>
-  
+
   <mat-progress-bar
     class="progress-bar"
     mode="determinate"
@@ -36,48 +49,150 @@
     <div class="woodcutting-box" (click)="startTimer(trees.tree)">
       <app-tree-spot [tree]="trees.tree"></app-tree-spot>
     </div>
-    <div *ngIf="this.playerCharacter.character.skills.woodcutting.level >= trees.oak.level" class="woodcutting-box" (click)="startTimer(trees.oak)">
+    <div
+      *ngIf="
+        this.playerCharacter.character.skills.woodcutting.level >=
+        trees.oak.level
+      "
+      class="woodcutting-box"
+      (click)="startTimer(trees.oak)"
+    >
       <app-tree-spot [tree]="trees.oak"></app-tree-spot>
     </div>
-    <div *ngIf="this.playerCharacter.character.skills.woodcutting.level >= trees.willow.level" class="woodcutting-box" (click)="startTimer(trees.willow)">
+    <div
+      *ngIf="
+        this.playerCharacter.character.skills.woodcutting.level >=
+        trees.willow.level
+      "
+      class="woodcutting-box"
+      (click)="startTimer(trees.willow)"
+    >
       <app-tree-spot [tree]="trees.willow"></app-tree-spot>
     </div>
-    <div *ngIf="this.playerCharacter.character.skills.woodcutting.level >= trees.bonsai.level" class="woodcutting-box" (click)="startTimer(trees.bonsai)">
+    <div
+      *ngIf="
+        this.playerCharacter.character.skills.woodcutting.level >=
+        trees.bonsai.level
+      "
+      class="woodcutting-box"
+      (click)="startTimer(trees.bonsai)"
+    >
       <app-tree-spot [tree]="trees.bonsai"></app-tree-spot>
     </div>
-    <div *ngIf="this.playerCharacter.character.skills.woodcutting.level >= trees.yew.level" class="woodcutting-box" (click)="startTimer(trees.yew)">
+    <div
+      *ngIf="
+        this.playerCharacter.character.skills.woodcutting.level >=
+        trees.yew.level
+      "
+      class="woodcutting-box"
+      (click)="startTimer(trees.yew)"
+    >
       <app-tree-spot [tree]="trees.yew"></app-tree-spot>
     </div>
-    <div *ngIf="this.playerCharacter.character.skills.woodcutting.level >= trees.magic.level" class="woodcutting-box" (click)="startTimer(trees.magic)">
+    <div
+      *ngIf="
+        this.playerCharacter.character.skills.woodcutting.level >=
+        trees.magic.level
+      "
+      class="woodcutting-box"
+      (click)="startTimer(trees.magic)"
+    >
       <app-tree-spot [tree]="trees.magic"></app-tree-spot>
     </div>
-    <div *ngIf="this.playerCharacter.character.skills.woodcutting.level >= trees.demon.level" class="woodcutting-box" (click)="startTimer(trees.demon)">
+    <div
+      *ngIf="
+        this.playerCharacter.character.skills.woodcutting.level >=
+        trees.demon.level
+      "
+      class="woodcutting-box"
+      (click)="startTimer(trees.demon)"
+    >
       <app-tree-spot [tree]="trees.demon"></app-tree-spot>
     </div>
-    <div *ngIf="this.playerCharacter.character.skills.woodcutting.level >= trees.divine.level" class="woodcutting-box" (click)="startTimer(trees.divine)">
+    <div
+      *ngIf="
+        this.playerCharacter.character.skills.woodcutting.level >=
+        trees.divine.level
+      "
+      class="woodcutting-box"
+      (click)="startTimer(trees.divine)"
+    >
       <app-tree-spot [tree]="trees.divine"></app-tree-spot>
     </div>
-    <div *ngIf="this.playerCharacter.character.skills.woodcutting.level < trees.oak.level" class="locked">
+    <div
+      *ngIf="
+        this.playerCharacter.character.skills.woodcutting.level <
+        trees.oak.level
+      "
+      class="locked"
+    >
       <app-locked-tree [level]="trees.oak.level"></app-locked-tree>
     </div>
-    <div *ngIf="this.playerCharacter.character.skills.woodcutting.level >= trees.oak.level && this.playerCharacter.character.skills.woodcutting.level < trees.willow.level" class="locked">
+    <div
+      *ngIf="
+        this.playerCharacter.character.skills.woodcutting.level >=
+          trees.oak.level &&
+        this.playerCharacter.character.skills.woodcutting.level <
+          trees.willow.level
+      "
+      class="locked"
+    >
       <app-locked-tree [level]="trees.willow.level"></app-locked-tree>
     </div>
-    <div *ngIf="this.playerCharacter.character.skills.woodcutting.level >= trees.willow.level && this.playerCharacter.character.skills.woodcutting.level < trees.bonsai.level" class="locked">
+    <div
+      *ngIf="
+        this.playerCharacter.character.skills.woodcutting.level >=
+          trees.willow.level &&
+        this.playerCharacter.character.skills.woodcutting.level <
+          trees.bonsai.level
+      "
+      class="locked"
+    >
       <app-locked-tree [level]="trees.bonsai.level"></app-locked-tree>
     </div>
-    <div *ngIf="this.playerCharacter.character.skills.woodcutting.level >= trees.bonsai.level && this.playerCharacter.character.skills.woodcutting.level < trees.yew.level" class="locked">
+    <div
+      *ngIf="
+        this.playerCharacter.character.skills.woodcutting.level >=
+          trees.bonsai.level &&
+        this.playerCharacter.character.skills.woodcutting.level <
+          trees.yew.level
+      "
+      class="locked"
+    >
       <app-locked-tree [level]="trees.yew.level"></app-locked-tree>
     </div>
-    <div *ngIf="this.playerCharacter.character.skills.woodcutting.level >= trees.yew.level && this.playerCharacter.character.skills.woodcutting.level < trees.magic.level" class="locked">
+    <div
+      *ngIf="
+        this.playerCharacter.character.skills.woodcutting.level >=
+          trees.yew.level &&
+        this.playerCharacter.character.skills.woodcutting.level <
+          trees.magic.level
+      "
+      class="locked"
+    >
       <app-locked-tree [level]="trees.magic.level"></app-locked-tree>
     </div>
-    <div *ngIf="this.playerCharacter.character.skills.woodcutting.level >= trees.magic.level && this.playerCharacter.character.skills.woodcutting.level < trees.divine.level" class="locked">
+    <div
+      *ngIf="
+        this.playerCharacter.character.skills.woodcutting.level >=
+          trees.magic.level &&
+        this.playerCharacter.character.skills.woodcutting.level <
+          trees.divine.level
+      "
+      class="locked"
+    >
       <app-locked-tree [level]="trees.divine.level"></app-locked-tree>
     </div>
-    <div *ngIf="this.playerCharacter.character.skills.woodcutting.level >= trees.divine.level && this.playerCharacter.character.skills.woodcutting.level < trees.divine.level" class="locked">
+    <div
+      *ngIf="
+        this.playerCharacter.character.skills.woodcutting.level >=
+          trees.divine.level &&
+        this.playerCharacter.character.skills.woodcutting.level <
+          trees.divine.level
+      "
+      class="locked"
+    >
       <app-locked-tree [level]="trees.divine.level"></app-locked-tree>
     </div>
   </div>
 </div>
-

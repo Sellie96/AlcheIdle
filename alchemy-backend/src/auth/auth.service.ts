@@ -17,17 +17,20 @@ export class AuthService {
         return user;
       }
     }
-
     return null;
   }
 
   async login(user: any) {
     const payload = { username: user.username, password: user.password };
-    console.log(await this.usersService.findOneByUsername(payload.username));
     return {
       access_token: this.jwtService.sign(payload),
       userData: await this.usersService.findOneByUsername(payload.username),
       message: 'User logged in',
     };
   }
+
+  verifyJwt(jwt: string): Promise<any> {
+    return this.jwtService.verifyAsync(jwt);
+  }
+
 }

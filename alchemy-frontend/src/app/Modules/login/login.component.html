@@ -1,0 +1,105 @@
+<div>
+  <mat-toolbar class="toolbar-register mat-elevation-z8" style="height: 4.3rem">
+    <mat-toolbar-row>
+      <button
+        style="margin-right: 2rem"
+        #tooltip="matTooltip"
+        matTooltip="{{ login ? 'Register' : 'Login' }}"
+        matTooltipHideDelay="100000"
+        (click)="login = !login"
+      >
+        <img style="width: 20px" src="../../assets/general/edit.png" />
+      </button>
+      <h1 *ngIf="!login">
+        {{ "Register" | titlecase }}
+      </h1>
+      <h1 *ngIf="login">
+        {{ "Login" | titlecase }}
+      </h1>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+  <div *ngIf="!login" class="register-form">
+    <h1 class="headings">
+      {{ "Register" | titlecase }}
+    </h1>
+
+    <p>
+      Welcome to Alchemy! Please fill out the form below to create your account.
+    </p>
+    <form
+      class="forms"
+      (keyup.enter)="submitRegistration()"
+      [formGroup]="registerForm"
+    >
+      <mat-form-field appearance="fill">
+        <mat-label>Username</mat-label>
+        <input formControlName="username" matInput />
+        <mat-error *ngIf="hasErrorRegister('username', 'required')">Username is required</mat-error>
+        <mat-error *ngIf="hasErrorRegister('username', 'minlength')">Username must be less than 20 characters</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Password</mat-label>
+        <input formControlName="password" type="password" matInput />
+        <mat-error *ngIf="hasErrorRegister('password', 'required')">Password is required</mat-error>
+        <mat-error *ngIf="hasErrorRegister('password', 'minlength')">Password must be longer than 6 characters</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Confirm Password</mat-label>
+        <input type="password" matInput />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Email</mat-label>
+        <input formControlName="email" matInput />
+        <mat-error *ngIf="hasErrorRegister('email', 'required')">Email is required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Character Name</mat-label>
+        <input formControlName="characterName" matInput />
+        <mat-error *ngIf="hasErrorRegister('characterName', 'required')">A Character name is required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Gamemode</mat-label>
+        <mat-select formControlName="characterAlignment">
+          <mat-option value="normal">Normal</mat-option>
+          <mat-option value="hardcore">Harcore</mat-option>
+        </mat-select>
+        <mat-error *ngIf="hasErrorRegister('characterAlignment', 'required')">Please select a Gamemode</mat-error>
+      </mat-form-field>
+
+      <button (click)="submitRegistration()" [disabled]="registerForm.invalid" mat-raised-button color="primary">Register</button>
+    </form>
+  </div>
+
+  <div *ngIf="login" class="register-form">
+    <h1 class="headings">
+      {{ "Login" | titlecase }}
+    </h1>
+
+    <p>Welcome to Alchemy! Please login to start your adventure!</p>
+    <form class="forms" (keyup.enter)="submitLogin()" [formGroup]="loginForm">
+      <mat-form-field appearance="fill">
+        <mat-label>Username</mat-label>
+        <input formControlName="username" matInput />
+        <mat-error *ngIf="hasError('username', 'required')">Username is required</mat-error>
+        <mat-error *ngIf="hasError('username', 'maxlength')">Username must be less than 20 characters</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Password</mat-label>
+        <input formControlName="password" type="password" matInput />
+        <mat-error *ngIf="hasError('password', 'required')">Password is required</mat-error>
+        <mat-error *ngIf="hasError('password', 'minlength')">Password must be longer than 6 characters</mat-error>
+      </mat-form-field>
+
+      <mat-checkbox (click)="this.rememberMe = !this.rememberMe" class="example-margin">Remember Me</mat-checkbox>
+
+      <button (click)="submitLogin()" [disabled]="loginForm.invalid" mat-raised-button color="primary">Login</button>
+    </form>
+  </div>
+</div>

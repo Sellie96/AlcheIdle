@@ -26,10 +26,15 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const user_entity_1 = require("./user.entity");
-const bcrypt = require("bcrypt");
+const userDefault_1 = require("./userDefault");
+const messages_gateway_1 = require("../Modules/messages/messages.gateway");
+const messages_service_1 = require("../Modules/messages/messages.service");
+const message_entity_1 = require("../Modules/skills/woodcutting/entities/message.entity");
 let UsersService = class UsersService {
-    constructor(usersRepository) {
+    constructor(usersRepository, messagesService, messagesGateway) {
         this.usersRepository = usersRepository;
+        this.messagesService = messagesService;
+        this.messagesGateway = messagesGateway;
     }
     findAll() {
         return this.usersRepository.find();
@@ -38,20 +43,27 @@ let UsersService = class UsersService {
         return this.usersRepository.findOneBy({ id });
     }
     findOneByUsername(username) {
-        return this.usersRepository.findOneBy({ username: username });
-    }
-    updateOneByUsername(username) {
         return __awaiter(this, void 0, void 0, function* () {
-            let test = yield this.findOneByUsername(username);
-            test.character.skills.woodcutting.xpCurrent += 5;
-            console.log(test.character.skills.woodcutting.xpCurrent >= test.character.skills.woodcutting.level * 10);
-            if (test.character.skills.woodcutting.xpCurrent >= test.character.skills.woodcutting.level * 10) {
-                console.log('level up');
-                test.character.skills.woodcutting.xpCurrent = 0;
-                test.character.skills.woodcutting.level += 1;
+            return yield this.usersRepository.findOneBy({ username: username });
+        });
+    }
+    updateWoodcuttingByUsername(woodcutter) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let user = yield this.findOneByUsername(woodcutter.username);
+            user.character.skills.woodcutting.xpCurrent += +woodcutter.treeType.xp;
+            if (user.character.skills.woodcutting.xpCurrent >=
+                user.character.skills.woodcutting.level * 10) {
+                user.character.skills.woodcutting.xpCurrent = 0;
+                user.character.skills.woodcutting.level += 1;
+                this.messagesService.create({
+                    name: 'Server',
+                    message: `${woodcutter.username} has advanced woodcutting to level ${user.character.skills.woodcutting.level}!`,
+                    time: new Date().toISOString().split('T')[1].split('.')[0],
+                });
+                this.messagesGateway.findAll();
             }
-            yield this.usersRepository.update({ username: username }, {
-                character: test.character
+            yield this.usersRepository.update({ username: woodcutter.username }, {
+                character: user.character,
             });
         });
     }
@@ -74,90 +86,12 @@ let UsersService = class UsersService {
     }
     register(registerData) {
         return __awaiter(this, void 0, void 0, function* () {
-            let user = {
-                username: registerData.username,
-                password: yield bcrypt.hash(registerData.password, 10),
-                asActive: true,
-                character: {
-                    characterName: registerData.characterName,
-                    characterAlignment: registerData.characterAlignment,
-                    currencies: {
-                        gold: 1,
-                        energy: 1,
-                        lifeForce: 1,
-                        gems: 1,
-                    },
-                    skills: {
-                        agility: {
-                            level: 1,
-                            xpMax: 1,
-                            xpCurrent: 1,
-                        },
-                        alchemy: {
-                            level: 1,
-                            xpMax: 1,
-                            xpCurrent: 1,
-                        },
-                        cooking: {
-                            level: 1,
-                            xpMax: 1,
-                            xpCurrent: 1,
-                        },
-                        crafting: {
-                            level: 1,
-                            xpMax: 1,
-                            xpCurrent: 1,
-                        },
-                        firemaking: {
-                            level: 1,
-                            xpMax: 1,
-                            xpCurrent: 1,
-                        },
-                        fishing: {
-                            level: 1,
-                            xpMax: 1,
-                            xpCurrent: 1,
-                        },
-                        fletching: {
-                            level: 1,
-                            xpMax: 1,
-                            xpCurrent: 1,
-                        },
-                        herblore: {
-                            level: 1,
-                            xpMax: 1,
-                            xpCurrent: 1,
-                        },
-                        mining: {
-                            level: 1,
-                            xpMax: 1,
-                            xpCurrent: 1,
-                        },
-                        runecrafting: {
-                            level: 1,
-                            xpMax: 1,
-                            xpCurrent: 1,
-                        },
-                        smithing: {
-                            level: 1,
-                            xpMax: 1,
-                            xpCurrent: 1,
-                        },
-                        thieving: {
-                            level: 1,
-                            xpMax: 1,
-                            xpCurrent: 1,
-                        },
-                        woodcutting: {
-                            level: 1,
-                            xpMax: 1,
-                            xpCurrent: 1,
-                        },
-                    },
-                    backpack: [],
-                    equipment: [],
-                },
-            };
+            let user = yield (0, userDefault_1.UserDataCreation)(registerData);
+            this.messagesService.create({
+                name: 'Server',
+                message: `${user.username} has joined the game!`,
+                time: new Date().toISOString().split('T')[1].split('.')[0],
+            });
             return this.usersRepository.save(user);
         });
     }
@@ -165,7 +99,9 @@ let UsersService = class UsersService {
 UsersService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.User)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        messages_service_1.MessagesService,
+        messages_gateway_1.MessagesGateway])
 ], UsersService);
 exports.UsersService = UsersService;
 //# sourceMappingURL=users.service.js.map

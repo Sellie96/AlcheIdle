@@ -2,11 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
+import { Socket } from 'ngx-socket-io';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { CreateCharacter } from '../stateManagement/character.actions';
-import { PlayerData } from '../stateManagement/CharacterDataTypes';
+import { CreateCharacter } from '../stateManagement/character/character.actions';
+import { PlayerData } from '../stateManagement/character/CharacterDataTypes';
+
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +19,11 @@ export class AccountService {
   private token: string = "";
   isAuthenticated = false;
 
-  constructor(private httpClient: HttpClient, private toastrService: ToastrService, private router: Router, private store: Store) {}
+  constructor(
+    private httpClient: HttpClient,
+    private toastrService: ToastrService,
+    private store: Store
+    ) {}
 
   getAuthStatusListener() {
     return this.authStatusListener.asObservable();
@@ -34,30 +40,37 @@ export class AccountService {
   login(model: any) {
     this.httpClient.post<{access_token:string, userData: PlayerData, message: string}>(`${this.baseUrl}/users/login`, model).subscribe(
       (response) => {
-        const token = response.access_token;
-        this.token = token;
-        console.log(response);
-        if (token) {
+        this.token = response.access_token;
+        if (this.token) {
         this.isAuthenticated = true;
         this.authStatusListener.next(true);
-        this.saveAuthData(token);
-        console.log(response);
+        this.saveAuthData(this.token);
         this.store.dispatch(new CreateCharacter(response.userData));
         window.location.reload();
         this.toastrService.success(response.message);
         }
       },
       (error) => {
-        console.log(error, 'error');
         this.toastrService.error(error.error.message);
       }
     );
   }
 
   register(model: any) {
-    this.httpClient.post(`${this.baseUrl}/users/register`, model).subscribe(
+    this.httpClient.post<{message: string}>(`${this.baseUrl}/users/register`, model).subscribe(
       (response) => {
-        console.log(response);
+        this.toastrService.success(response.message);
+      },
+      (error) => {
+        this.toastrService.success(error.message);
+      }
+    );
+  }
+
+  getPlayerData(username: string) {
+    this.httpClient.post<{playerData: PlayerData}>(`${this.baseUrl}/users/profile`, {username: username}).subscribe(
+      (response) => {
+        this.store.dispatch(new CreateCharacter(response.playerData));
       },
       (error) => {
         console.log(error, 'error');
@@ -96,4 +109,6 @@ export class AccountService {
       token: token
     }
   }
+
+  
 }

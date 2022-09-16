@@ -2,14 +2,19 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
-import * as bcrypt from 'bcrypt';
 import { RegisterData } from './register.interface';
+import { UserDataCreation } from './userDefault';
+import { MessagesGateway } from 'src/Modules/messages/messages.gateway';
+import { MessagesService } from 'src/Modules/messages/messages.service';
+import { Woodcutting } from 'src/Modules/skills/woodcutting/entities/message.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
+    private messagesService: MessagesService,
+    private messagesGateway: MessagesGateway
   ) {}
 
   findAll(): Promise<User[]> {
@@ -20,29 +25,35 @@ export class UsersService {
     return this.usersRepository.findOneBy({ id });
   }
 
-  findOneByUsername(username: string): Promise<User> {
-    return this.usersRepository.findOneBy({ username: username });
+  async findOneByUsername(username: string): Promise<User> {
+    return await this.usersRepository.findOneBy({ username: username });
   }
 
-  async updateOneByUsername(username: string) {
-    //update woodcuttingxp in mongodb
+  async updateWoodcuttingByUsername(woodcutter: Woodcutting) {
+    let user = await this.findOneByUsername(woodcutter.username);
 
-    let test = await this.findOneByUsername(username);
+    user.character.skills.woodcutting.xpCurrent += +woodcutter.treeType.xp;
 
-    test.character.skills.woodcutting.xpCurrent += 5;
+    if (
+      user.character.skills.woodcutting.xpCurrent >=
+      user.character.skills.woodcutting.level * 10
+    ) {
+      user.character.skills.woodcutting.xpCurrent = 0;
+      user.character.skills.woodcutting.level += 1;
 
-    console.log(test.character.skills.woodcutting.xpCurrent >= test.character.skills.woodcutting.level * 10)
+      this.messagesService.create({
+        name: 'Server',
+        message: `${woodcutter.username} has advanced woodcutting to level ${user.character.skills.woodcutting.level}!`,
+        time: new Date().toISOString().split('T')[1].split('.')[0],
+      });
 
-    if(test.character.skills.woodcutting.xpCurrent >= test.character.skills.woodcutting.level * 10) {
-      console.log('level up');
-      test.character.skills.woodcutting.xpCurrent = 0;
-      test.character.skills.woodcutting.level += 1;
+      this.messagesGateway.findAll();
     }
 
     await this.usersRepository.update(
-      { username: username },
+      { username: woodcutter.username },
       {
-        character: test.character
+        character: user.character,
       },
     );
   }
@@ -62,90 +73,14 @@ export class UsersService {
   }
 
   async register(registerData: RegisterData) {
-    let user: User = {
-      username: registerData.username,
-      password: await bcrypt.hash(registerData.password, 10),
-      asActive: true,
-      character: {
-        characterName: registerData.characterName,
-        characterAlignment: registerData.characterAlignment,
-        currencies: {
-          gold: 1,
-          energy: 1,
-          lifeForce: 1,
-          gems: 1,
-        },
-        skills: {
-          agility: {
-            level: 1,
-            xpMax: 1,
-            xpCurrent: 1,
-          },
-          alchemy: {
-            level: 1,
-            xpMax: 1,
-            xpCurrent: 1,
-          },
-          cooking: {
-            level: 1,
-            xpMax: 1,
-            xpCurrent: 1,
-          },
-          crafting: {
-            level: 1,
-            xpMax: 1,
-            xpCurrent: 1,
-          },
-          firemaking: {
-            level: 1,
-            xpMax: 1,
-            xpCurrent: 1,
-          },
-          fishing: {
-            level: 1,
-            xpMax: 1,
-            xpCurrent: 1,
-          },
-          fletching: {
-            level: 1,
-            xpMax: 1,
-            xpCurrent: 1,
-          },
-          herblore: {
-            level: 1,
-            xpMax: 1,
-            xpCurrent: 1,
-          },
-          mining: {
-            level: 1,
-            xpMax: 1,
-            xpCurrent: 1,
-          },
-          runecrafting: {
-            level: 1,
-            xpMax: 1,
-            xpCurrent: 1,
-          },
-          smithing: {
-            level: 1,
-            xpMax: 1,
-            xpCurrent: 1,
-          },
-          thieving: {
-            level: 1,
-            xpMax: 1,
-            xpCurrent: 1,
-          },
-          woodcutting: {
-            level: 1,
-            xpMax: 1,
-            xpCurrent: 1,
-          },
-        },
-        backpack: [],
-        equipment: [],
-      },
-    };
+    let user: User = await UserDataCreation(registerData)
+
+    this.messagesService.create({
+      name: 'Server',
+      message: `${user.username} has joined the game!`,
+      time: new Date().toISOString().split('T')[1].split('.')[0],
+    });
+
     return this.usersRepository.save(user);
   }
 }

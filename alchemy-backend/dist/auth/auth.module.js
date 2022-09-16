@@ -10,11 +10,12 @@ exports.AuthModule = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
 const passport_1 = require("@nestjs/passport");
+const app_module_1 = require("../app.module");
 const users_module_1 = require("../user/users.module");
 const auth_service_1 = require("./auth.service");
-const constants_1 = require("./constants");
-const jwt_strategy_1 = require("./jwt.strategy");
-const local_strategy_1 = require("./local.strategy");
+const constants_1 = require("./strategies/constants");
+const jwt_strategy_1 = require("./strategies/jwt.strategy");
+const local_strategy_1 = require("./strategies/local.strategy");
 let AuthModule = class AuthModule {
 };
 AuthModule = __decorate([

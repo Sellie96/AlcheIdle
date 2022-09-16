@@ -1,18 +1,13 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { ScheduleModule } from '@nestjs/schedule';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { MessagesService } from './messages/messages.service';
-import { MessagesGateway } from './messages/messages.gateway';
-import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
+import { WoodcuttingModule } from './Modules/skills/woodcutting/woodcutting.module';
 import { User } from './user/user.entity';
 import { UsersModule } from './user/users.module';
-import { PassportModule } from '@nestjs/passport';
-import { AuthModule } from './auth/auth.module';
-import { JwtModule, JwtService } from '@nestjs/jwt';
-import { WoodcuttingGateway } from './skills/woodcutting/woodcutting.gateway';
-import { WoodcuttingService } from './skills/woodcutting/woodcutting.service';
-import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -24,18 +19,12 @@ import { ScheduleModule } from '@nestjs/schedule';
       entities: [User],
       useUnifiedTopology: true,
     }),
-    UsersModule,
     AuthModule,
+    UsersModule,
+    WoodcuttingModule,
     ScheduleModule.forRoot(),
   ],
   controllers: [AppController],
-  providers: [
-  AppService,
-  MessagesGateway,
-  MessagesService,
-  WoodcuttingGateway,
-  WoodcuttingService,
-  JwtService
-],
+  providers: [AppService],
 })
 export class AppModule {}

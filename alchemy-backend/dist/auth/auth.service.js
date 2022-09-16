@@ -42,13 +42,15 @@ let AuthService = class AuthService {
     login(user) {
         return __awaiter(this, void 0, void 0, function* () {
             const payload = { username: user.username, password: user.password };
-            console.log(yield this.usersService.findOneByUsername(payload.username));
             return {
                 access_token: this.jwtService.sign(payload),
                 userData: yield this.usersService.findOneByUsername(payload.username),
                 message: 'User logged in',
             };
         });
+    }
+    verifyJwt(jwt) {
+        return this.jwtService.verifyAsync(jwt);
     }
 };
 AuthService = __decorate([

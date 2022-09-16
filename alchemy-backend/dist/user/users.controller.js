@@ -25,8 +25,8 @@ exports.UsersController = void 0;
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const auth_service_1 = require("../auth/auth.service");
-const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
-const local_auth_guard_1 = require("../auth/local-auth.guard");
+const jwt_auth_guard_1 = require("../auth/strategies/jwt-auth.guard");
+const local_auth_guard_1 = require("../auth/strategies/local-auth.guard");
 const user_entity_1 = require("./user.entity");
 const users_service_1 = require("./users.service");
 let UsersController = class UsersController {
@@ -35,7 +35,6 @@ let UsersController = class UsersController {
         this.authService = authService;
     }
     login(req) {
-        console.log(req.user);
         return this.authService.login(req.user);
     }
     create(res, createUser) {
@@ -47,6 +46,11 @@ let UsersController = class UsersController {
                 this.usersService.register(createUser);
                 return res.status(200).send({ message: 'User registered' });
             }
+        });
+    }
+    getPlayerData(res, body) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return res.status(200).send({ playerData: yield this.usersService.findOneByUsername(body.username) });
         });
     }
     findOne(id) {
@@ -74,6 +78,20 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "create", null);
+__decorate([
+    (0, common_1.Post)('profile'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, swagger_1.ApiOperation)({ summary: 'Get player data' }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'User Returned'
+    }),
+    __param(0, (0, common_1.Res)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "getPlayerData", null);
 __decorate([
     (0, common_1.Get)(':id'),
     (0, swagger_1.ApiResponse)({

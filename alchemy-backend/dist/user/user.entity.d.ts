@@ -1,4 +1,4 @@
-import { Character } from 'src/character/Character.entity';
+import { Character } from 'src/Modules/character/character.entity';
 export declare class User {
     id?: number;
     username: string;

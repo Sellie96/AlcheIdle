@@ -1,4 +1,5 @@
-import { Character } from 'src/character/Character.entity';
+
+import { Character } from 'src/Modules/character/character.entity';
 import { Entity, Column, ObjectIdColumn } from 'typeorm';
 
 @Entity()

@@ -3,4 +3,5 @@ export declare class Skill {
     level: number;
     xpMax: number;
     xpCurrent: number;
+    pet?: boolean;
 }

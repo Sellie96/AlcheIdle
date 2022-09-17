@@ -14,6 +14,7 @@ const typeorm_1 = require("@nestjs/typeorm");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const auth_module_1 = require("./auth/auth.module");
+const thieving_module_1 = require("./Modules/skills/thieving/thieving.module");
 const woodcutting_module_1 = require("./Modules/skills/woodcutting/woodcutting.module");
 const user_entity_1 = require("./user/user.entity");
 const users_module_1 = require("./user/users.module");
@@ -33,6 +34,7 @@ AppModule = __decorate([
             auth_module_1.AuthModule,
             users_module_1.UsersModule,
             woodcutting_module_1.WoodcuttingModule,
+            thieving_module_1.ThievingModule,
             schedule_1.ScheduleModule.forRoot(),
         ],
         controllers: [app_controller_1.AppController],

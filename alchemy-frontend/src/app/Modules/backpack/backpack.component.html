@@ -1,0 +1,17 @@
+<mat-toolbar class="backpack">
+  <mat-toolbar-row>
+    <div style="width: 100%">
+      <span> Backpack </span>
+      <span matTooltip="Gold" style="margin-left: 5rem; cursor: pointer;"> {{playerCharacter.character.currencies.gold}}<img style="width: 1.2rem;" src="../../../assets/general/gold.png"></span>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<div class="backpack-area">
+  <div matTooltip="{{items.name}} | {{items.value}} Gold" class="backpack-item" *ngFor="let items of playerCharacter.character.backpack">
+    <img style="width: 60px; padding: 0.5rem;" src="../../../assets/items/{{items.name}}.png" alt="item" class="item" />
+    <span class="amount">
+        {{ items.amount }}
+    </span>
+  </div>
+</div>

@@ -13,22 +13,28 @@ export class WoodcuttingService {
 
   constructor(private usersService: UsersService) {}
   
-  addToWoodcuttingActive(activeWoodcutter: Woodcutting) {
+  async addToWoodcuttingActive(activeWoodcutter: Woodcutting) {
     const user: Woodcutting = activeWoodcutter;
+
+    let returnedData:any = {
+      updateMessage: '',
+      woodcuttingUsers: {},
+    };
 
     if(this.woodCuttingUsers.some(
       (woodcutter) => woodcutter.username === user.username)) {
-        console.log('Username already exists');
+        if(this.woodCuttingUsers.some(
+          (woodcutter) => woodcutter.timestamp + 11 < user.timestamp)) {
+            returnedData.woodcuttingUsers = await this.usersService.updateWoodcuttingByUsername(user);
+          }
       } else {
       this.woodCuttingUsers.push(user);
+      returnedData.woodcuttingUsers = await this.usersService.updateWoodcuttingByUsername(user);
     }
 
-    if(this.startWoodcutting) {
-      this.updateWoodcuttingXp();
-      this.startWoodcutting = false;
-    }
+    returnedData.updateMessage = `You gain ${returnedData.woodcuttingUsers.logAmount}x ${user.treeType.logs} and ${user.treeType.xp} XP!`;
 
-    return this.woodCuttingUsers;
+    return returnedData;
   }
 
   removeWoodcuttingUser(username: string) {
@@ -51,10 +57,4 @@ export class WoodcuttingService {
     return this.clientToUser[clientId];
   }
 
-  @Cron(CronExpression.EVERY_10_SECONDS)
-  updateWoodcuttingXp() {
-    for (let i = 0; i < this.woodCuttingUsers.length; i++) {
-      this.usersService.updateWoodcuttingByUsername(this.woodCuttingUsers[i]);
-    }
-  }
 }

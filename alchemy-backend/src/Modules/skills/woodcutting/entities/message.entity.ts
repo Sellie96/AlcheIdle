@@ -2,6 +2,7 @@ export class Woodcutting {
   username: string;
   treeType: Tree;
   jwt: string;
+  timestamp: string;
 }
 
 export interface Tree {
@@ -10,4 +11,5 @@ export interface Tree {
   xp: number;
   logs: string;
   time: number;
+  value: number;
 }

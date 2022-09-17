@@ -11,9 +11,10 @@ export declare class WoodcuttingGateway implements OnGatewayConnection, OnGatewa
     private usersService;
     server: Server;
     users: number;
+    sendResponse: boolean;
     constructor(woodCuttingService: WoodcuttingService, authService: AuthService, usersService: UsersService);
     handleConnection(client: Socket): Promise<void>;
     handleDisconnect(client: Socket): Promise<void>;
-    create(woodcutting: WoodcuttingDto): Promise<void>;
+    create(woodcutting: WoodcuttingDto, client: Socket): Promise<void>;
     getPlayerData(playerData: User, client: Socket): Promise<void>;
 }

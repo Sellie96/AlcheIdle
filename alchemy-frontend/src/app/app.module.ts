@@ -35,6 +35,9 @@ import { WoodcuttingComponent } from './Modules/skills/woodcutting/woodcutting.c
 import { CharacterState } from './stateManagement/character/character.state';
 import { TextInputComponent } from './_forms/text-input/text-input.component';
 import { JwtInterceptor } from './_interceptors/jwt.interceptor';
+import { BackpackComponent } from './Modules/backpack/backpack.component';
+import { LockedThievingComponent } from './Modules/skills/thieving/locked-thieving/locked-thieving.component';
+import { ThievingSpotComponent } from './Modules/skills/thieving/thieving-spot/thieving-spot.component';
 
 const config: SocketIoConfig = { url: 'http://localhost:3000', options: {
   extraHeaders: {
@@ -64,7 +67,10 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {
     LockedTreeComponent,
     ChatComponent,
     LoginComponent,
-    TextInputComponent
+    TextInputComponent,
+    BackpackComponent,
+    LockedThievingComponent,
+    ThievingSpotComponent
   ],
   imports: [
     BrowserModule,

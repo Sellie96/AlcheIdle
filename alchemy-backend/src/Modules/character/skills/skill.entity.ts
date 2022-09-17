@@ -14,4 +14,7 @@ export class Skill {
 
     @Column()
     xpCurrent: number;
+
+    @Column()
+    pet?: boolean;
 }

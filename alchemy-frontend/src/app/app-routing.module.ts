@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { BackpackComponent } from './Modules/backpack/backpack.component';
 
 import { AdventureComponent } from './Modules/general/adventure/adventure.component';
 import { MainpageComponent } from './Modules/mainpage/mainpage.component';
@@ -40,6 +41,8 @@ const routes: Routes = [
       { path: 'smithing', component: SmithingComponent },
       { path: 'thieving', component: ThievingComponent },
       { path: 'woodcutting', component: WoodcuttingComponent },
+      { path: 'backpack', component: BackpackComponent},
+      { path: '**', redirectTo: '', pathMatch: 'full' },
     ],
   },
 ];

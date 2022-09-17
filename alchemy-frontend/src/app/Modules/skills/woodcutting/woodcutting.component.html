@@ -3,7 +3,9 @@
     <mat-toolbar-row>
       <div style="width: 100%">
         <span> {{ +woodcutters }} Users Woodcutting </span>
-        <span style="margin-left: 25rem;"> Current Bonus: {{ 1 + (0.001 * woodcutters) }}x </span>
+        <span style="margin-left: 25rem">
+          Current Bonus: {{ 1 + 0.001 * woodcutters }}x
+        </span>
         <span>
           <div style="margin-left: 1rem">
             Skill Level
@@ -17,11 +19,9 @@
             </span>
             Skill XP
             <span class="xp">
-              {{
-                this.playerCharacter.character.skills.woodcutting.xpCurrent
-              }}
+              {{ this.playerCharacter.character.skills.woodcutting.xpCurrent }}
               /
-              {{ this.playerCharacter.character.skills.woodcutting.level * 10 }}
+              {{ this.getExperiencePointsForLevel() | number }}
             </span>
           </div>
           <mat-progress-bar
@@ -29,8 +29,7 @@
             mode="determinate"
             [value]="
               (this.playerCharacter.character.skills.woodcutting.xpCurrent /
-                (this.playerCharacter.character.skills.woodcutting.level *
-                  10)) *
+                this.getExperiencePointsForLevel()) *
               100
             "
           ></mat-progress-bar>

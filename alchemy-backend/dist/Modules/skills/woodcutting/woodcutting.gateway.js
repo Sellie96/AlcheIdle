@@ -36,6 +36,7 @@ let WoodcuttingGateway = class WoodcuttingGateway {
         this.authService = authService;
         this.usersService = usersService;
         this.users = 0;
+        this.sendResponse = true;
     }
     handleConnection(client) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -70,6 +71,7 @@ let WoodcuttingGateway = class WoodcuttingGateway {
                     console.log('user disconnected');
                     let users = this.woodCuttingService.removeWoodcuttingUser(user.username);
                     this.server.emit('woodcuttingUsers', users.length);
+                    client.disconnect();
                 }
             }
             catch (_a) {
@@ -77,10 +79,12 @@ let WoodcuttingGateway = class WoodcuttingGateway {
             }
         });
     }
-    create(woodcutting) {
+    create(woodcutting, client) {
         return __awaiter(this, void 0, void 0, function* () {
-            let users = this.woodCuttingService.addToWoodcuttingActive({ username: woodcutting.username, treeType: woodcutting.treeType, jwt: woodcutting.jwt });
+            let returnWoodcuttingData = yield this.woodCuttingService.addToWoodcuttingActive({ username: woodcutting.username, treeType: woodcutting.treeType, jwt: woodcutting.jwt, timestamp: woodcutting.timestamp });
+            let users = this.woodCuttingService.getWoodcuttingUsers();
             this.server.emit('woodcuttingUsers', users.length);
+            this.server.to(client.id).emit('woodcuttingActive', returnWoodcuttingData);
         });
     }
     getPlayerData(playerData, client) {
@@ -108,8 +112,9 @@ __decorate([
 __decorate([
     (0, websockets_1.SubscribeMessage)('woodcuttingActive'),
     __param(0, (0, websockets_1.MessageBody)()),
+    __param(1, (0, decorators_1.ConnectedSocket)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [woodcutting_dto_1.WoodcuttingDto]),
+    __metadata("design:paramtypes", [woodcutting_dto_1.WoodcuttingDto, socket_io_1.Socket]),
     __metadata("design:returntype", Promise)
 ], WoodcuttingGateway.prototype, "create", null);
 __decorate([

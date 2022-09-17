@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Character = void 0;
 const typeorm_1 = require("typeorm");
 const currencies_entity_1 = require("./currencies/currencies.entity");
+const combat_entity_1 = require("./skills/combat.entity");
 const skills_entity_1 = require("./skills/skills.entity");
 let Character = class Character {
 };
@@ -27,6 +28,10 @@ __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], Character.prototype, "characterAlignment", void 0);
+__decorate([
+    (0, typeorm_1.Column)((type) => combat_entity_1.CombatStats),
+    __metadata("design:type", combat_entity_1.CombatStats)
+], Character.prototype, "combatStats", void 0);
 __decorate([
     (0, typeorm_1.Column)((type) => currencies_entity_1.AllCurrencies),
     __metadata("design:type", currencies_entity_1.AllCurrencies)

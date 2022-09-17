@@ -2,6 +2,7 @@ export interface Skill {
   level: number;
   xpMax: number;
   xpCurrent: number;
+  pet?: boolean;
 }
 
 export interface AllSkills {
@@ -28,21 +29,13 @@ export interface AllCurrencies {
 }
 
 export interface PlayerStats {
-  hpMax: number;
-  hpCurrent: number;
-  accuracy: number;
-  armour: number;
-  potions: {
-    small: number;
-    medium: number;
-    large: number;
-  };
-  level: number;
-  xpMax: number;
-  xpCurrent: number;
-  damage: number;
-  evasion: number;
-  critChance: number;
+  hpCurrent: number,
+  hpMax: number,
+  attack: number,
+  defence: number,
+  strength: number,
+  magic: number,
+  ranged: number,
 }
 
 export interface PlayerData {
@@ -56,7 +49,7 @@ export interface PlayerData {
 export interface Character {
   characterAlignment: string;
   characterName: string;
-  stats: PlayerStats;
+  combatStats: PlayerStats;
   currencies: AllCurrencies;
   skills: AllSkills;
   backpack: any[];

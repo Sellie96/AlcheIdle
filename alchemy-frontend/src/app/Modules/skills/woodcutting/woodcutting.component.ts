@@ -1,8 +1,9 @@
 import {
-  Component, ElementRef,
+  Component,
+  ElementRef,
   HostListener,
   OnDestroy,
-  OnInit
+  OnInit,
 } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngxs/store';
@@ -44,6 +45,9 @@ export class WoodcuttingComponent implements OnInit, OnDestroy {
   @HostListener('unloaded')
   ngOnDestroy(): void {
     this.elementRef.nativeElement.remove();
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
     console.log('Items destroyed');
   }
 
@@ -58,13 +62,22 @@ export class WoodcuttingComponent implements OnInit, OnDestroy {
     this.getInitialData();
   }
 
+  getExperiencePointsForLevel() {
+    let points = 0;
+    let output = 0;
+      for (let lvl = 1; lvl <= this.playerCharacter.character.skills.woodcutting.level; lvl++) {
+        points += Math.floor(lvl + 300.0 * Math.pow(2.0, lvl / 7.0));
+          if (lvl >= this.playerCharacter.character.skills.woodcutting.level) {
+              return output;
+          }
+          output = Math.floor(points / 4);
+      }
+      return 0;
+  }
+
   getInitialData() {
     this.skillsService.getWoodcutters().subscribe((woodcutters: any) => {
       this.woodcutters = woodcutters;
-    });
-
-    this.skillsService.getPlayerData().subscribe((playerData: any) => {
-      this.setPlayerData(playerData);
     });
   }
 
@@ -73,8 +86,6 @@ export class WoodcuttingComponent implements OnInit, OnDestroy {
   }
 
   startTimer(tree: Tree) {
-    this.skillsService.woodcuttingActive(this.playerCharacter.username, tree);
-
     this.activeTree = tree.name;
     if (this.playerCharacter.character.skills.woodcutting.level >= tree.level) {
       if (this.sub) {
@@ -94,13 +105,17 @@ export class WoodcuttingComponent implements OnInit, OnDestroy {
     } else return;
   }
 
-  completeWoodcutting(tree: Tree) {
-    this.woodcuttingXp += tree.xp;
-    this.toastr.info('+' + tree.xp + ' XP' + '  ' + 1 + tree.logs, 'Reward', {
-      timeOut: 2000,
-      positionClass: 'toast-bottom-right',
-      progressBar: true,
-      progressAnimation: 'increasing',
+  async completeWoodcutting(tree: Tree) {
+    this.skillsService.woodcuttingActive(this.playerCharacter.username, tree);
+
+    await this.skillsService.getWoodcuttingUpdate().then((data: any) => {
+      this.setPlayerData(data.woodcuttingUsers.user);
+      this.toastr.info(data.updateMessage, 'Update', {
+        timeOut: 2000,
+        positionClass: 'toast-bottom-right',
+        progressBar: true,
+        progressAnimation: 'increasing',
+      });
     });
 
     this.startTimer(tree);

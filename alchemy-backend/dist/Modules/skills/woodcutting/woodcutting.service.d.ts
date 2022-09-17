@@ -7,10 +7,9 @@ export declare class WoodcuttingService {
     timeLeft: number;
     clientToUser: {};
     constructor(usersService: UsersService);
-    addToWoodcuttingActive(activeWoodcutter: Woodcutting): Woodcutting[];
+    addToWoodcuttingActive(activeWoodcutter: Woodcutting): Promise<any>;
     removeWoodcuttingUser(username: string): Woodcutting[];
     getWoodcuttingUsers(): Woodcutting[];
     identify(name: string, clientId: string): unknown[];
     getClientName(clientId: string): any;
-    updateWoodcuttingXp(): void;
 }

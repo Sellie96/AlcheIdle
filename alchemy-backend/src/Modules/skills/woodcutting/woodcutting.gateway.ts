@@ -12,6 +12,7 @@ export class WoodcuttingGateway implements OnGatewayConnection, OnGatewayDisconn
 
   @WebSocketServer() server: Server;
   users: number = 0;
+  sendResponse: boolean = true;
 
   constructor(
     private readonly woodCuttingService: WoodcuttingService,
@@ -50,6 +51,7 @@ export class WoodcuttingGateway implements OnGatewayConnection, OnGatewayDisconn
         console.log('user disconnected');
         let users = this.woodCuttingService.removeWoodcuttingUser(user.username);
         this.server.emit('woodcuttingUsers', users.length);
+        client.disconnect();
       }
     } catch {
       console.log('woodcutting disconnect error');
@@ -57,9 +59,11 @@ export class WoodcuttingGateway implements OnGatewayConnection, OnGatewayDisconn
   }
 
   @SubscribeMessage('woodcuttingActive')
-  async create(@MessageBody() woodcutting: WoodcuttingDto) {
-    let users = this.woodCuttingService.addToWoodcuttingActive({username: woodcutting.username, treeType: woodcutting.treeType, jwt: woodcutting.jwt});
+  async create(@MessageBody() woodcutting: WoodcuttingDto, @ConnectedSocket() client: Socket) {
+    let returnWoodcuttingData = await this.woodCuttingService.addToWoodcuttingActive({username: woodcutting.username, treeType: woodcutting.treeType, jwt: woodcutting.jwt, timestamp: woodcutting.timestamp});
+    let users = this.woodCuttingService.getWoodcuttingUsers();
     this.server.emit('woodcuttingUsers', users.length);
+    this.server.to(client.id).emit('woodcuttingActive', returnWoodcuttingData);
   }
 
   @SubscribeMessage('getWoodcuttingPlayerData')

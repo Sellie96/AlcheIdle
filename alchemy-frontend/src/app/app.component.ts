@@ -85,11 +85,5 @@ export class AppComponent implements OnInit {
       .subscribe((character: PlayerData) => {
         this.playerCharacter = character;
       });
-
-    // interval(3000)
-    //   .pipe(untilDestroyed(this), shareReplay())
-    //   .subscribe(() => {
-    //     this.accountService.getPlayerData(this.playerCharacter.username);
-    //   });
   }
 }

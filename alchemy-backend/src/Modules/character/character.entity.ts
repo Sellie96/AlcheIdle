@@ -1,5 +1,6 @@
 import { Entity, ObjectID, ObjectIdColumn, Column } from "typeorm"
 import { AllCurrencies } from "./currencies/currencies.entity";
+import { CombatStats } from "./skills/combat.entity";
 import { AllSkills } from "./skills/skills.entity";
 
 @Entity()
@@ -13,6 +14,9 @@ export class Character {
     @Column()
     characterAlignment: string;
 
+    @Column((type) => CombatStats)
+    combatStats: CombatStats;
+
     @Column((type) => AllCurrencies)
     currencies: AllCurrencies;
 
@@ -20,7 +24,7 @@ export class Character {
     skills: AllSkills;
 
     @Column()
-    backpack: object[];
+    backpack: any[];
 
     @Column()
     equipment: object[];

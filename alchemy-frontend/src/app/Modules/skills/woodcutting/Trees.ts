@@ -15,6 +15,7 @@ export interface Tree {
   xp: number;
   logs: string;
   time: number;
+  value: number;
 }
 
 export interface Logs {
@@ -62,12 +63,12 @@ export enum TreeNames {
  }
 
 export const treeTypes: Trees = {
-  tree: { name: TreeNames.tree, level: 1, xp: 10, logs: LogNames.logs, time: 10 },
-  oak: { name: TreeNames.oak, level: 10, xp: 15, logs: LogNames.oak, time: 10 },
-  willow: { name: TreeNames.willow, level: 30, xp: 25, logs: LogNames.willow, time: 10 },
-  bonsai: { name: TreeNames.bonsai, level: 45, xp: 45, logs: LogNames.bonsai, time: 10 },
-  yew: { name: TreeNames.yew, level: 60, xp: 60, logs: LogNames.yew, time: 10 },
-  magic: { name: TreeNames.magic, level: 75, xp: 75, logs: LogNames.magic, time: 10 },
-  demon: { name: TreeNames.demon, level: 80, xp: 85, logs: LogNames.demon, time: 10 },
-  divine: { name: TreeNames.divine, level: 90, xp: 150, logs: LogNames.divine, time: 10 },
+  tree: { name: TreeNames.tree, level: 1, xp: 10, logs: LogNames.logs, time: 3, value: 1 },
+  oak: { name: TreeNames.oak, level: 10, xp: 15, logs: LogNames.oak, time: 4, value: 5 },
+  willow: { name: TreeNames.willow, level: 30, xp: 25, logs: LogNames.willow, time: 5, value: 10 },
+  bonsai: { name: TreeNames.bonsai, level: 45, xp: 45, logs: LogNames.bonsai, time: 6, value: 20 },
+  yew: { name: TreeNames.yew, level: 60, xp: 60, logs: LogNames.yew, time: 8, value: 35 },
+  magic: { name: TreeNames.magic, level: 75, xp: 75, logs: LogNames.magic, time: 10, value: 50 },
+  demon: { name: TreeNames.demon, level: 80, xp: 85, logs: LogNames.demon, time: 12, value: 75 },
+  divine: { name: TreeNames.divine, level: 90, xp: 150, logs: LogNames.divine, time: 20, value: 100 },
 };

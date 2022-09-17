@@ -50,11 +50,11 @@
   display: flex;
   align-items: center;
   flex-direction: column;
-  overflow:hidden;
+  overflow: hidden;
 }
 
 .side-nav-list:hover {
-  overflow-y:scroll;
+  overflow-y: scroll;
 }
 
 .woodcutting {
@@ -144,7 +144,7 @@
 
 .town {
   background-color: rgb(255, 185, 81);
-  color: black
+  color: black;
 }
 
 .shop {
@@ -201,7 +201,7 @@
   margin-top: 0;
   background-color: rgb(75, 75, 75);
   box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
-  color: rgb(156, 156, 156);;
+  color: rgb(156, 156, 156);
 }
 
 .chatBox {
@@ -212,6 +212,20 @@
   position: fixed;
   bottom: 0;
   right: 0;
+}
+
+.hpBox {
+  background-color: rgba(35, 42, 53, 0.9);
+  padding: 0;
+  margin: 0;
+  width: 33%;
+  position: fixed;
+  bottom: 0;
+  left: auto;
+  right: auto;
+  height: 3rem;
+  box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.12);
+  margin-left: 1rem;
 }
 
 ::ng-deep .mat-expansion-panel-body {
@@ -237,7 +251,7 @@
 }
 
 .settingsArea {
-  margin-left: auto; 
+  margin-left: auto;
   margin-right: 15%;
   background-color: rgba(35, 42, 53, 0.9);
   padding-left: 0.5rem;
@@ -245,4 +259,26 @@
   border: 2px solid black;
 }
 
+.hpBox-text {
+  color: white;
+  font-size: 1rem;
+  font-family: Trebuchet MS;
+  text-align: center;
+}
 
+.progress-bar-hp {
+  background-color: #ff0000;
+  height: 1rem;
+}
+
+::ng-deep .mat-progress-bar-fill::after {
+  background-color: rgb(86, 143, 0);
+}
+
+::ng-deep .mat-progress-bar-buffer {
+  background-color: rgb(194, 0, 0);
+}
+
+::ng-deep .mat-progress-bar {
+  border-radius: 2px;
+}

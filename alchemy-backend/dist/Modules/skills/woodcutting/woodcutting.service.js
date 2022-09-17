@@ -8,10 +8,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.WoodcuttingService = void 0;
 const common_1 = require("@nestjs/common");
-const schedule_1 = require("@nestjs/schedule");
 const users_service_1 = require("../../../user/users.service");
 let WoodcuttingService = class WoodcuttingService {
     constructor(usersService) {
@@ -22,18 +30,24 @@ let WoodcuttingService = class WoodcuttingService {
         this.clientToUser = {};
     }
     addToWoodcuttingActive(activeWoodcutter) {
-        const user = activeWoodcutter;
-        if (this.woodCuttingUsers.some((woodcutter) => woodcutter.username === user.username)) {
-            console.log('Username already exists');
-        }
-        else {
-            this.woodCuttingUsers.push(user);
-        }
-        if (this.startWoodcutting) {
-            this.updateWoodcuttingXp();
-            this.startWoodcutting = false;
-        }
-        return this.woodCuttingUsers;
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = activeWoodcutter;
+            let returnedData = {
+                updateMessage: '',
+                woodcuttingUsers: {},
+            };
+            if (this.woodCuttingUsers.some((woodcutter) => woodcutter.username === user.username)) {
+                if (this.woodCuttingUsers.some((woodcutter) => woodcutter.timestamp + 11 < user.timestamp)) {
+                    returnedData.woodcuttingUsers = yield this.usersService.updateWoodcuttingByUsername(user);
+                }
+            }
+            else {
+                this.woodCuttingUsers.push(user);
+                returnedData.woodcuttingUsers = yield this.usersService.updateWoodcuttingByUsername(user);
+            }
+            returnedData.updateMessage = `You gain ${returnedData.woodcuttingUsers.logAmount}x ${user.treeType.logs} and ${user.treeType.xp} XP!`;
+            return returnedData;
+        });
     }
     removeWoodcuttingUser(username) {
         this.woodCuttingUsers = this.woodCuttingUsers.filter((woodcutter) => woodcutter.username !== username);
@@ -49,18 +63,7 @@ let WoodcuttingService = class WoodcuttingService {
     getClientName(clientId) {
         return this.clientToUser[clientId];
     }
-    updateWoodcuttingXp() {
-        for (let i = 0; i < this.woodCuttingUsers.length; i++) {
-            this.usersService.updateWoodcuttingByUsername(this.woodCuttingUsers[i]);
-        }
-    }
 };
-__decorate([
-    (0, schedule_1.Cron)(schedule_1.CronExpression.EVERY_10_SECONDS),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
-], WoodcuttingService.prototype, "updateWoodcuttingXp", null);
 WoodcuttingService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [users_service_1.UsersService])

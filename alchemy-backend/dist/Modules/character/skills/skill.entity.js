@@ -29,6 +29,10 @@ __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
 ], Skill.prototype, "xpCurrent", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Boolean)
+], Skill.prototype, "pet", void 0);
 Skill = __decorate([
     (0, typeorm_1.Entity)()
 ], Skill);

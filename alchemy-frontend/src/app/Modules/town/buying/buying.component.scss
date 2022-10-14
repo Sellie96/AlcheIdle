@@ -1,0 +1,18 @@
+::ng-deep .mat-dialog-container {
+  background-color: rgba(35, 42, 53, 1);
+  padding: 3rem;
+  border: 2px solid rgb(50, 63, 85);
+  color: whitesmoke;
+}
+
+.dialog-button {
+    border: 2px solid rgb(50, 63, 85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dialog-button:hover {
+    background-color: #576f94;
+    cursor: pointer;
+}

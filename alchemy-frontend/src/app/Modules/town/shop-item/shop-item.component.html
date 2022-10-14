@@ -1,0 +1,8 @@
+<div (click)="openDialog()" class="item-box">
+    <img class="shop-item"  src="../../../../assets/shop/{{name}}.png">
+    <span>
+        <h1>{{ name | titlecase }}</h1>
+        <p>{{ description }}</p>
+        <p><img style="width: 15px;" src="../../../../assets/general/gold.png"> {{value | number}}</p>
+    </span>
+</div>

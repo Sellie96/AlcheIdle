@@ -27,78 +27,94 @@ export declare function UserDataCreation(registerData: RegisterData): Promise<{
                 xpMax: number;
                 xpCurrent: number;
                 pet: boolean;
+                tool: {};
             };
             alchemy: {
                 level: number;
                 xpMax: number;
                 xpCurrent: number;
                 pet: boolean;
+                tool: {};
             };
             cooking: {
                 level: number;
                 xpMax: number;
                 xpCurrent: number;
                 pet: boolean;
+                tool: {};
             };
             crafting: {
                 level: number;
                 xpMax: number;
                 xpCurrent: number;
                 pet: boolean;
+                tool: {};
             };
             firemaking: {
                 level: number;
                 xpMax: number;
                 xpCurrent: number;
                 pet: boolean;
+                tool: {};
             };
             fishing: {
                 level: number;
                 xpMax: number;
                 xpCurrent: number;
                 pet: boolean;
+                tool: {};
             };
             fletching: {
                 level: number;
                 xpMax: number;
                 xpCurrent: number;
                 pet: boolean;
+                tool: {};
             };
             herblore: {
                 level: number;
                 xpMax: number;
                 xpCurrent: number;
                 pet: boolean;
+                tool: {};
             };
             mining: {
                 level: number;
                 xpMax: number;
                 xpCurrent: number;
                 pet: boolean;
+                tool: {};
             };
             runecrafting: {
                 level: number;
                 xpMax: number;
                 xpCurrent: number;
                 pet: boolean;
+                tool: {};
             };
             smithing: {
                 level: number;
                 xpMax: number;
                 xpCurrent: number;
                 pet: boolean;
+                tool: {};
             };
             thieving: {
                 level: number;
                 xpMax: number;
                 xpCurrent: number;
                 pet: boolean;
+                tool: {};
             };
             woodcutting: {
                 level: number;
                 xpMax: number;
                 xpCurrent: number;
                 pet: boolean;
+                tool: {
+                    name: string;
+                    bonus: number;
+                };
             };
         };
         backpack: any[];

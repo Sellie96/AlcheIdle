@@ -4,4 +4,5 @@ export declare class Skill {
     xpMax: number;
     xpCurrent: number;
     pet?: boolean;
+    tool?: object;
 }

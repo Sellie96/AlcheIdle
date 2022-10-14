@@ -1,5 +1,7 @@
 .backpack {
     margin-top: 2rem;
+    margin-left: 2rem;
+    width: 96%;
     box-shadow: 0 1px 2px rgb(33 34 35/50%),0 1px 2px rgb(26 26 27/50%);
     border-top: 3px solid green;
     background-color: #232a35;
@@ -12,7 +14,9 @@
 .backpack-area {
     display: flex;
     flex-direction: row;
-    width: 98%;
+    width: 96%;
+    margin-left: 2rem;
+    margin-top: 2rem;
     background-color: #232a35;
     min-height: 75vh;
 }

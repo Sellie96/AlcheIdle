@@ -38,6 +38,9 @@ import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 import { BackpackComponent } from './Modules/backpack/backpack.component';
 import { LockedThievingComponent } from './Modules/skills/thieving/locked-thieving/locked-thieving.component';
 import { ThievingSpotComponent } from './Modules/skills/thieving/thieving-spot/thieving-spot.component';
+import { TownComponent } from './Modules/town/town.component';
+import { ShopItemComponent } from './Modules/town/shop-item/shop-item.component';
+import { BuyingComponent } from './Modules/town/buying/buying.component';
 
 const config: SocketIoConfig = { url: 'http://localhost:3000', options: {
   extraHeaders: {
@@ -70,7 +73,10 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {
     TextInputComponent,
     BackpackComponent,
     LockedThievingComponent,
-    ThievingSpotComponent
+    ThievingSpotComponent,
+    TownComponent,
+    ShopItemComponent,
+    BuyingComponent
   ],
   imports: [
     BrowserModule,

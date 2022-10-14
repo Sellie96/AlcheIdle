@@ -3,6 +3,7 @@ export interface Skill {
   xpMax: number;
   xpCurrent: number;
   pet?: boolean;
+  tool?: Tool;
 }
 
 export interface AllSkills {
@@ -54,4 +55,9 @@ export interface Character {
   skills: AllSkills;
   backpack: any[];
   equipment: any[];
+}
+
+export interface Tool {
+  name: string;
+  bonus: number;
 }

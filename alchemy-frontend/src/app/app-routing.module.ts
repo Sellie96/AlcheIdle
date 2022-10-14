@@ -17,6 +17,7 @@ import { RunecraftingComponent } from './Modules/skills/runecrafting/runecraftin
 import { SmithingComponent } from './Modules/skills/smithing/smithing.component';
 import { ThievingComponent } from './Modules/skills/thieving/thieving.component';
 import { WoodcuttingComponent } from './Modules/skills/woodcutting/woodcutting.component';
+import { TownComponent } from './Modules/town/town.component';
 import { AuthGuard } from './_guards/auth.guard';
 
 const routes: Routes = [
@@ -42,6 +43,7 @@ const routes: Routes = [
       { path: 'thieving', component: ThievingComponent },
       { path: 'woodcutting', component: WoodcuttingComponent },
       { path: 'backpack', component: BackpackComponent},
+      { path: 'town', component: TownComponent },
       { path: '**', redirectTo: '', pathMatch: 'full' },
     ],
   },

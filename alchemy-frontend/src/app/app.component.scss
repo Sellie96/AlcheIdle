@@ -27,7 +27,7 @@
 }
 
 .main-content {
-  background-image: url("../assets/background.jpg");
+  background-image: url("../assets/general/background.jpg");
   background-position: center; /* Center the image */
   background-repeat: no-repeat; /* Do not repeat the image */
   background-size: cover; /* Resize the background image to cover the entire container */
@@ -215,7 +215,7 @@
 }
 
 .hpBox {
-  background-color: rgba(35, 42, 53, 0.9);
+  background-color: rgba(35, 42, 53);
   padding: 0;
   margin: 0;
   width: 33%;
@@ -223,9 +223,9 @@
   bottom: 0;
   left: auto;
   right: auto;
-  height: 3rem;
+  height: 3.1rem;
   box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.12);
-  margin-left: 1rem;
+  border: 1px solid rgb(50, 63, 85);
 }
 
 ::ng-deep .mat-expansion-panel-body {
@@ -237,7 +237,7 @@
 
 .sign-in {
   background-color: rgba(35, 42, 53, 0.9);
-  background-image: url("../assets/background.jpg");
+  background-image: url("../assets/general/background.jpg");
   background-position: center; /* Center the image */
   background-repeat: no-repeat; /* Do not repeat the image */
   background-size: cover; /* Resize the background image to cover the entire container */

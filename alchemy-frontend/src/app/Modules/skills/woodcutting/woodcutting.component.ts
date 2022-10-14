@@ -8,7 +8,7 @@ import {
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngxs/store';
 import { ToastrService } from 'ngx-toastr';
-import { interval } from 'rxjs';
+import { delay, interval } from 'rxjs';
 import { UpdateWoodcutting } from 'src/app/stateManagement/character/character.actions';
 import { CharacterState } from 'src/app/stateManagement/character/character.state';
 import { PlayerData } from 'src/app/stateManagement/character/CharacterDataTypes';
@@ -22,7 +22,7 @@ import { logTypes, Tree, treeTypes } from './Trees';
   styleUrls: ['./woodcutting.component.scss'],
 })
 export class WoodcuttingComponent implements OnInit, OnDestroy {
-  treeProgress = 100;
+  treeProgress = 0;
   curSec: number = 0;
   type: string = '';
   woodcuttingXp: number = 0;
@@ -30,7 +30,7 @@ export class WoodcuttingComponent implements OnInit, OnDestroy {
   sub: any;
   treeActive: boolean = false;
   playerCharacter!: PlayerData;
-  activeTree: string = '';
+  activeTree!: Tree;
   woodcutters: number = 0;
 
   trees = treeTypes;
@@ -48,7 +48,6 @@ export class WoodcuttingComponent implements OnInit, OnDestroy {
     if (this.sub) {
       this.sub.unsubscribe();
     }
-    console.log('Items destroyed');
   }
 
   ngOnInit(): void {
@@ -86,20 +85,23 @@ export class WoodcuttingComponent implements OnInit, OnDestroy {
   }
 
   startTimer(tree: Tree) {
-    this.activeTree = tree.name;
+    this.activeTree = tree;
     if (this.playerCharacter.character.skills.woodcutting.level >= tree.level) {
       if (this.sub) {
         this.sub.unsubscribe();
       }
-      const time = tree.time * 10;
-      const timer$ = interval(100);
+      const time = ((tree.time * 10) * this.playerCharacter.character.skills.woodcutting.tool!.bonus).toFixed(1);
+      const timer$ = interval(50);
 
-      this.sub = timer$.subscribe((sec) => {
-        this.treeProgress = 100 - (sec * 100) / time;
-        this.curSec = sec;
-        if (this.curSec === time) {
+      this.sub = timer$.subscribe(async (sec) => {
+        this.treeProgress = 0 + (sec * 50) / +time;
+        this.curSec = sec / 2;
+        if (this.curSec >= +time) {
           this.sub.unsubscribe();
-          this.completeWoodcutting(tree);
+          setTimeout (() => {
+            this.treeProgress = 0;
+            this.completeWoodcutting(tree);
+         }, 250);
         }
       });
     } else return;
@@ -118,6 +120,8 @@ export class WoodcuttingComponent implements OnInit, OnDestroy {
       });
     });
 
-    this.startTimer(tree);
+    setTimeout (() => {
+      this.startTimer(tree);
+   }, 250);
   }
 }

@@ -60,3 +60,38 @@ body {
   margin: 0;
   width: 100%;
 }
+
+.mat-expansion-panel-header {
+  background-color: rgba(35, 42, 53, 1);
+  color: white;
+}
+
+.mat-expansion-panel-header:hover {
+  background-color: black;
+}
+
+.mat-expansion-panel-header-title {
+  color: white;
+}
+
+.mat-expansion-panel-header-description {
+  color: white;
+}
+
+.mat-expansion-panel {
+  background-color: rgba(35, 42, 53, 1);
+  color: white;
+  border: 2px solid rgb(50, 63, 85);
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+    color: whitesmoke;
+}
+
+.mat-form-field-appearance-fill .mat-form-field-flex {
+  background-color: rgb(255, 255, 255, 0.9);
+}

@@ -17,4 +17,7 @@ export class Skill {
 
     @Column()
     pet?: boolean;
+
+    @Column()
+    tool?: object;
 }

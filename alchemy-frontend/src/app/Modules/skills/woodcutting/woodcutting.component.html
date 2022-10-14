@@ -2,21 +2,22 @@
   <mat-toolbar class="skill-information">
     <mat-toolbar-row>
       <div style="width: 100%">
-        <span> {{ +woodcutters }} Users Woodcutting </span>
-        <span style="margin-left: 25rem">
-          Current Bonus: {{ 1 + 0.001 * woodcutters }}x
-        </span>
         <span>
           <div style="margin-left: 1rem">
             Skill Level
             <span class="level">
               {{ this.playerCharacter.character.skills.woodcutting.level }} / 99
             </span>
-
-            Active:
+            Users Woodcutting
             <span class="level">
-              {{ activeTree || "None" | titlecase }}
+              {{ +woodcutters }}
             </span>
+
+            Current Bonus:
+            <span class="level">
+              {{ 1 + 0.001 * woodcutters }}x
+            </span>
+            
             Skill XP
             <span class="xp">
               {{ this.playerCharacter.character.skills.woodcutting.xpCurrent }}
@@ -38,15 +39,37 @@
     </mat-toolbar-row>
   </mat-toolbar>
 
-  <mat-progress-bar
-    class="progress-bar"
-    mode="determinate"
-    [value]="treeProgress"
-  ></mat-progress-bar>
+  <mat-toolbar class="skill-information">
+    <mat-toolbar-row>
+      <div style="width: 100%">
+        <span>
+          <mat-progress-bar
+          class="progress-bar"
+          mode="determinate"
+          [value]="treeProgress"
+        ></mat-progress-bar>
+        <div style="margin-left: 1rem">
+          <div class="rewardContainer" *ngIf="activeTree">
+            <span>
+              {{ this.playerCharacter.character.skills.woodcutting.tool?.name || "None" | titlecase }}
+            </span>
+
+            <div>
+              <img matTooltip="{{activeTree.name | titlecase}}" style="width: 36px;" src="../../../../assets/trees/{{activeTree.name}}.png"  alt="None">
+            </div>
+            <div>
+              <img matTooltip="{{activeTree.logs | titlecase}}" style="width: 36px;" src="../../../../assets/items/{{activeTree.logs}}.png"  alt="None">
+            </div>
+          </div>
+        </div>
+        </span>
+      </div>
+    </mat-toolbar-row>
+  </mat-toolbar>
 
   <div style="display: flexbox; margin-left: 6rem">
     <div class="woodcutting-box" (click)="startTimer(trees.tree)">
-      <app-tree-spot [tree]="trees.tree"></app-tree-spot>
+      <app-tree-spot [bonus]="playerCharacter.character.skills.woodcutting.tool!.bonus" [tree]="trees.tree"></app-tree-spot>
     </div>
     <div
       *ngIf="
@@ -56,7 +79,7 @@
       class="woodcutting-box"
       (click)="startTimer(trees.oak)"
     >
-      <app-tree-spot [tree]="trees.oak"></app-tree-spot>
+      <app-tree-spot [bonus]="playerCharacter.character.skills.woodcutting.tool!.bonus" [tree]="trees.oak"></app-tree-spot>
     </div>
     <div
       *ngIf="
@@ -66,7 +89,7 @@
       class="woodcutting-box"
       (click)="startTimer(trees.willow)"
     >
-      <app-tree-spot [tree]="trees.willow"></app-tree-spot>
+      <app-tree-spot [bonus]="playerCharacter.character.skills.woodcutting.tool!.bonus" [tree]="trees.willow"></app-tree-spot>
     </div>
     <div
       *ngIf="
@@ -76,7 +99,7 @@
       class="woodcutting-box"
       (click)="startTimer(trees.bonsai)"
     >
-      <app-tree-spot [tree]="trees.bonsai"></app-tree-spot>
+      <app-tree-spot [bonus]="playerCharacter.character.skills.woodcutting.tool!.bonus" [tree]="trees.bonsai"></app-tree-spot>
     </div>
     <div
       *ngIf="
@@ -86,7 +109,7 @@
       class="woodcutting-box"
       (click)="startTimer(trees.yew)"
     >
-      <app-tree-spot [tree]="trees.yew"></app-tree-spot>
+      <app-tree-spot [bonus]="playerCharacter.character.skills.woodcutting.tool!.bonus" [tree]="trees.yew"></app-tree-spot>
     </div>
     <div
       *ngIf="
@@ -96,7 +119,7 @@
       class="woodcutting-box"
       (click)="startTimer(trees.magic)"
     >
-      <app-tree-spot [tree]="trees.magic"></app-tree-spot>
+      <app-tree-spot [bonus]="playerCharacter.character.skills.woodcutting.tool!.bonus" [tree]="trees.magic"></app-tree-spot>
     </div>
     <div
       *ngIf="
@@ -106,7 +129,7 @@
       class="woodcutting-box"
       (click)="startTimer(trees.demon)"
     >
-      <app-tree-spot [tree]="trees.demon"></app-tree-spot>
+      <app-tree-spot [bonus]="playerCharacter.character.skills.woodcutting.tool!.bonus" [tree]="trees.demon"></app-tree-spot>
     </div>
     <div
       *ngIf="
@@ -116,7 +139,7 @@
       class="woodcutting-box"
       (click)="startTimer(trees.divine)"
     >
-      <app-tree-spot [tree]="trees.divine"></app-tree-spot>
+      <app-tree-spot [bonus]="playerCharacter.character.skills.woodcutting.tool!.bonus" [tree]="trees.divine"></app-tree-spot>
     </div>
     <div
       *ngIf="

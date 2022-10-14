@@ -1,0 +1,86 @@
+<mat-toolbar class="town-heading">
+  <mat-toolbar-row>
+    <div style="width: 100%; text-align: center">
+      <span matTooltip="Gold" style="margin-left: 3rem; cursor: pointer">
+        {{ playerCharacter.character.currencies.gold
+        }}<img style="width: 1.2rem" src="../../../assets/general/gold.png"
+      /></span>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>
+<div class="town-area">
+  <div class="action-buttons">
+    <button mat-button (click)="accordion.openAll()">Expand All</button>
+    <button mat-button (click)="accordion.closeAll()">Collapse All</button>
+  </div>
+  <mat-accordion class="example-headers-align" multi>
+    <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+            General Items
+            <mat-icon>account_circle</mat-icon>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <div class="shop-box">
+        <app-shop-item [name]="'Sage'"  [description]="'Sage'"  [value]="50"></app-shop-item>
+        <app-shop-item [name]="'Basil'"  [description]="'Basil'"  [value]="1000"></app-shop-item>
+        <app-shop-item [name]="'Parsley'"  [description]="'Parsley'"  [value]="1000"></app-shop-item>
+        <app-shop-item [name]="'Oregano'"  [description]="'Oregano'"  [value]="10000"></app-shop-item>
+        <app-shop-item [name]="'Grass'"  [description]="'Grass'"  [value]="25"></app-shop-item>
+      </div>
+
+    </mat-expansion-panel>
+    <mat-expansion-panel  [expanded]="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>Skilling items <mat-icon>map</mat-icon></mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="shop-box">
+        <app-shop-item [name]="'Iron Axe'"  [description]="'-5% Woodcutting Interval'"  [value]="50"></app-shop-item>
+        <app-shop-item [name]="'Steel Axe'"  [description]="'-10% Woodcutting Interval'"  [value]="10000"></app-shop-item>
+        <app-shop-item [name]="'Crystal Axe'"  [description]="'-20% Woodcutting Interval'"  [value]="1000000"></app-shop-item>
+        <app-shop-item [name]="'Steel Axe'"  [description]="'-10% Woodcutting Interval'"  [value]="10000"></app-shop-item>
+        <app-shop-item [name]="'Crystal Axe'"  [description]="'-20% Woodcutting Interval'"  [value]="1000000"></app-shop-item>
+      </div>
+      <div class="shop-box">
+        <app-shop-item [name]="'Iron Rod'"  [description]="'-5% Fishing Interval'"  [value]="50"></app-shop-item>
+        <app-shop-item [name]="'Steel Rod'"  [description]="'-10% Fishing Interval'"  [value]="10000"></app-shop-item>
+        <app-shop-item [name]="'Crystal Rod'"  [description]="'-20% Fishing Interval'"  [value]="1000000"></app-shop-item>
+        <app-shop-item [name]="'Master Rod'"  [description]="'-10% Fishing Interval'"  [value]="10000"></app-shop-item>
+        <app-shop-item [name]="'Harpoon'"  [description]="'-20% Fishing Interval'"  [value]="1000000"></app-shop-item>
+      </div>
+      <div class="shop-box">
+        <app-shop-item [name]="'Iron Pickaxe'"  [description]="'-5% Miniing Interval'"  [value]="50"></app-shop-item>
+        <app-shop-item [name]="'Steel Pickaxe'"  [description]="'-10% Miniing Interval'"  [value]="10000"></app-shop-item>
+        <app-shop-item [name]="'Earth Pickaxe'"  [description]="'-20% Miniing Interval'"  [value]="1000000"></app-shop-item>
+        <app-shop-item [name]="'Dwarven Pickaxe'"  [description]="'-10% Miniing Interval'"  [value]="10000"></app-shop-item>
+        <app-shop-item [name]="'Enchanted Pickaxe'"  [description]="'-20% Miniing Interval'"  [value]="1000000"></app-shop-item>
+      </div>
+      <div class="shop-box">
+        <app-shop-item [name]="'Junior Mortar'"  [description]="'5% Alchemy Bonus'"  [value]="50"></app-shop-item>
+        <app-shop-item [name]="'Apprentice Mortar'"  [description]="'10% Alchemy Bonus'"  [value]="10000"></app-shop-item>
+        <app-shop-item [name]="'Adept Mortar'"  [description]="'20% Alchemy Bonus'"  [value]="1000000"></app-shop-item>
+        <app-shop-item [name]="'Master Mortar'"  [description]="'10% Alchemy Bonus'"  [value]="10000"></app-shop-item>
+        <app-shop-item [name]="'Grand Mortar'"  [description]="'20% Alchemy Bonus'"  [value]="1000000"></app-shop-item>
+      </div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+            Combat items
+            <mat-icon>date_range</mat-icon>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <div class="shop-box">
+        <app-shop-item [name]="'Small Potion'"  [description]="'Restores 10 HP'"  [value]="50"></app-shop-item>
+        <app-shop-item [name]="'Potion'"  [description]="'Restores 50 HP'"  [value]="10000"></app-shop-item>
+        <app-shop-item [name]="'Large Potion'"  [description]="'Restores 100 HP'"  [value]="1000000"></app-shop-item>
+        <app-shop-item [name]="'Restoration Potion'"  [description]="'Restores 200 HP'"  [value]="10000"></app-shop-item>
+        <app-shop-item [name]="'Holy Elixer'"  [description]="'Full Heal'"  [value]="1000000"></app-shop-item>
+      </div>
+
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

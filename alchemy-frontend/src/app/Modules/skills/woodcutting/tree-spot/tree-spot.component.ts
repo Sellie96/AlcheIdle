@@ -9,6 +9,7 @@ import { Tree } from '../Trees';
 export class TreeSpotComponent implements OnInit {
 
   @Input() tree!: Tree;
+  @Input() bonus!: number;
 
   constructor() { }
 

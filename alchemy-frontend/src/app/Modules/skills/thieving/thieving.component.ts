@@ -17,9 +17,9 @@ import { Thieving, thievingOptions } from './Thieving';
 @UntilDestroy()
 export class ThievingComponent implements OnInit {
   sub: any;
-  activeThieving!: string;
+  activeThieving!: Thieving;
   playerCharacter!: PlayerData;
-  thievingProgress = 100;
+  thievingProgress = 0;
   curSec: number = 0;
   thiefs: number = 0;
 
@@ -59,7 +59,7 @@ export class ThievingComponent implements OnInit {
   }
 
   startTimer(thievingTarget: Thieving) {
-    this.activeThieving = thievingTarget.name;
+    this.activeThieving = thievingTarget;
     if (
       this.playerCharacter.character.skills.thieving.level >=
       thievingTarget.level
@@ -71,11 +71,14 @@ export class ThievingComponent implements OnInit {
       const timer$ = interval(100);
 
       this.sub = timer$.subscribe((sec) => {
-        this.thievingProgress = 100 - (sec * 100) / time;
+        this.thievingProgress = 0 + (sec * 100) / time;
         this.curSec = sec;
         if (this.curSec === time) {
           this.sub.unsubscribe();
-          this.completeThieving(thievingTarget);
+          setTimeout (() => {
+            this.thievingProgress = 0;
+            this.completeThieving(thievingTarget);
+         }, 250);
         }
       });
     } else return;
@@ -94,7 +97,9 @@ export class ThievingComponent implements OnInit {
       });
     });
 
-    this.startTimer(thief);
+    setTimeout (() => {
+      this.startTimer(thief);
+   }, 250);
   }
 
   setPlayerData(playerData: any) {

@@ -2,20 +2,21 @@
     <mat-toolbar class="skill-information">
       <mat-toolbar-row>
         <div style="width: 100%">
-          <span> {{ +thiefs }} Users Thieving </span>
-          <span style="margin-left: 25rem">
-            Current Bonus: {{ 1 + 0.001 * thiefs }}x
-          </span>
           <span>
             <div style="margin-left: 1rem">
               Skill Level
               <span class="level">
                 {{ this.playerCharacter.character.skills.thieving.level }} / 99
               </span>
-  
-              Active:
+
+              Thieves
+              <span class="xp">
+                {{ +thiefs }}
+              </span>
+              
+              Bonus
               <span class="level">
-                {{ activeThieving || "None" | titlecase }}
+                {{ 1 + 0.001 * thiefs }}x
               </span>
               Skill XP
               <span class="xp">
@@ -38,11 +39,29 @@
       </mat-toolbar-row>
     </mat-toolbar>
   
-    <mat-progress-bar
-      class="progress-bar"
-      mode="determinate"
-      [value]="thievingProgress"
-    ></mat-progress-bar>
+    <mat-toolbar class="skill-information">
+      <mat-toolbar-row>
+        <div style="width: 100%">
+          <span>
+            <mat-progress-bar
+            class="progress-bar"
+            mode="determinate"
+            [value]="thievingProgress"
+          ></mat-progress-bar>
+          <div style="margin-left: 1rem">
+            <div class="rewardContainer" *ngIf="activeThieving">
+              <div>
+                <img matTooltip="{{activeThieving.name | titlecase}}" style="width: 36px;" src="../../../../assets/thieving/{{activeThieving.name}}.png"  alt="None">
+              </div>
+              <div>
+                <img matTooltip="{{activeThieving.value}}" style="width: 36px;" src="../../../../assets/general/gold.png"  alt="None">
+              </div>
+            </div>
+          </div>
+          </span>
+        </div>
+      </mat-toolbar-row>
+    </mat-toolbar>
   
     <div style="display: flexbox; margin-left: 6rem">
       <div class="thieving-box" (click)="startTimer(thievingOptions.humans)">

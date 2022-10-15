@@ -93,3 +93,9 @@
     border-radius: 5px;
     border-top: 3px solid green;
 }
+
+.rewardContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}

@@ -25,7 +25,7 @@
     >
       <mat-form-field appearance="fill">
         <mat-label>Username</mat-label>
-        <input style="color: white;" formControlName="username" matInput />
+        <input formControlName="username" matInput />
         <mat-error *ngIf="hasErrorRegister('username', 'required')"
           >Username is required</mat-error
         >
@@ -132,7 +132,7 @@
 
       <mat-checkbox
         (click)="this.rememberMe = !this.rememberMe"
-        style="margin-top: 1rem; color: white;"
+        style="margin-top: 1rem;"
         >Remember Me</mat-checkbox
       >
 

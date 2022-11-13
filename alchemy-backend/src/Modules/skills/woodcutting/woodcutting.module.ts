@@ -1,7 +1,6 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { AuthModule } from 'src/auth/auth.module';
 import { UsersModule } from 'src/user/users.module';
-import { WoodcuttingGateway } from './woodcutting.gateway';
 import { WoodcuttingService } from './woodcutting.service';
 
 @Module({
@@ -10,8 +9,8 @@ import { WoodcuttingService } from './woodcutting.service';
     forwardRef(() => UsersModule),
   ],
   controllers: [],
-  providers: [WoodcuttingService, WoodcuttingGateway],
-  exports: [WoodcuttingService, WoodcuttingGateway],
+  providers: [WoodcuttingService],
+  exports: [WoodcuttingService],
 })
 
 export class WoodcuttingModule {}

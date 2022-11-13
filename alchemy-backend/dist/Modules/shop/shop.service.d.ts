@@ -16,8 +16,18 @@ export declare class ShopService {
         name: string;
         bonus: number;
     };
+    smallPotion: {
+        name: string;
+        amount: number;
+        value: number;
+        restores: number;
+    };
     buyItem(username: string, item: Item): Promise<any>;
     buyItemUpdate(userData: User, item: Item, itemToBuy: any): {
+        message: string;
+        userData: User;
+    };
+    buyPotionUpdate(userData: User, item: Item, itemToBuy: any): {
         message: string;
         userData: User;
     };

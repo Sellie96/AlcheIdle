@@ -1,11 +1,12 @@
+@import "~../../../variables.scss";
+
 .town-heading {
   margin-top: 2rem;
   margin-left: 2rem;
   width: 96%;
   box-shadow: 0 1px 2px rgb(33 34 35/50%), 0 1px 2px rgb(26 26 27/50%);
   border-top: 3px solid green;
-  background-color: #232a35;
-  color: #f5f5f5;
+  background-color: $primary-dark;
   display: relative;
   font-size: 0.875rem;
   height: 4rem;
@@ -15,7 +16,7 @@
   width: 96%;
   margin-left: 2rem;
   margin-top: 2rem;
-  background-color: #232a35;
+  background-color: $primary-dark;
   min-height: 75vh;
 }
 
@@ -24,7 +25,6 @@
   height: 4rem;
   margin: 1rem;
   background-color: slategrey;
-  color: whitesmoke;
   cursor: pointer;
 }
 
@@ -40,30 +40,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
-}
-
-.mat-expansion-panel-header {
-  background-color: rgba(35, 42, 53, 1);
-  color: white;
-}
-
-.mat-expansion-panel-header:hover {
-  background-color: black;
-}
-
-.mat-expansion-panel-header-title {
-  color: white;
-}
-
-.mat-expansion-panel-header-description {
-  color: white;
-}
-
-.mat-expansion-panel {
-  background-color: rgba(35, 42, 53, 1);
-  color: white;
-  border: 2px solid rgb(50, 63, 85);
 }
 
 .panel-title {

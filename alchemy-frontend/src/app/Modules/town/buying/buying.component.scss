@@ -1,12 +1,13 @@
+@import "~../../../../variables.scss";
+
 ::ng-deep .mat-dialog-container {
-  background-color: rgba(35, 42, 53, 1);
+  background-color: $primary-dark;
   padding: 3rem;
-  border: 2px solid rgb(50, 63, 85);
-  color: whitesmoke;
+  border: 2px solid $primary;
 }
 
 .dialog-button {
-    border: 2px solid rgb(50, 63, 85);
+    border: 2px solid $primary;
     display: flex;
     justify-content: center;
     align-items: center;

@@ -10,7 +10,6 @@ exports.WoodcuttingModule = void 0;
 const common_1 = require("@nestjs/common");
 const auth_module_1 = require("../../../auth/auth.module");
 const users_module_1 = require("../../../user/users.module");
-const woodcutting_gateway_1 = require("./woodcutting.gateway");
 const woodcutting_service_1 = require("./woodcutting.service");
 let WoodcuttingModule = class WoodcuttingModule {
 };
@@ -21,8 +20,8 @@ WoodcuttingModule = __decorate([
             (0, common_1.forwardRef)(() => users_module_1.UsersModule),
         ],
         controllers: [],
-        providers: [woodcutting_service_1.WoodcuttingService, woodcutting_gateway_1.WoodcuttingGateway],
-        exports: [woodcutting_service_1.WoodcuttingService, woodcutting_gateway_1.WoodcuttingGateway],
+        providers: [woodcutting_service_1.WoodcuttingService],
+        exports: [woodcutting_service_1.WoodcuttingService],
     })
 ], WoodcuttingModule);
 exports.WoodcuttingModule = WoodcuttingModule;

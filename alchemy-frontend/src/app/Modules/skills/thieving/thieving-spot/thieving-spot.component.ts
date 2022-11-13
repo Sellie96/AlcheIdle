@@ -8,7 +8,8 @@ import { Thieving } from '../Thieving';
 })
 export class ThievingSpotComponent implements OnInit {
 
-  @Input() thievingTarget!: Thieving;
+  @Input() activeThieving!: Thieving;
+  @Input() bonus!: number;
 
   constructor() { }
 

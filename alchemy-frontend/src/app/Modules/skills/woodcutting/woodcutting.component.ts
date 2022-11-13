@@ -3,17 +3,17 @@ import {
   ElementRef,
   HostListener,
   OnDestroy,
-  OnInit,
+  OnInit
 } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngxs/store';
 import { ToastrService } from 'ngx-toastr';
-import { delay, interval } from 'rxjs';
+import { interval } from 'rxjs';
 import { UpdateWoodcutting } from 'src/app/stateManagement/character/character.actions';
 import { CharacterState } from 'src/app/stateManagement/character/character.state';
 import { PlayerData } from 'src/app/stateManagement/character/CharacterDataTypes';
 import { SkillsService } from '../skills.service';
-import { logTypes, Tree, treeTypes } from './Trees';
+import { lockedTrees, logTypes, Tree, treeTypes, treeTypesToChop } from './Trees';
 
 @UntilDestroy()
 @Component({
@@ -32,6 +32,8 @@ export class WoodcuttingComponent implements OnInit, OnDestroy {
   playerCharacter!: PlayerData;
   activeTree!: Tree;
   woodcutters: number = 0;
+  treeTypes: Tree[] = treeTypesToChop;
+  lockedTrees: number[] = lockedTrees;
 
   trees = treeTypes;
 
@@ -57,27 +59,6 @@ export class WoodcuttingComponent implements OnInit, OnDestroy {
       .subscribe((character: PlayerData) => {
         this.playerCharacter = JSON.parse(JSON.stringify(character));
       });
-
-    this.getInitialData();
-  }
-
-  getExperiencePointsForLevel() {
-    let points = 0;
-    let output = 0;
-      for (let lvl = 1; lvl <= this.playerCharacter.character.skills.woodcutting.level; lvl++) {
-        points += Math.floor(lvl + 300.0 * Math.pow(2.0, lvl / 7.0));
-          if (lvl >= this.playerCharacter.character.skills.woodcutting.level) {
-              return output;
-          }
-          output = Math.floor(points / 4);
-      }
-      return 0;
-  }
-
-  getInitialData() {
-    this.skillsService.getWoodcutters().subscribe((woodcutters: any) => {
-      this.woodcutters = woodcutters;
-    });
   }
 
   setPlayerData(playerData: any) {
@@ -108,9 +89,9 @@ export class WoodcuttingComponent implements OnInit, OnDestroy {
   }
 
   async completeWoodcutting(tree: Tree) {
-    this.skillsService.woodcuttingActive(this.playerCharacter.username, tree);
+    this.skillsService.skillingActive(this.playerCharacter.username, tree);
 
-    await this.skillsService.getWoodcuttingUpdate().then((data: any) => {
+    await this.skillsService.getSkillingUpdate().then((data: any) => {
       this.setPlayerData(data.woodcuttingUsers.user);
       this.toastr.info(data.updateMessage, 'Update', {
         timeOut: 2000,

@@ -10,7 +10,6 @@ exports.ThievingModule = void 0;
 const common_1 = require("@nestjs/common");
 const auth_module_1 = require("../../../auth/auth.module");
 const users_module_1 = require("../../../user/users.module");
-const thieving_gateway_1 = require("./thieving.gateway");
 const thieving_service_1 = require("./thieving.service");
 let ThievingModule = class ThievingModule {
 };
@@ -21,8 +20,8 @@ ThievingModule = __decorate([
             (0, common_1.forwardRef)(() => users_module_1.UsersModule),
         ],
         controllers: [],
-        providers: [thieving_service_1.ThievingService, thieving_gateway_1.ThievingGateway],
-        exports: [thieving_service_1.ThievingService, thieving_gateway_1.ThievingGateway],
+        providers: [thieving_service_1.ThievingService],
+        exports: [thieving_service_1.ThievingService],
     })
 ], ThievingModule);
 exports.ThievingModule = ThievingModule;

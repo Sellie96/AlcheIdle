@@ -7,7 +7,7 @@ import { UpdateWoodcutting } from 'src/app/stateManagement/character/character.a
 import { CharacterState } from 'src/app/stateManagement/character/character.state';
 import { PlayerData } from 'src/app/stateManagement/character/CharacterDataTypes';
 import { SkillsService } from '../skills.service';
-import { Thieving, thievingOptions } from './Thieving';
+import { lockedTargets, Thieving, thievingOptions, thievingTargets } from './Thieving';
 
 @Component({
   selector: 'app-thieving',
@@ -22,6 +22,8 @@ export class ThievingComponent implements OnInit {
   thievingProgress = 0;
   curSec: number = 0;
   thiefs: number = 0;
+  thievingTargets = thievingTargets;
+  lockedTargets = lockedTargets;
 
   thievingOptions = thievingOptions;
 
@@ -48,14 +50,6 @@ export class ThievingComponent implements OnInit {
       .subscribe((character: PlayerData) => {
         this.playerCharacter = JSON.parse(JSON.stringify(character));
       });
-
-      this.intializeThieving();
-  }
-
-  intializeThieving() {
-    this.skillsService.getThiefs().subscribe((thiefs: any) => {
-      this.thiefs = thiefs;
-    });
   }
 
   startTimer(thievingTarget: Thieving) {
@@ -85,9 +79,9 @@ export class ThievingComponent implements OnInit {
   }
 
   async completeThieving(thief: Thieving) {
-    this.skillsService.thievingActive(this.playerCharacter.username, thief);
+    this.skillsService.skillingActive(this.playerCharacter.username, thief);
 
-    await this.skillsService.getThievingUpdate().then((data: any) => {
+    await this.skillsService.getSkillingUpdate().then((data: any) => {
       this.setPlayerData(data.thievingUsers.user);
       this.toastr.info(data.updateMessage, 'Update', {
         timeOut: 2000,
@@ -104,22 +98,5 @@ export class ThievingComponent implements OnInit {
 
   setPlayerData(playerData: any) {
     this.store.dispatch(new UpdateWoodcutting(playerData));
-  }
-
-  getExperiencePointsForLevel() {
-    let points = 0;
-    let output = 0;
-    for (
-      let lvl = 1;
-      lvl <= this.playerCharacter.character.skills.thieving.level;
-      lvl++
-    ) {
-      points += Math.floor(lvl + 300.0 * Math.pow(2.0, lvl / 7.0));
-      if (lvl >= this.playerCharacter.character.skills.thieving.level) {
-        return output;
-      }
-      output = Math.floor(points / 4);
-    }
-    return 0;
   }
 }

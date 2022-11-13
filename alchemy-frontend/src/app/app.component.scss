@@ -1,29 +1,18 @@
-.content {
-  background-color: #673ab7;
-}
+@import "~../variables.scss";
 
-.elevation {
-  background-color: #673ab7;
-  z-index: 1000;
-  box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
-}
-
-.nav-item {
-  color: whitesmoke;
-  font-size: 14px;
+.nav-header {
+  font-family: Roboto, Helvetica Neue, sans-serif;
+  font-size: 18px;
+  font-weight: 500;
 }
 
 .is-active {
-  border-top: 1px solid #4195fc; /* some kind of blue border */
-  border-bottom: 1px solid #4195fc; /* some kind of blue border */
+  border: 1px solid $accent; /* some kind of blue border */
   pointer-events: none;
   cursor: default;
-  -webkit-border-radius: 1px;
-  -moz-border-radius: 1px;
-  border-radius: 1px;
-  -webkit-box-shadow: 0px 0px 4px #4195fc;
-  -moz-box-shadow: 0px 0px 4px #4195fc;
-  box-shadow: 0px 0px 4px #4195fc;
+  -webkit-box-shadow: 0px 0px 4px $accent;
+  -moz-box-shadow: 0px 0px 4px $accent;
+  box-shadow: 0px 0px 4px $accent;
 }
 
 .main-content {
@@ -35,31 +24,26 @@
 
 .icon {
   width: 24px;
-  border: black 2px solid;
   display: flex;
   align-items: center;
   flex-direction: row;
-  background-color: black;
   border-radius: 5px;
   margin-right: 1rem;
 }
 
 .side-nav-list {
-  background-color: rgb(51, 51, 51);
-  color: whitesmoke;
+  background-color: $primary;
   display: flex;
   align-items: center;
   flex-direction: column;
-  overflow: hidden;
-}
-
-.side-nav-list:hover {
-  overflow-y: scroll;
+  overflow-y: hidden;
+  width: 15rem;
+  font-weight: 500;
+  border-right: 1px black solid;
 }
 
 .woodcutting {
-  background-color: #358f12;
-  color: whitesmoke;
+  background-color: green;
 }
 
 .firemaking {
@@ -149,7 +133,6 @@
 
 .shop {
   background-color: rgb(119, 58, 0);
-  color: white;
 }
 
 .adventure {
@@ -162,81 +145,94 @@
   color: black;
 }
 
-.heading {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-  margin: 0;
-  text-align: center;
-  font-size: 1.5rem;
-  font-family: Trebuchet MS;
-  background-image: url("../assets/general/fire-bg.png");
-  background-position: center; /* Center the image */
-  background-repeat: no-repeat; /* Do not repeat the image */
-  background-size: cover; /* Resize the background image to cover the entire container */
-}
-
-.opacityBackground {
-  background-color: rgba(35, 42, 53, 0.9);
-  padding: 0;
-  margin: 0;
-  width: 100%;
-}
-
 .opacityBackgroundMain {
-  background-color: rgba(35, 42, 53, 0.3);
-  padding: 0;
-  margin: 0;
   min-width: 100%;
-  min-height: 100vh;
+  min-height: 93.3vh;
   top: 0;
 }
 
 .mainHeading {
-  background-color: rgb(75, 75, 75);
-  box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
-  margin-bottom: 0.3rem;
+  background-color: $primary;
+  margin-bottom: 0rem;
 }
 
 .subHeading {
   margin-top: 0;
-  background-color: rgb(75, 75, 75);
-  box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
+  background-color: $primary;
   color: rgb(156, 156, 156);
 }
 
-.chatBox {
-  background-color: rgba(35, 42, 53, 0.9);
-  padding: 0;
-  margin: 0;
-  width: 33%;
+.chat-box {
   position: fixed;
-  bottom: 0;
-  right: 0;
+  left: 255px;
+  bottom: 2px; 
+  width: 500px;
+  background: rgba(1.0, 1.0, 1.0, 0.4);
+  padding: 10px 10px;
+  border-radius: 10px;
+  border-color: #0f2;
+  -webkit-box-shadow: 0 0 10px #0f2;
+  -moz-box-shadow: 0 0 10px #0f2;
+  box-shadow: 0 0 10px #0f2;
+  visibility: hidden;
 }
 
-.hpBox {
-  background-color: rgba(35, 42, 53);
-  padding: 0;
-  margin: 0;
-  width: 33%;
+.fade-in {
+	opacity: 1;
+	animation-name: fadeInOpacity;
+	animation-iteration-count: 1;
+	animation-timing-function: ease-in;
+	animation-duration: 2s;
+}
+
+@keyframes fadeInOpacity {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+.hp-box {
   position: fixed;
-  bottom: 0;
-  left: auto;
-  right: auto;
-  height: 3.1rem;
-  box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.12);
-  border: 1px solid rgb(50, 63, 85);
+  transform: translate(-57%, 0);
+  left: 57%;
+  bottom: 2px; 
+  width: 200px;
+  background: $primary-dark;
+  padding: 10px 10px;
+  border-color: #0f2;
+  -webkit-box-shadow: 0 0 10px #0f2;
+  -moz-box-shadow: 0 0 10px #0f2;
+  box-shadow: 0 0 10px #0f2;
+  visibility: hidden;
+  padding: 0;
+  color: white;
+}
+
+::ng-deep .mat-expansion-panel {
+  background-color: $primary;
+}
+
+::ng-deep .mat-expansion-panel-header {
+  background-color: $primary;
+  border-radius: 0;
+}
+
+::ng-deep .mat-expansion-panel:hover {
+  background-color: $primary;
+}
+
+::ng-deep .mat-expansion-panel:focus {
+  background-color: $primary;
 }
 
 ::ng-deep .mat-expansion-panel-body {
-  background-color: rgba(35, 42, 53, 1);
-  padding: 0;
-  margin: 0;
-  width: 100%;
+  background-color: $primary-dark;
 }
 
 .sign-in {
-  background-color: rgba(35, 42, 53, 0.9);
   background-image: url("../assets/general/background.jpg");
   background-position: center; /* Center the image */
   background-repeat: no-repeat; /* Do not repeat the image */
@@ -252,33 +248,157 @@
 
 .settingsArea {
   margin-left: auto;
-  margin-right: 15%;
-  background-color: rgba(35, 42, 53, 0.9);
-  padding-left: 0.5rem;
-  box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.12);
+  background-color: $primary;
   border: 2px solid black;
+  padding-right: 2rem;
 }
 
 .hpBox-text {
-  color: white;
-  font-size: 1rem;
+  font-weight: 700;
   font-family: Trebuchet MS;
   text-align: center;
+  padding: 0;
+  position: absolute;
+  bottom: 7px;
+  transform: translate(-50%, 0);
+  left: 50%;
 }
 
 .progress-bar-hp {
   background-color: #ff0000;
-  height: 1rem;
+  height: 0.75rem;
+  margin-top: 0.25rem;
+  color: $secondary;
 }
 
 ::ng-deep .mat-progress-bar-fill::after {
-  background-color: rgb(86, 143, 0);
+  background-color: $primary;
 }
 
 ::ng-deep .mat-progress-bar-buffer {
-  background-color: rgb(194, 0, 0);
+  background-color: $warn;
 }
 
 ::ng-deep .mat-progress-bar {
   border-radius: 2px;
+}
+
+::ng-deep .mat-drawer-inner-container {
+  overflow-y: hidden !important;
+}
+
+::ng-deep .mat-drawer-inner-container:hover {
+  overflow-y: scroll !important;
+  scrollbar-color: #0A4C95 #C2D2E4;
+  scrollbar-width: thin;
+}
+
+::ng-deep .mat-list-base {
+  padding-top: 0 !important;
+}
+
+::ng-deep .mat-list-item {
+  color: #f5f5f5 !important;
+  font-size: .875rem !important;
+  line-height: 1.25rem !important;
+}
+.heading-section {
+  height: 9.5rem;
+}
+
+.main-background {
+  position: absolute;
+  width: 100%;
+  height: 10rem;
+  top: 0;
+  left: 0;
+}
+
+.heading-section-text {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+  top: 134px;
+  color: black;
+  font-weight: 900;
+  z-index: 10002;
+}
+
+.top-bar {
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+.nav-heading {
+  padding: 1.375rem 1.25rem 0.375rem;
+  font-size: .875rem !important;
+  text-transform: uppercase;
+  letter-spacing: .0625rem;
+  color: #8ca0b3;
+}
+
+.main-logo {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translate(-50%, 0);
+  width: 128px;
+  z-index: 10000;
+}
+
+.main-logo-two {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+  top: 120px;
+  width: 128px;
+  z-index: 10001;
+}
+
+.main-logo-text {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+  top: 118px;
+  color: black;
+  font-weight: 900;
+  z-index: 10002;
+}
+
+.heading-button {
+  width: 100%;
+  margin-bottom: 0.5rem;
+  background:#d03651;
+  box-shadow:0px 5px 0px 0px #a72b41,
+    0px 0px 5px 0px rgba(120, 120, 120, 0.4);;
+}
+
+.expand-box {
+  position: fixed;
+  right: 5px;
+  bottom: 5px; 
+  background: $primary;
+  color: white;
+  border-color: #0f2;
+  -webkit-box-shadow: 0 0 10px #0f2;
+  -moz-box-shadow: 0 0 10px #0f2;
+  box-shadow: 0 0 10px #0f2;
+}
+
+.expand-hp-box {
+  position: fixed;
+  width: 5rem;
+  padding: 0;
+  right: 5px;
+  bottom: 50px; 
+  background: $primary;
+  color: white;
+  border-color: #0f2;
+  -webkit-box-shadow: 0 0 10px #0f2;
+  -moz-box-shadow: 0 0 10px #0f2;
+  box-shadow: 0 0 10px #0f2;
+}
+
+::ng-deep .mat-list-base:hover {
+  background-color: rgba(0,0,0,0) !important;
 }

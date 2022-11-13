@@ -48,20 +48,6 @@ let ThievingService = class ThievingService {
             return returnedData;
         });
     }
-    removeThievingUser(username) {
-        this.thievingUsers = this.thievingUsers.filter((thief) => thief.username !== username);
-        return this.thievingUsers;
-    }
-    getThievingUsers() {
-        return this.thievingUsers;
-    }
-    identify(name, clientId) {
-        this.clientToUser[clientId] = name;
-        return Object.values(this.clientToUser);
-    }
-    getClientName(clientId) {
-        return this.clientToUser[clientId];
-    }
 };
 ThievingService = __decorate([
     (0, common_1.Injectable)(),

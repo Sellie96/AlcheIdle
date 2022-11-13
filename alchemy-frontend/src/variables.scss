@@ -1,0 +1,25 @@
+@import "~@angular/material/theming";
+@include mat-core();
+
+
+/* ======== Angular material custom themes ======== */ 
+$alch-secondary: mat-palette($mat-blue-gray, 900);
+$alch-secondary-dark: mat-palette($mat-blue-gray, 900);
+$alch-accent: mat-palette($mat-pink, A200, A100, A400);
+
+$alch-warn: mat-palette($mat-red);
+
+$alch-primary: mat-palette($mat-blue-gray, 800);
+$alch-primary-dark: mat-palette($mat-blue-gray, 900);
+
+
+$alch-theme: mat-light-theme($alch-primary, $alch-accent, $alch-warn);
+
+@include angular-material-theme($alch-theme);
+
+$primary: mat-color($alch-primary);
+$primary-dark: mat-color($alch-primary-dark);
+$secondary: mat-color($alch-secondary);
+$secondary-dark: mat-color($alch-secondary-dark);
+$accent: mat-color($alch-accent);
+$warn: mat-color($alch-warn);

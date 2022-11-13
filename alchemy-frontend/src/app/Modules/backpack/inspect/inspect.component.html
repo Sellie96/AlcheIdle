@@ -1,0 +1,22 @@
+<div>
+    <img width="64px" src="../../../../assets/items/{{data.name}}.png">
+    <h2>
+        {{ data.name | titlecase }}, no item description.
+    </h2>
+    <p>
+        In storage: {{ data.amount | number }}
+    </p>
+
+    <mat-form-field>
+        <input matInput [max]="data.amount" type="number" placeholder="Amount">
+    </mat-form-field>
+
+    <p>
+        <img style="width: 15px;" src="../../../../assets/general/gold.png"> {{data.value | number}}
+    </p>
+
+    <div style="display: flex; flex-direction: row;">
+        <button (click)="sellItem()" class="dialog-button" mat-button>Sell</button>
+        <button (click)="closeDialog()" class="dialog-button" mat-button>Close</button>
+    </div>
+</div>

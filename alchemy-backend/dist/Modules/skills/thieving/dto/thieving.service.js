@@ -45,7 +45,7 @@ let ThievingService = class ThievingService {
                 this.thievingUsers.push(user);
                 returnedData.thievingUsers = yield this.usersService.updateThievingByUsername(user);
             }
-            returnedData.updateMessage = `You gain ${returnedData.thievingUsers.gold} Gold and ${user.thievingOption.xp} XP!`;
+            returnedData.updateMessage = `You gain ${returnedData.thievingUsers.reward} Gold and ${user.thievingOption.xp} XP!`;
             return returnedData;
         });
     }

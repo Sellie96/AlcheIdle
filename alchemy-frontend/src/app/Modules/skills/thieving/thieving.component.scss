@@ -1,18 +1,16 @@
+@import "~../../../../variables.scss";
+
 .thieving-box {
-    width: 21.1rem;
-    height: 15rem;
-    background-color: #232a35;
+    width: 22rem;
+    background-color: $primary-dark;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    margin: 1rem;
-    color: whitesmoke;
-    font-size: 18px;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    margin: 1.9rem;
     text-align: center;
-    box-shadow: 0 3px 1px -2px #0003, 0 2px 2px #00000024, 0 1px 5px #0000001f;
+    box-shadow: inset 0 0 0 1px #142b2b,0 0 30px -3px #000;
     border-radius: 5px;
-    border-top: 3px solid green;
+    border-top: 3px solid gray;
 }
 
 .thieving-box:focus {
@@ -36,27 +34,46 @@
     display: flex;
     flex-direction: row;
     width: 98%;
-    height: 10px;
+    height: 12px;
     border-radius: 5px;
-    background-color: #232a35;
+    background-color: $secondary-dark;
+}
+
+.progress-bar-rewards {
+    display: flex;
+    flex-direction: row;
+    width: 98%;
+    height: 20px;
+    border-radius: 5px;
+    background-color: $primary;
+}
+
+.skill-rewards {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0.5rem;
+    width: 98%;
+    box-shadow: inset 0 0 0 1px #142b2b,0 0 30px -3px #000;
+    border-top: 3px solid green;
+    background-color: $secondary-dark;
+    display: flex;
+    flex-direction: column;
+    font-size: .875rem;
 }
 
 .skill-information {
-    margin-top: 2rem;
-    box-shadow: 0 1px 2px rgb(33 34 35/50%),0 1px 2px rgb(26 26 27/50%);
     border-top: 3px solid green;
-    background-color: #232a35;
-    color: #f5f5f5;
-    display: relative;
+    background-color: #455a64;
+    display: flex;
+    flex-direction: column;
     font-size: .875rem;
-    height: 6rem;
+    height: 0px;
 }
 
 .level{
     background-color: forestgreen;
     border-radius: 5px;
     padding: 0.3rem;
-    margin-right: 25vw;
 }
 
 .xp{
@@ -80,12 +97,11 @@
 .locked {
     width: 21.1rem;
     height: 15rem;
-    background-color: #232a35;
+    background-color: $primary;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     margin: 1rem;
-    color: whitesmoke;
     font-size: 18px;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     text-align: center;
@@ -98,4 +114,13 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
+}
+
+.rewardIcon {
+    border-radius: 1px;
+    border: solid 1px #000000;
+    padding: 0.25rem;
+    margin: 0.25rem;
+    position: relative;
+    background-color: $primary;
 }

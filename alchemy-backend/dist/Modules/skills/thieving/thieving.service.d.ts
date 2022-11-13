@@ -7,8 +7,4 @@ export declare class ThievingService {
     clientToUser: {};
     constructor(usersService: UsersService);
     addToThievingActive(activeThief: Thieving): Promise<any>;
-    removeThievingUser(username: string): Thieving[];
-    getThievingUsers(): Thieving[];
-    identify(name: string, clientId: string): unknown[];
-    getClientName(clientId: string): any;
 }

@@ -1,7 +1,6 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { AuthModule } from 'src/auth/auth.module';
 import { UsersModule } from 'src/user/users.module';
-import { ThievingGateway } from './thieving.gateway';
 import { ThievingService } from './thieving.service';
 
 @Module({
@@ -10,8 +9,8 @@ import { ThievingService } from './thieving.service';
     forwardRef(() => UsersModule),
   ],
   controllers: [],
-  providers: [ThievingService, ThievingGateway],
-  exports: [ThievingService, ThievingGateway],
+  providers: [ThievingService],
+  exports: [ThievingService],
 })
 
 export class ThievingModule {}

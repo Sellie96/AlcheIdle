@@ -45,23 +45,9 @@ let WoodcuttingService = class WoodcuttingService {
                 this.woodCuttingUsers.push(user);
                 returnedData.woodcuttingUsers = yield this.usersService.updateWoodcuttingByUsername(user);
             }
-            returnedData.updateMessage = `You gain ${returnedData.woodcuttingUsers.logAmount}x ${user.treeType.logs} and ${user.treeType.xp} XP!`;
+            returnedData.updateMessage = `You gain ${returnedData.woodcuttingUsers.logAmount}x ${user.treeType.reward} and ${user.treeType.xp} XP!`;
             return returnedData;
         });
-    }
-    removeWoodcuttingUser(username) {
-        this.woodCuttingUsers = this.woodCuttingUsers.filter((woodcutter) => woodcutter.username !== username);
-        return this.woodCuttingUsers;
-    }
-    getWoodcuttingUsers() {
-        return this.woodCuttingUsers;
-    }
-    identify(name, clientId) {
-        this.clientToUser[clientId] = name;
-        return Object.values(this.clientToUser);
-    }
-    getClientName(clientId) {
-        return this.clientToUser[clientId];
     }
 };
 WoodcuttingService = __decorate([

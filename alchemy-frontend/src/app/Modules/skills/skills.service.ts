@@ -1,6 +1,9 @@
 import { HostListener, Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { AccountService } from 'src/app/_services/account.service';
+import { Course } from './agility/Agility';
+import { Fish } from './fishing/Fishing';
+import { Ore } from './mining/Mining';
 import { Thieving } from './thieving/Thieving';
 import { Tree } from './woodcutting/Trees';
 
@@ -10,19 +13,10 @@ import { Tree } from './woodcutting/Trees';
 export class SkillsService {
   constructor(private socket: Socket, private accountService: AccountService) {}
 
-  woodcuttingActive(name: string, tree: Tree) {
-    this.socket.emit('woodcuttingActive', {
+  skillingActive(name: string, skill: any) {
+    this.socket.emit('skillingActive', {
       username: name,
-      treeType: tree,
-      jwt: this.accountService.getToken(),
-      timestamp: new Date().toISOString().split('T')[1].split('.')[0],
-    });
-  }
-
-  thievingActive(name: string, thievingTarget: Thieving) {
-    this.socket.emit('thievingActive', {
-      username: name,
-      thievingOption: thievingTarget,
+      type: skill,
       jwt: this.accountService.getToken(),
       timestamp: new Date().toISOString().split('T')[1].split('.')[0],
     });
@@ -36,20 +30,8 @@ export class SkillsService {
     return this.socket.fromEvent('findAllMessages');
   }
 
-  getWoodcutters() {
-    return this.socket.fromEvent('woodcuttingUsers');
-  }
-
-  getWoodcuttingUpdate() {
-    return this.socket.fromOneTimeEvent('woodcuttingActive');
-  }
-
-  getThiefs() {
-    return this.socket.fromEvent('thievingUsers');
-  }
-
-  getThievingUpdate() {
-    return this.socket.fromOneTimeEvent('thievingActive');
+  getSkillingUpdate() {
+    return this.socket.fromOneTimeEvent('skillingActive');
   }
 
   closeSocket() {

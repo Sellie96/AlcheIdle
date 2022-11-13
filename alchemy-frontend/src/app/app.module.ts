@@ -29,18 +29,25 @@ import { MiningComponent } from './Modules/skills/mining/mining.component';
 import { RunecraftingComponent } from './Modules/skills/runecrafting/runecrafting.component';
 import { SmithingComponent } from './Modules/skills/smithing/smithing.component';
 import { ThievingComponent } from './Modules/skills/thieving/thieving.component';
-import { LockedTreeComponent } from './Modules/skills/woodcutting/locked-tree/locked-tree.component';
 import { TreeSpotComponent } from './Modules/skills/woodcutting/tree-spot/tree-spot.component';
 import { WoodcuttingComponent } from './Modules/skills/woodcutting/woodcutting.component';
 import { CharacterState } from './stateManagement/character/character.state';
 import { TextInputComponent } from './_forms/text-input/text-input.component';
 import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 import { BackpackComponent } from './Modules/backpack/backpack.component';
-import { LockedThievingComponent } from './Modules/skills/thieving/locked-thieving/locked-thieving.component';
 import { ThievingSpotComponent } from './Modules/skills/thieving/thieving-spot/thieving-spot.component';
 import { TownComponent } from './Modules/town/town.component';
 import { ShopItemComponent } from './Modules/town/shop-item/shop-item.component';
 import { BuyingComponent } from './Modules/town/buying/buying.component';
+import { MenuItemsComponent } from './Modules/mainpage/menu-items/menu-items.component';
+import { InspectComponent } from './Modules/backpack/inspect/inspect.component';
+import { SkillInformationComponent } from './Modules/general/skill-information/skill-information.component';
+import { SkillRewardsComponent } from './Modules/general/skill-rewards/skill-rewards.component';
+import { LockedComponent } from './Modules/general/locked/locked.component';
+import { FishingSpotComponent } from './Modules/skills/fishing/fishing-spot/fishing-spot.component';
+import { MiningSpotComponent } from './Modules/skills/mining/mining-spot/mining-spot.component';
+import { AgilityComponent } from './Modules/skills/agility/agility.component';
+import { AgilitySpotComponent } from './Modules/skills/agility/agility-spot/agility-spot.component';
 
 const config: SocketIoConfig = { url: 'http://localhost:3000', options: {
   extraHeaders: {
@@ -56,6 +63,7 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {
     AlchemyComponent,
     AdventureComponent,
     TreeSpotComponent,
+    AgilityComponent,
     FiremakingComponent,
     FishingComponent,
     CookingComponent,
@@ -67,16 +75,22 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {
     CraftingComponent,
     HerbloreComponent,
     ConstructionComponent,
-    LockedTreeComponent,
     ChatComponent,
     LoginComponent,
     TextInputComponent,
     BackpackComponent,
-    LockedThievingComponent,
     ThievingSpotComponent,
     TownComponent,
     ShopItemComponent,
-    BuyingComponent
+    BuyingComponent,
+    MenuItemsComponent,
+    InspectComponent,
+    SkillInformationComponent,
+    SkillRewardsComponent,
+    LockedComponent,
+    FishingSpotComponent,
+    MiningSpotComponent,
+    AgilitySpotComponent
   ],
   imports: [
     BrowserModule,

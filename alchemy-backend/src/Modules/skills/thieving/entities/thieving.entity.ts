@@ -9,7 +9,7 @@ export class Thieving {
     name: string;
     level: number;
     xp: number;
-    damage: number;
     time: number;
-    value: number;
+    reward: number;
+    damage?: number;
   }

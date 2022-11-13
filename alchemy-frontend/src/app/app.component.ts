@@ -3,10 +3,11 @@ import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Rout
 import { Store } from '@ngxs/store';
 
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Observable } from 'rxjs';
+import { delay, Observable } from 'rxjs';
 import { ChatService } from './Modules/chat/chat.service';
 import { CharacterState, CharacterStateModel } from './stateManagement/character/character.state';
 import { PlayerData } from './stateManagement/character/CharacterDataTypes';
+import { combatLinks, navLinkEnums, navLinks, skillLinks } from './utils/utils';
 import { AccountService } from './_services/account.service';
 
 @UntilDestroy()
@@ -23,7 +24,14 @@ export class AppComponent implements OnInit {
   opened: boolean = true;
   playerCharacter!: PlayerData;
   users: number = 0;
-  loading = false;
+  loading = true;
+  navLinks = navLinks;
+  combatLinks = combatLinks;
+  skillLinks = skillLinks;
+  showChat = true;
+  showHp = true;
+  config = require('./config.json');
+  
 
   constructor(
     private router: Router,
@@ -31,7 +39,7 @@ export class AppComponent implements OnInit {
     private accountService: AccountService,
     private chatService: ChatService
   ) {
-    this.router.events.subscribe((event) => {
+    this.router.events.subscribe(async (event) => {
       if (event instanceof NavigationEnd) {
         // event is an instance of NavigationEnd, get url!
         const url = event.urlAfterRedirects;
@@ -46,7 +54,9 @@ export class AppComponent implements OnInit {
         case event instanceof NavigationEnd:
         case event instanceof NavigationCancel:
         case event instanceof NavigationError: {
-          this.loading = false;
+          setTimeout(() => {
+            this.loading = false;
+         }, 500);
           break;
         }
         default: {
@@ -55,8 +65,8 @@ export class AppComponent implements OnInit {
       }
     });
   }
-  ngOnInit(): void {
 
+  ngOnInit(): void {
     this.chatService.getUsers().subscribe((users: any) => {
       this.users = users;
     });
@@ -85,5 +95,68 @@ export class AppComponent implements OnInit {
       .subscribe((character: PlayerData) => {
         this.playerCharacter = character;
       });
+  }
+
+  hideHp() {
+    this.showHp = !this.showHp
+    const boxes = Array.from(
+      document.getElementsByClassName('hp-box') as HTMLCollectionOf<HTMLElement>,
+    );
+
+    boxes.forEach(box => {
+      if(box.style.visibility === 'visible') {
+      box.style.visibility = 'hidden';
+      } else {
+        box.style.visibility = 'visible';
+      }
+    });
+
+  }
+
+  hideChat() {
+    this.showChat = !this.showChat
+    const boxes = Array.from(
+      document.getElementsByClassName('chat-box') as HTMLCollectionOf<HTMLElement>,
+    );
+
+    boxes.forEach(box => {
+      if(box.style.visibility === 'visible') {
+      box.style.visibility = 'hidden';
+      } else {
+        box.style.visibility = 'visible';
+      }
+    });
+  }
+
+  changeChatLocation() {
+    const boxes = Array.from(
+      document.getElementsByClassName('chat-box') as HTMLCollectionOf<HTMLElement>,
+    );
+
+    boxes.forEach(box => {
+      if(box.style.left === '5px') {
+      box.style.left = '255px';
+      } else {
+        box.style.left = '5px';
+      }
+    });
+  }
+
+  getCorrectSkillLevel(skill: string) {
+    switch (skill) {
+      case navLinkEnums.woodcutting: return this.playerCharacter.character.skills.woodcutting.level;
+      case navLinkEnums.mining: return this.playerCharacter.character.skills.mining.level;
+      case navLinkEnums.fishing: return this.playerCharacter.character.skills.fishing.level;
+      case navLinkEnums.cooking: return this.playerCharacter.character.skills.cooking.level;
+      case navLinkEnums.firemaking: return this.playerCharacter.character.skills.firemaking.level;
+      case navLinkEnums.smithing: return this.playerCharacter.character.skills.smithing.level;
+      case navLinkEnums.crafting: return this.playerCharacter.character.skills.crafting.level;
+      case navLinkEnums.runecrafting: return this.playerCharacter.character.skills.runecrafting.level;
+      case navLinkEnums.thieving: return this.playerCharacter.character.skills.thieving.level;
+      case navLinkEnums.fletching: return this.playerCharacter.character.skills.fletching.level;
+      case navLinkEnums.herblore: return this.playerCharacter.character.skills.herblore.level;
+      case navLinkEnums.agility: return this.playerCharacter.character.skills.agility.level;
+      default: return -1;
+    }
   }
 }

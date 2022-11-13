@@ -9,7 +9,7 @@ export interface Tree {
   name: string;
   level: number;
   xp: number;
-  logs: string;
+  reward: string;
   time: number;
   value: number;
 }

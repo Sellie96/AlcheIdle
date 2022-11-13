@@ -8,8 +8,4 @@ export declare class WoodcuttingService {
     clientToUser: {};
     constructor(usersService: UsersService);
     addToWoodcuttingActive(activeWoodcutter: Woodcutting): Promise<any>;
-    removeWoodcuttingUser(username: string): Woodcutting[];
-    getWoodcuttingUsers(): Woodcutting[];
-    identify(name: string, clientId: string): unknown[];
-    getClientName(clientId: string): any;
 }

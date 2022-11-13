@@ -1,39 +1,76 @@
+@import "~../../../variables.scss";
+
 .backpack {
     margin-top: 2rem;
     margin-left: 2rem;
     width: 96%;
+    max-width: 96%;
     box-shadow: 0 1px 2px rgb(33 34 35/50%),0 1px 2px rgb(26 26 27/50%);
     border-top: 3px solid green;
-    background-color: #232a35;
-    color: #f5f5f5;
+    background-color: $primary-dark;
     display: relative;
-    font-size: .875rem;
-    height: 4rem;
+    text-align: center;
+    color: white;
 }
 
 .backpack-area {
-    display: flex;
+    display: inline-flex;
     flex-direction: row;
-    width: 96%;
-    margin-left: 2rem;
-    margin-top: 2rem;
-    background-color: #232a35;
-    min-height: 75vh;
+    flex-wrap: wrap;
 }
 
 .backpack-item {
-    border: 4px solid #0d1e3a;
+    border-color: #0f2;
+    -webkit-box-shadow: 0 0 10px #0f2;
+    -moz-box-shadow: 0 0 10px #0f2;
+    box-shadow: 0 0 10px #0f2;
     height: 4rem;
     margin: 1rem;
-    background-color: slategrey;
-    color: whitesmoke;
     cursor: pointer;
 }
 
+.empty-backpack-item {
+    border-color: rgb(0, 0, 0);
+    -webkit-box-shadow:inset 0px 0px 0px 5px rgb(0, 0, 0);
+    -moz-box-shadow:inset 0px 0px 0px 5px rgb(0, 0, 0);
+    box-shadow:inset 0px 0px 0px 5px rgb(0, 0, 0);
+    height: 4rem;
+    margin: 1rem;
+    cursor: pointer;
+}
+
+
+.backpack-background {
+    background-color: $primary-dark;
+    border: 1px solid $primary;
+    width: 96%;
+    margin-left: 2rem;
+    margin-top: 2rem;
+    min-height: 65vh;
+}
+
 .amount {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    bottom: 0;
+    padding-right: 0.6em;
+    padding-left: 0.6em;
+    border-radius: 10rem;
+    background-color: $primary;
+    color: white;
+    font-weight: 600;
+}
+
+.floating {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+    bottom: -16px;
+}
+
+.rewardIcon {
+    position: relative;
+}
+
+.empty-slot {
+    border: black solid;
+    min-width: 3.75rem;
+    min-height: 4rem;
 }

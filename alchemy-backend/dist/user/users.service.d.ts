@@ -5,6 +5,9 @@ import { MessagesGateway } from 'src/Modules/messages/messages.gateway';
 import { MessagesService } from 'src/Modules/messages/messages.service';
 import { Woodcutting } from 'src/Modules/skills/woodcutting/entities/message.entity';
 import { Thieving } from 'src/Modules/skills/thieving/entities/thieving.entity';
+import { Fishing } from 'src/Modules/skills/fishing/entities/fishing.entity';
+import { Mining } from 'src/Modules/skills/mining/entities/message.entity';
+import { Agility } from 'src/Modules/skills/agility/entities/message.entity';
 export declare class UsersService {
     private usersRepository;
     private messagesService;
@@ -17,12 +20,24 @@ export declare class UsersService {
         user: User;
         logAmount: number;
     }>;
-    shouldLevelup(user: User, skill: string): number;
+    shouldLevelup(skill: number): number;
     remove(id: string): Promise<void>;
     doesUserExist(username: string): Promise<boolean>;
     register(registerData: RegisterData): Promise<User>;
     updateThievingByUsername(thief: Thieving): Promise<{
         user: User;
         gold: number;
+    }>;
+    updateFishingByUsername(fisher: Fishing): Promise<{
+        user: User;
+        fishAmount: number;
+    }>;
+    updateMiningByUsername(miner: Mining): Promise<{
+        user: User;
+        oreAmount: number;
+    }>;
+    updateAgilityByUsername(agility: Agility): Promise<{
+        user: User;
+        marksAmount: number;
     }>;
 }

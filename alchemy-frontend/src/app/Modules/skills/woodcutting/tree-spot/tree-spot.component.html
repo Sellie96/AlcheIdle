@@ -1,7 +1,20 @@
-<div style="flex-direction: column; width: 100%;">
-    <div>
-      <h1>{{ tree.name | titlecase }}</h1>
-    </div>
-    <img style="width: 4rem; margin-bottom: 1.5rem;" src="./assets/trees/{{ tree.name }}.png" />
-    <p style="font-size: 12px;">{{ tree.xp }} XP / <img style="width: 1rem;" src="./assets/general/hourglass.png" /> {{ (tree.time * bonus).toFixed(1) }} seconds</p>
-  </div>
+<div class="wood-box">
+  <p style="margin-bottom: 0;">Cut</p>
+  <p style="font-weight: bold; margin-bottom: 0;">{{ tree.name | titlecase }} Tree</p>
+  <p>
+    {{ tree.xp }} XP /
+    <img style="width: 0.7rem" src="./assets/general/hourglass.png" />
+    {{ (tree.time * bonus).toFixed(1) }} seconds
+  </p>
+  <img
+    style="width: 4rem; margin-bottom: 1.875rem"
+    src="./assets/trees/{{ tree.name }}.png"
+  />
+
+  <mat-progress-bar
+    class="progress-bar"
+    mode="determinate"
+    [color]="'primary'"
+    [value]="">
+  </mat-progress-bar>
+</div>

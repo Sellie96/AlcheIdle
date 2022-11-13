@@ -1,0 +1,23 @@
+<div class="agility-box">
+    <p style="margin-bottom: 0">Mine</p>
+    <p style="font-weight: bold; margin-bottom: 0">
+      {{ course.name | titlecase }}
+    </p>
+    <p>
+      {{ course.xp }} XP /
+      <img style="width: 0.7rem" src="./assets/general/hourglass.png" />
+      {{ (course.time * bonus).toFixed(1) }} seconds
+    </p>
+    <img
+      style="width: 4rem; margin-bottom: 1.875rem"
+      src="./assets/agility/agility.png"
+    />
+  
+    <mat-progress-bar
+      class="progress-bar"
+      mode="determinate"
+      [color]="'primary'"
+      [value]=""
+    >
+    </mat-progress-bar>
+  </div>

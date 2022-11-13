@@ -76,7 +76,10 @@ function UserDataCreation(registerData) {
                         xpMax: 1,
                         xpCurrent: 1,
                         pet: false,
-                        tool: {},
+                        tool: {
+                            name: 'Makeshift Rod',
+                            bonus: 1,
+                        },
                     },
                     fletching: {
                         level: 1,

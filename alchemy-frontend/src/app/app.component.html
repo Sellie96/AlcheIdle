@@ -1,280 +1,97 @@
 <div *ngIf="player$ | async; let player">
-  <mat-drawer-container
-    *ngIf="authenticated"
-    class="sidebar"
-    style="position: relative"
-  >
+  <mat-drawer-container *ngIf="authenticated" class="sidebar">
     <mat-drawer
       #sidenav
       mode="side"
       [(opened)]="opened"
-      style="width: 15rem; overflow-y: hidden"
-      class="mat-elevation-z8"
+      class="side-nav-list"
       mode="side"
     >
-      <mat-nav-list class="side-nav-list heading opacityBackground">
-        <div class="opacityBackground">
-          <div>
-            <h1 class="nav-item mainHeading">Alche Idle</h1>
-          </div>
-          <div>
-            <h2 class="nav-item subHeading">V0.0.1</h2>
-          </div>
+      <mat-nav-list>
+        <mat-list-item style="height: 10rem;" class="heading-section">
+          <mat-icon matListIcon><img class="main-background" src="../assets/general/logobackground.webp"></mat-icon>
+          <mat-icon matListIcon><img class="main-logo" src="../assets/logo.PNG"></mat-icon>
+          <mat-icon matListIcon><img class="main-logo-two" src="../assets/logoText.png"></mat-icon>
+          <p class="main-logo-text">{{ config.app }}</p>
+          <p class="heading-section-text">{{ config.version }}</p>
+        </mat-list-item>
+        <div *ngFor="let skill of navLinks">
           <mat-list-item
             [routerLinkActive]="['is-active']"
-            (click)="setTitle('adventure')"
-            [routerLink]="'/adventure'"
-            class="nav-item"
-            ><img
+            (click)="setTitle(skill.toLowerCase())"
+            [routerLink]="'/' + skill.toLowerCase()"
+          >
+            <img
               class="icon"
-              src="../assets/menu-icons/adventure.png"
-            />Adventure</mat-list-item
-          >
+              src="../assets/menu-icons/{{ skill.toLowerCase() }}.png"
+            />
+            {{ skill | titlecase }}
+            <span
+              *ngIf="getCorrectSkillLevel(skill) > 0"
+              style="margin-left: auto; font-size: 11px"
+              >({{ getCorrectSkillLevel(skill) }} / 99)</span
+            >
+          </mat-list-item>
+        </div>
+        <mat-divider></mat-divider>
+        <span class="nav-heading"
+          >Combat<mat-icon style="display: inline-flex; vertical-align: middle"
+            >visibility</mat-icon
+          ></span
+        >
+        <div *ngFor="let skill of combatLinks">
           <mat-list-item
             [routerLinkActive]="['is-active']"
-            (click)="setTitle('shop')"
-            [routerLink]="'/shop'"
-            class="nav-item"
-            ><img
+            (click)="setTitle(skill.toLowerCase())"
+            [routerLink]="'/' + skill.toLowerCase()"
+          >
+            <img
               class="icon"
-              src="../assets/menu-icons/shop.png"
-            />Shop</mat-list-item
-          >
+              src="../assets/menu-icons/{{ skill.toLowerCase() }}.png"
+            />
+            {{ skill | titlecase }}
+            <span
+              *ngIf="getCorrectSkillLevel(skill) > 0"
+              style="margin-left: auto; font-size: 11px"
+              >({{ getCorrectSkillLevel(skill) }} / 99)</span
+            >
+          </mat-list-item>
+        </div>
+        <mat-divider></mat-divider>
+        <span class="nav-heading"
+          >Skills
+          <mat-icon style="display: inline-flex; vertical-align: middle"
+            >visibility</mat-icon
+          ></span
+        >
+        <div *ngFor="let skill of skillLinks">
           <mat-list-item
             [routerLinkActive]="['is-active']"
-            (click)="setTitle('town')"
-            [routerLink]="'/town'"
-            class="nav-item"
-            ><img
+            (click)="setTitle(skill.toLowerCase())"
+            [routerLink]="'/' + skill.toLowerCase()"
+          >
+            <img
               class="icon"
-              src="../assets/menu-icons/town.png"
-            />Town</mat-list-item
-          >
-          <mat-list-item
-            [routerLinkActive]="['is-active']"
-            (click)="setTitle('alchemy')"
-            [routerLink]="'/alchemy'"
-            class="nav-item"
-            ><img
-              class="icon"
-              src="../assets/menu-icons/alchemy.png"
-            />Alchemy</mat-list-item
-          >
-          <mat-list-item
-            [routerLinkActive]="['is-active']"
-            (click)="setTitle('quests')"
-            [routerLink]="'/quests'"
-            class="nav-item"
-            ><img
-              class="icon"
-              src="../assets/menu-icons/quests.png"
-            />Quests</mat-list-item
-          >
-          <mat-list-item
-            [routerLinkActive]="['is-active']"
-            (click)="setTitle('backpack')"
-            [routerLink]="'/backpack'"
-            class="nav-item"
-            ><img
-              class="icon"
-              src="../assets/menu-icons/backpack.png"
-            />Backpack</mat-list-item
-          >
-          <h2 class="nav-item">Combat</h2>
-          <mat-list-item
-            [routerLinkActive]="['is-active']"
-            (click)="setTitle('attack')"
-            [routerLink]="'/combat'"
-            class="nav-item"
-            ><img class="icon" src="../assets/menu-icons/attack.png" />Attack
-            <span style="margin-left: auto">(0 / 99)</span></mat-list-item
-          >
-          <mat-list-item
-            [routerLinkActive]="['is-active']"
-            (click)="setTitle('dungeon')"
-            [routerLink]="'/dungeon'"
-            class="nav-item"
-            ><img class="icon" src="../assets/menu-icons/dungeon.png" />Dungeons
-            <span style="margin-left: auto">(1 / 99)</span></mat-list-item
-          >
-          <mat-list-item
-            [routerLinkActive]="['is-active']"
-            (click)="setTitle('raids')"
-            [routerLink]="'/raid'"
-            class="nav-item"
-            ><img class="icon" src="../assets/menu-icons/raids.png" />Raids
-            <span style="margin-left: auto">(1 / 99)</span></mat-list-item
-          >
-          <h2 class="nav-item">Skills</h2>
-          <mat-list-item
-            [routerLinkActive]="['is-active']"
-            (click)="setTitle('woodcutting')"
-            [routerLink]="'/woodcutting'"
-            class="nav-item"
-            ><img
-              class="icon"
-              src="../assets/menu-icons/woodcutting.png"
-            />Woodcutting
-            <span style="margin-left: auto"
-              >({{ player.playerData.character.skills.woodcutting.level }} /
-              99)</span
-            ></mat-list-item
-          >
-          <mat-list-item
-            [routerLinkActive]="['is-active']"
-            (click)="setTitle('firemaking')"
-            [routerLink]="'/firemaking'"
-            class="nav-item"
-            ><img
-              class="icon"
-              src="../assets/menu-icons/firemaking.png"
-            />Firemaking
-            <span style="margin-left: auto"
-              >({{ player.playerData.character.skills.firemaking.level }} /
-              99)</span
-            ></mat-list-item
-          >
-          <mat-list-item
-            [routerLinkActive]="['is-active']"
-            (click)="setTitle('fishing')"
-            [routerLink]="'/fishing'"
-            class="nav-item"
-            ><img class="icon" src="../assets/menu-icons/fishing.png" />Fishing
-            <span style="margin-left: auto"
-              >({{ player.playerData.character.skills.fishing.level }} /
-              99)</span
-            ></mat-list-item
-          >
-          <mat-list-item
-            [routerLinkActive]="['is-active']"
-            (click)="setTitle('cooking')"
-            [routerLink]="'/cooking'"
-            class="nav-item"
-            ><img class="icon" src="../assets/menu-icons/cooking.png" />Cooking
-            <span style="margin-left: auto"
-              >({{ player.playerData.character.skills.cooking.level }} /
-              99)</span
-            ></mat-list-item
-          >
-          <mat-list-item
-            [routerLinkActive]="['is-active']"
-            (click)="setTitle('runecrafting')"
-            [routerLink]="'/runecrafting'"
-            class="nav-item"
-            ><img
-              class="icon"
-              src="../assets/menu-icons/runecrafting.png"
-            />Runecrafting
-            <span style="margin-left: auto"
-              >({{ player.playerData.character.skills.runecrafting.level }} /
-              99)</span
-            ></mat-list-item
-          >
-          <mat-list-item
-            [routerLinkActive]="['is-active']"
-            (click)="setTitle('mining')"
-            [routerLink]="'/mining'"
-            class="nav-item"
-            ><img class="icon" src="../assets/menu-icons/mining.png" />Mining
-            <span style="margin-left: auto"
-              >({{ player.playerData.character.skills.mining.level }} /
-              99)</span
-            ></mat-list-item
-          >
-          <mat-list-item
-            [routerLinkActive]="['is-active']"
-            (click)="setTitle('smithing')"
-            [routerLink]="'/smithing'"
-            class="nav-item"
-            ><img
-              class="icon"
-              src="../assets/menu-icons/smithing.png"
-            />Smithing
-            <span style="margin-left: auto"
-              >({{ player.playerData.character.skills.smithing.level }} /
-              99)</span
-            ></mat-list-item
-          >
-          <mat-list-item
-            [routerLinkActive]="['is-active']"
-            (click)="setTitle('thieving')"
-            [routerLink]="'/thieving'"
-            class="nav-item"
-            ><img
-              class="icon"
-              src="../assets/menu-icons/thieving.png"
-            />Thieving
-            <span style="margin-left: auto"
-              >({{ player.playerData.character.skills.thieving.level }} /
-              99)</span
-            ></mat-list-item
-          >
-          <mat-list-item
-            [routerLinkActive]="['is-active']"
-            (click)="setTitle('fletching')"
-            [routerLink]="'/fletching'"
-            class="nav-item"
-            ><img
-              class="icon"
-              src="../assets/menu-icons/fletching.png"
-            />Fletching
-            <span style="margin-left: auto"
-              >({{ player.playerData.character.skills.fletching.level }} /
-              99)</span
-            ></mat-list-item
-          >
-          <mat-list-item
-            [routerLinkActive]="['is-active']"
-            (click)="setTitle('crafting')"
-            [routerLink]="'/crafting'"
-            class="nav-item"
-            ><img
-              class="icon"
-              src="../assets/menu-icons/crafting.png"
-            />Crafting
-            <span style="margin-left: auto"
-              >({{ player.playerData.character.skills.crafting.level }} /
-              99)</span
-            ></mat-list-item
-          >
-          <mat-list-item
-            [routerLinkActive]="['is-active']"
-            (click)="setTitle('agility')"
-            [routerLink]="'/agility'"
-            class="nav-item"
-            ><img class="icon" src="../assets/menu-icons/agility.png" />Agility
-            <span style="margin-left: auto"
-              >({{ player.playerData.character.skills.agility.level }} /
-              99)</span
-            ></mat-list-item
-          >
-          <mat-list-item
-            [routerLinkActive]="['is-active']"
-            (click)="setTitle('herblore')"
-            [routerLink]="'/herblore'"
-            class="nav-item"
-            ><img
-              class="icon"
-              src="../assets/menu-icons/herblore.png"
-            />Herblore
-            <span style="margin-left: auto"
-              >({{ player.playerData.character.skills.herblore.level }} /
-              99)</span
-            ></mat-list-item
-          >
+              src="../assets/menu-icons/{{ skill.toLowerCase() }}.png"
+            />
+            {{ skill | titlecase }}
+            <span
+              *ngIf="getCorrectSkillLevel(skill) > 0"
+              style="margin-left: auto; font-size: 11px"
+              >({{ getCorrectSkillLevel(skill) }} / 99)</span
+            >
+          </mat-list-item>
         </div>
       </mat-nav-list>
     </mat-drawer>
-    <mat-drawer-content
-      class="main-content opacityBackground"
-      style="max-height: 100vh"
-    >
+    <mat-drawer-content class="main-content">
       <mat-toolbar
-        class="{{ title || 'standard' }} mat-elevation-z8"
-        style="height: 4.3rem"
+        class="top-bar"
+        style="border-bottom: 1px black solid; height: 72px"
+        class="{{ title || 'standard' }}"
       >
         <mat-toolbar-row>
-          <button mat-icon-button color="primary" (click)="sidenav.toggle()">
+          <button mat-icon-button (click)="sidenav.toggle(); changeChatLocation()">
             <mat-icon>menu</mat-icon>
           </button>
           <span>
@@ -285,18 +102,15 @@
               }}.png"
             />
           </span>
-          {{ title || "AlcheIdle" | titlecase }}
+          {{ title || config.app | titlecase }}
 
-          <span
-            class="settingsArea"
-            style="margin-left: auto; margin-right: 2vw"
-          >
-            <span style="font-size: 14px; color: white">
-              {{ player.playerData.username }}
-            </span>
+          <span class="settingsArea">
             <button mat-button [matMenuTriggerFor]="menu">
               <mat-icon>settings</mat-icon>
             </button>
+            <span style="font-size: 14px">
+              {{ player.playerData.username }}
+            </span>
             <mat-menu #menu="matMenu">
               <button mat-menu-item (click)="logout()">Logout</button>
             </mat-menu>
@@ -304,37 +118,44 @@
         </mat-toolbar-row>
       </mat-toolbar>
       <div class="opacityBackgroundMain">
-        <router-outlet></router-outlet>
-        <div class="chatBox">
-          <mat-expansion-panel hideToggle>
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                Global Chat
-                <span style="margin-left: auto">
-                  {{ users }} Users Online
-                </span>
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-            <app-chat></app-chat>
-          </mat-expansion-panel>
+        <div *ngIf="loading; else content">
+          <mat-spinner
+            style="position: fixed; top: 50%; left: 50%"
+            [diameter]="200"
+          ></mat-spinner>
         </div>
-        <div class="hpBox">
-          <button style="width: 100%; height: 4rem; justify-content:center; align-items: center; border-radius: 2px solid rgb(65, 0, 109);" mat-button>
-            <div>
-              <mat-progress-bar
+        <ng-template #content> <router-outlet></router-outlet> </ng-template>
+        <div class="chat-box fade-in">
+          <app-chat></app-chat>
+        </div>
+        <div class="expand-box">
+          <button *ngIf="!showChat" mat-button (click)="hideChat()"> <mat-icon>chat</mat-icon> <mat-icon>expand_more</mat-icon></button>
+        </div>
+        <div class="expand-box">
+          <button *ngIf="showChat" mat-button (click)="hideChat()"> <mat-icon>chat</mat-icon> <mat-icon>expand_less</mat-icon></button>
+        </div>
+        <div class="expand-hp-box">
+          <button *ngIf="!showHp" mat-button (click)="hideHp()"> <mat-icon>bar_chart</mat-icon> <mat-icon>expand_more</mat-icon></button>
+        </div>
+        <div class="expand-hp-box">
+          <button *ngIf="showHp" mat-button (click)="hideHp()"> <mat-icon>bar_chart</mat-icon> <mat-icon>expand_less</mat-icon></button>
+        </div>
+        <div class="hp-box">
+          <button style="width: 100%" mat-button>
+            <span class="hpBox-text">
+              {{ player.playerData.character.combatStats.hpCurrent }} /
+              {{ player.playerData.character.combatStats.hpMax }}</span
+            >
+            <mat-progress-bar
               class="progress-bar-hp"
               mode="determinate"
+              color="secondary"
               [value]="
                 (player.playerData.character.combatStats.hpCurrent /
                   player.playerData.character.combatStats.hpMax) *
                 100
               "
             ></mat-progress-bar>
-            <span class="hpBox-text">
-              {{ player.playerData.character.combatStats.hpCurrent }} /
-              {{ player.playerData.character.combatStats.hpMax }}</span
-            >
-            </div>
           </button>
         </div>
       </div>

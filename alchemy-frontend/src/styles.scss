@@ -6,15 +6,13 @@ body {
 }
 body {
   margin: 0;
-  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
-    "Segoe UI Emoji", "Segoe UI Symbol";
+  font-family: inter,-apple-system,BlinkMacSystemFont,segoe ui,Roboto,helvetica neue,Arial,noto sans,sans-serif,apple color emoji,segoe ui emoji,segoe ui symbol;
   font-size: 1rem;
-  font-weight: 400;
+  font-weight: 500;
   line-height: 1.5;
-  color: #343a40;
+  color: #edf0f2;
   text-align: left;
-  overflow: overlay;
+  background-color: #edf0f2;
 }
 
 .mat-drawer-inner-container::-webkit-scrollbar {
@@ -52,37 +50,6 @@ body {
 /* Importing Datepicker SCSS file. */
 @import "node_modules/ngx-bootstrap/datepicker/bs-datepicker";
 
-.mat-expansion-panel-body {
-  padding: 0 !important;
-  margin: 0;
-  background-color: rgba(35, 42, 53, 0.9);
-  padding: 0;
-  margin: 0;
-  width: 100%;
-}
-
-.mat-expansion-panel-header {
-  background-color: rgba(35, 42, 53, 1);
-  color: white;
-}
-
-.mat-expansion-panel-header:hover {
-  background-color: black;
-}
-
-.mat-expansion-panel-header-title {
-  color: white;
-}
-
-.mat-expansion-panel-header-description {
-  color: white;
-}
-
-.mat-expansion-panel {
-  background-color: rgba(35, 42, 53, 1);
-  color: white;
-  border: 2px solid rgb(50, 63, 85);
-}
 
 input:-webkit-autofill,
 input:-webkit-autofill:hover,

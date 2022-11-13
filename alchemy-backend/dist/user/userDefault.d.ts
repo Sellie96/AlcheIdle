@@ -62,7 +62,10 @@ export declare function UserDataCreation(registerData: RegisterData): Promise<{
                 xpMax: number;
                 xpCurrent: number;
                 pet: boolean;
-                tool: {};
+                tool: {
+                    name: string;
+                    bonus: number;
+                };
             };
             fletching: {
                 level: number;

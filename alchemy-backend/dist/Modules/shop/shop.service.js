@@ -41,6 +41,12 @@ let ShopService = class ShopService {
             name: 'Crystal Axe',
             bonus: 0.8,
         };
+        this.smallPotion = {
+            name: 'Small Potion',
+            amount: 1,
+            value: 10,
+            restores: 10,
+        };
     }
     buyItem(username, item) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -56,27 +62,48 @@ let ShopService = class ShopService {
                 case 'Crystal Axe':
                     response = this.buyItemUpdate(userData, item, this.crystalAxe);
                     return response;
+                case 'Small Potion':
+                    response = this.buyPotionUpdate(userData, item, this.smallPotion);
             }
-            return { message: 'Item bought', userData: userData };
+            return response;
         });
     }
     buyItemUpdate(userData, item, itemToBuy) {
-        if (userData.character.skills.woodcutting.level >= 1) {
-            if (userData.character.currencies.gold >= item.value) {
-                userData.character.currencies.gold -= item.value;
-                userData.character.skills.woodcutting.tool = itemToBuy;
-                this.usersRepository.update({ username: userData.username }, {
-                    character: userData.character,
-                });
-                return { message: 'Item bought', userData: userData };
+        if (userData.character.currencies.gold >= item.value) {
+            userData.character.currencies.gold -= item.value;
+            userData.character.skills.woodcutting.tool = itemToBuy;
+            this.usersRepository.update({ username: userData.username }, {
+                character: userData.character,
+            });
+            return { message: 'Item bought', userData: userData };
+        }
+        else {
+            return {
+                message: 'You do not have enough gold to buy this item.',
+                userData: userData,
+            };
+        }
+    }
+    buyPotionUpdate(userData, item, itemToBuy) {
+        if (userData.character.currencies.gold >= item.value) {
+            userData.character.currencies.gold -= item.value;
+            if (userData.character.backpack.some((item) => item.name === itemToBuy.name)) {
+                let indexOfItem = userData.character.backpack.findIndex((item) => item.name === itemToBuy.name);
+                userData.character.backpack[indexOfItem].amount += itemToBuy.amount;
             }
             else {
-                console.log('Not enough gold');
-                return {
-                    message: 'You do not have enough gold to buy this item.',
-                    userData: userData,
-                };
+                userData.character.backpack.push(itemToBuy);
             }
+            this.usersRepository.update({ username: userData.username }, {
+                character: userData.character,
+            });
+            return { message: 'Item bought', userData: userData };
+        }
+        else {
+            return {
+                message: 'You do not have enough gold to buy this item.',
+                userData: userData,
+            };
         }
     }
 };

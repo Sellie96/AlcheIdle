@@ -1,3 +1,4 @@
+import { NoopScrollStrategy } from '@angular/cdk/overlay';
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BuyingComponent } from '../buying/buying.component';
@@ -24,6 +25,7 @@ export class ShopItemComponent implements OnInit {
         description: this.description,
         value: this.value,
       },
+      scrollStrategy: new NoopScrollStrategy()
     });
   }
 }

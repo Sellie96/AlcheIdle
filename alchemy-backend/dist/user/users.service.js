@@ -31,6 +31,9 @@ const messages_gateway_1 = require("../Modules/messages/messages.gateway");
 const messages_service_1 = require("../Modules/messages/messages.service");
 const message_entity_1 = require("../Modules/skills/woodcutting/entities/message.entity");
 const thieving_entity_1 = require("../Modules/skills/thieving/entities/thieving.entity");
+const fishing_entity_1 = require("../Modules/skills/fishing/entities/fishing.entity");
+const message_entity_2 = require("../Modules/skills/mining/entities/message.entity");
+const message_entity_3 = require("../Modules/skills/agility/entities/message.entity");
 let UsersService = class UsersService {
     constructor(usersRepository, messagesService, messagesGateway) {
         this.usersRepository = usersRepository;
@@ -61,12 +64,12 @@ let UsersService = class UsersService {
                 logAmount = 1;
             }
             let logs = {
-                name: woodcutter.treeType.logs,
+                name: woodcutter.treeType.reward,
                 amount: logAmount,
                 value: woodcutter.treeType.value,
             };
-            if (user.character.backpack.some((item) => item.name === woodcutter.treeType.logs)) {
-                let indexOfItem = user.character.backpack.findIndex((item) => item.name === woodcutter.treeType.logs);
+            if (user.character.backpack.some((item) => item.name === woodcutter.treeType.reward)) {
+                let indexOfItem = user.character.backpack.findIndex((item) => item.name === woodcutter.treeType.reward);
                 user.character.backpack[indexOfItem].amount += logAmount;
             }
             else {
@@ -80,7 +83,7 @@ let UsersService = class UsersService {
                     time: new Date().toISOString().split('T')[1].split('.')[0],
                 });
             }
-            if (user.character.skills.woodcutting.xpCurrent >= this.shouldLevelup(user, 'woodcutting')) {
+            if (user.character.skills.woodcutting.xpCurrent >= this.shouldLevelup(user.character.skills.woodcutting.level)) {
                 user.character.skills.woodcutting.xpCurrent = 0;
                 user.character.skills.woodcutting.level += 1;
                 this.messagesService.create({
@@ -100,21 +103,12 @@ let UsersService = class UsersService {
             return returnedObject;
         });
     }
-    shouldLevelup(user, skill) {
+    shouldLevelup(skill) {
         let points = 0;
         let output = 0;
-        let skillHolder;
-        switch (skill) {
-            case 'woodcutting':
-                skillHolder = user.character.skills.woodcutting.level;
-                break;
-            case 'thieving':
-                skillHolder = user.character.skills.thieving.level;
-                break;
-        }
-        for (let lvl = 1; lvl <= skillHolder; lvl++) {
+        for (let lvl = 1; lvl <= skill; lvl++) {
             points += Math.floor(lvl + 300.0 * Math.pow(2.0, lvl / 7.0));
-            if (lvl >= skillHolder) {
+            if (lvl >= skill) {
                 return output;
             }
             output = Math.floor(points / 4);
@@ -153,7 +147,7 @@ let UsersService = class UsersService {
         return __awaiter(this, void 0, void 0, function* () {
             let user = yield this.findOneByUsername(thief.username);
             user.character.skills.thieving.xpCurrent += +thief.thievingOption.xp;
-            let gold = thief.thievingOption.value;
+            let gold = thief.thievingOption.reward;
             if (user.character.skills.thieving.pet) {
                 if ((Math.random() * (10 - 1) + 1) > 8)
                     gold = gold * 2;
@@ -174,7 +168,7 @@ let UsersService = class UsersService {
                     time: new Date().toISOString().split('T')[1].split('.')[0],
                 });
             }
-            if (user.character.skills.thieving.xpCurrent >= this.shouldLevelup(user, 'thieving')) {
+            if (user.character.skills.thieving.xpCurrent >= this.shouldLevelup(user.character.skills.thieving.level)) {
                 user.character.skills.thieving.xpCurrent = 0;
                 user.character.skills.thieving.level += 1;
                 this.messagesService.create({
@@ -190,6 +184,159 @@ let UsersService = class UsersService {
             const returnedObject = {
                 user: user,
                 gold: gold,
+            };
+            return returnedObject;
+        });
+    }
+    updateFishingByUsername(fisher) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let user = yield this.findOneByUsername(fisher.username);
+            user.character.skills.fishing.xpCurrent += +fisher.fishType.xp;
+            let fishAmount = 1;
+            if (user.character.skills.fishing.pet) {
+                if ((Math.random() * (10 - 1) + 1) > 8)
+                    fishAmount = 2;
+            }
+            else {
+                fishAmount = 1;
+            }
+            let fish = {
+                name: fisher.fishType.reward,
+                amount: fishAmount,
+                value: fisher.fishType.value,
+            };
+            if (user.character.backpack.some((item) => item.name === fisher.fishType.reward)) {
+                let indexOfItem = user.character.backpack.findIndex((item) => item.name === fisher.fishType.reward);
+                user.character.backpack[indexOfItem].amount += fishAmount;
+            }
+            else {
+                user.character.backpack.push(fish);
+            }
+            if ((Math.random() * (10000 - 1) + 1) === 69) {
+                user.character.skills.fishing.pet = true;
+                this.messagesService.create({
+                    name: 'Server',
+                    message: `${fisher.username} has recieved a Crab at level ${user.character.skills.fishing.level}!`,
+                    time: new Date().toISOString().split('T')[1].split('.')[0],
+                });
+            }
+            if (user.character.skills.fishing.xpCurrent >= this.shouldLevelup(user.character.skills.fishing.level)) {
+                user.character.skills.fishing.xpCurrent = 0;
+                user.character.skills.fishing.level += 1;
+                this.messagesService.create({
+                    name: 'Server',
+                    message: `${fisher.username} has advanced fishing to level ${user.character.skills.fishing.level}!`,
+                    time: new Date().toISOString().split('T')[1].split('.')[0],
+                });
+            }
+            yield this.usersRepository.update({ username: fisher.username }, {
+                character: user.character,
+            });
+            this.messagesGateway.findAll();
+            const returnedObject = {
+                user: user,
+                fishAmount: fishAmount,
+            };
+            return returnedObject;
+        });
+    }
+    updateMiningByUsername(miner) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let user = yield this.findOneByUsername(miner.username);
+            user.character.skills.mining.xpCurrent += +miner.oreType.xp;
+            let oreAmount = 1;
+            if (user.character.skills.mining.pet) {
+                if ((Math.random() * (10 - 1) + 1) > 8)
+                    oreAmount = 2;
+            }
+            else {
+                oreAmount = 1;
+            }
+            let ore = {
+                name: miner.oreType.reward,
+                amount: oreAmount,
+                value: miner.oreType.value,
+            };
+            if (user.character.backpack.some((item) => item.name === miner.oreType.reward)) {
+                let indexOfItem = user.character.backpack.findIndex((item) => item.name === miner.oreType.reward);
+                user.character.backpack[indexOfItem].amount += oreAmount;
+            }
+            else {
+                user.character.backpack.push(ore);
+            }
+            if ((Math.random() * (10000 - 1) + 1) === 69) {
+                user.character.skills.mining.pet = true;
+                this.messagesService.create({
+                    name: 'Server',
+                    message: `${miner.username} has recieved a Golem at level ${user.character.skills.mining.level}!`,
+                    time: new Date().toISOString().split('T')[1].split('.')[0],
+                });
+            }
+            if (user.character.skills.mining.xpCurrent >= this.shouldLevelup(user.character.skills.mining.level)) {
+                user.character.skills.mining.xpCurrent = 0;
+                user.character.skills.mining.level += 1;
+                this.messagesService.create({
+                    name: 'Server',
+                    message: `${miner.username} has advanced mining to level ${user.character.skills.mining.level}!`,
+                    time: new Date().toISOString().split('T')[1].split('.')[0],
+                });
+            }
+            yield this.usersRepository.update({ username: miner.username }, {
+                character: user.character,
+            });
+            this.messagesGateway.findAll();
+            const returnedObject = {
+                user: user,
+                oreAmount: oreAmount,
+            };
+            return returnedObject;
+        });
+    }
+    updateAgilityByUsername(agility) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let user = yield this.findOneByUsername(agility.username);
+            user.character.skills.agility.xpCurrent += +agility.courseType.xp;
+            let marksAmount = 1;
+            if (user.character.skills.agility.pet) {
+                if ((Math.random() * (10 - 1) + 1) > 8)
+                    marksAmount = marksAmount * 2;
+            }
+            let marks = {
+                name: "Agility Marks",
+                amount: marksAmount,
+                value: agility.courseType.value,
+            };
+            if (user.character.backpack.some((item) => item.name === "Agility Marks")) {
+                let indexOfItem = user.character.backpack.findIndex((item) => item.name === "Agility Marks");
+                user.character.backpack[indexOfItem].amount += marksAmount;
+            }
+            else {
+                user.character.backpack.push(marks);
+            }
+            if ((Math.random() * (10000 - 1) + 1) === 69) {
+                user.character.skills.agility.pet = true;
+                this.messagesService.create({
+                    name: 'Server',
+                    message: `${agility.username} has recieved a Monkey at level ${user.character.skills.agility.level}!`,
+                    time: new Date().toISOString().split('T')[1].split('.')[0],
+                });
+            }
+            if (user.character.skills.agility.xpCurrent >= this.shouldLevelup(user.character.skills.agility.level)) {
+                user.character.skills.agility.xpCurrent = 0;
+                user.character.skills.agility.level += 1;
+                this.messagesService.create({
+                    name: 'Server',
+                    message: `${agility.username} has advanced agility to level ${user.character.skills.agility.level}!`,
+                    time: new Date().toISOString().split('T')[1].split('.')[0],
+                });
+            }
+            yield this.usersRepository.update({ username: agility.username }, {
+                character: user.character,
+            });
+            this.messagesGateway.findAll();
+            const returnedObject = {
+                user: user,
+                marksAmount: marksAmount,
             };
             return returnedObject;
         });

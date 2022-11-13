@@ -1,0 +1,30 @@
+import { OnGatewayConnection, OnGatewayDisconnect } from '@nestjs/websockets';
+import { Server, Socket } from 'socket.io';
+import { AuthService } from 'src/auth/auth.service';
+import { MessagesService } from 'src/Modules/messages/messages.service';
+import { User } from 'src/user/user.entity';
+import { UsersService } from 'src/user/users.service';
+import { AgilityService } from '../agility/agility.service';
+import { FishingService } from '../fishing/fishing.service';
+import { MiningService } from '../mining/mining.service';
+import { ThievingService } from '../thieving/thieving.service';
+import { WoodcuttingService } from '../woodcutting/woodcutting.service';
+import { SkillingDto } from './skill.dto';
+export declare class SkillsGateway implements OnGatewayConnection, OnGatewayDisconnect {
+    private readonly miningService;
+    private readonly agilityService;
+    private readonly fishingService;
+    private readonly woodcuttingService;
+    private readonly thievingService;
+    private authService;
+    private usersService;
+    private messagesService;
+    server: Server;
+    users: number;
+    sendResponse: boolean;
+    constructor(miningService: MiningService, agilityService: AgilityService, fishingService: FishingService, woodcuttingService: WoodcuttingService, thievingService: ThievingService, authService: AuthService, usersService: UsersService, messagesService: MessagesService);
+    handleConnection(client: Socket): Promise<void>;
+    handleDisconnect(client: Socket): Promise<void>;
+    create(skilling: SkillingDto, client: Socket): Promise<void>;
+    getPlayerData(playerData: User, client: Socket): Promise<void>;
+}

@@ -1,0 +1,31 @@
+<mat-toolbar class="skill-rewards">
+  <mat-toolbar-row>
+    <mat-progress-bar
+      class="progress-bar-rewards"
+      mode="determinate"
+      [color]="'secondary'"
+      [value]="skillProgress"
+    ></mat-progress-bar>
+  </mat-toolbar-row>
+  <mat-toolbar-row style="justify-content: center">
+    <div class="rewardContainer" *ngIf="activeNode">
+      <div class="rewardIcon">
+        <span class="floating"> {{ activeNode.reward }}</span>
+        <img
+          matTooltip="{{ activeNode.reward }}"
+          class="icon"
+          src="../../../../assets/items/{{ standby(activeNode.reward) }}.png"
+          alt="None"
+        />
+      </div>
+      <div class="rewardIcon">
+        <span class="floating">
+          {{
+            (activeNode.time * (playerCharacter.tool!.bonus || 1)).toFixed(1)
+          }}</span
+        >
+        <img class="icon" src="./assets/general/hourglass.png" />
+      </div>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>

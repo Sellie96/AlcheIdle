@@ -8,6 +8,7 @@ export function calculateRandomChance(chanceInPercentage: string | number) {
 
 export enum navLinkEnums {
   town = 'Town',
+  leaderboard = 'Leaderboard',
   alchemy = 'Alchemy',
   // quests = 'Quests',
   backpack = 'Backpack',
@@ -33,6 +34,7 @@ export const navLinks = [
   navLinkEnums.alchemy,
   // navLinkEnums.quests,
   navLinkEnums.backpack,
+  navLinkEnums.leaderboard,
 ];
 
 export const combatLinks = [

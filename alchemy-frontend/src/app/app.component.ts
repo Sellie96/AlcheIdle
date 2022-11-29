@@ -134,10 +134,10 @@ export class AppComponent implements OnInit {
     );
 
     boxes.forEach(box => {
-      if(box.style.left === '5px') {
-      box.style.left = '255px';
+      if(box.style.left === '0px') {
+      box.style.left = '240px';
       } else {
-        box.style.left = '5px';
+        box.style.left = '0px';
       }
     });
   }

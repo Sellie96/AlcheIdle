@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { BackpackComponent } from './Modules/backpack/backpack.component';
 
 import { AdventureComponent } from './Modules/general/adventure/adventure.component';
+import { LeaderboardsComponent } from './Modules/leaderboards/leaderboards.component';
 import { MainpageComponent } from './Modules/mainpage/mainpage.component';
 import { AgilityComponent } from './Modules/skills/agility/agility.component';
 import { AlchemyComponent } from './Modules/skills/alchemy/alchemy.component';
@@ -44,6 +45,7 @@ const routes: Routes = [
       { path: 'woodcutting', component: WoodcuttingComponent },
       { path: 'backpack', component: BackpackComponent},
       { path: 'town', component: TownComponent },
+      { path: 'leaderboard', component: LeaderboardsComponent },
       { path: '**', redirectTo: '', pathMatch: 'full' },
     ],
   },

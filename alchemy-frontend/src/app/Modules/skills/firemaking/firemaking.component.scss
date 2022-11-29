@@ -1,0 +1,77 @@
+@import "~../../../../variables.scss";
+
+.firemaking-box {
+    width: 29.5%;
+    height: 16rem;
+    background-color: $primary-dark;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1.9rem;
+    text-align: center;
+    box-shadow: inset 0 0 0 1px #142b2b,0 0 30px -3px #000;
+    border-radius: 5px;
+    border-top: 3px solid green;
+    color: white;
+}
+
+.progress-bar {
+    flex-direction: column;
+    height: 20px;
+}
+
+::ng-deep .mat-option {
+    background-color: $primary !important;
+    color: white !important;
+}
+
+::ng-deep .mat-option:hover {
+    background-color: $primary-dark !important;
+    color: white !important;
+}
+
+::ng-deep .mat-select-panel {
+    background-color: $primary !important;
+    color: white !important;
+    max-height: none !important;
+    border: 1px solid white;
+}
+
+::ng-deep .mat-select-value {
+    color: white !important;
+}
+
+.rewardContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.rewardIcon {
+    border-color: #0f2;
+    -webkit-box-shadow: 0 0 10px #0f2;
+    -moz-box-shadow: 0 0 10px #0f2;
+    box-shadow: 0 0 10px #0f2;
+    padding: 0.25rem;
+    margin: 0.25rem;
+    position: relative;
+    background-color: $primary
+}
+
+.floating {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+    bottom: -16px;
+}
+
+.icon {
+    width: 30px;
+}
+
+.progress-bar {
+    height: 20px;
+    width: 96%;
+    border-radius: 5px;
+    margin-top: 2rem;
+}

@@ -9,5 +9,7 @@ export declare class UsersController {
     login(req: any): any;
     create(res: any, createUser: RegisterData): Promise<User>;
     getPlayerData(res: any, body: any): Promise<User>;
-    findOne(id: string): Promise<User>;
+    returnTotalLevelLeaderboard(res: any, skill: String): Promise<User>;
+    filterTotalLevel(returnedData: any[]): any[];
+    filterSkillLevel(returnedData: any, skill: any): any;
 }

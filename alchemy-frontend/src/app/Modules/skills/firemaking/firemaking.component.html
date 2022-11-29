@@ -1,1 +1,65 @@
-<p>firemaking works!</p>
+<app-skill-information
+  [playerCharacter]="playerCharacter.character.skills.firemaking"
+  [players]="1"
+></app-skill-information>
+
+<form [formGroup]="firemakingForm" class="firemaking-box">
+  <mat-form-field style="margin-top: 1rem" appearance="fill">
+    <mat-label style="color: white">Select your logs</mat-label>
+    <mat-select formControlName="logs">
+      <div *ngFor="let logs of logNames">
+        <mat-option value="{{ logs }}">
+          <img
+            style="width: 16px"
+            src="../../../../assets/items/{{ logs.charAt(0).toUpperCase() + logs.slice(1) }}.png"
+          />
+          {{ logs | titlecase }}</mat-option
+        >
+      </div>
+    </mat-select>
+  </mat-form-field>
+
+  <div>
+    <img
+      style="width: 64px; position: absolute; left: 70px"
+      src="../../../../assets/items/{{ currentLogSelected.charAt(0).toUpperCase() + currentLogSelected.slice(1) }}.png"
+    />
+    Normal Logs
+    <p>{{ logsInStorage | number }}</p>
+    <div class="rewardContainer">
+      <div class="rewardIcon">
+        <span class="floating"> 20 </span>
+        <img class="icon" src="../../../../assets/items/{{ currentLogSelected.charAt(0).toUpperCase() + currentLogSelected.slice(1) }}.png" alt="None" />
+      </div>
+      <div class="rewardIcon">
+        <span class="floating">{{ 4 }}</span>
+        <img class="icon" src="./assets/general/hourglass.png" />
+      </div>
+    </div>
+  </div>
+</form>
+
+<div class="firemaking-box">
+  <button
+    mat-button
+    style="background-color: red; color: black; margin-top: 0.5rem"
+  >
+    Burn Logs
+  </button>
+
+  <span
+    appTimestampCountdown
+    [timestamp]=" timeUntilFinish || 0"
+    (isFinished)="resetTimer()"
+  ></span>
+
+  <mat-progress-bar
+    class="progress-bar"
+    mode="determinate"
+    [color]="'primary'"
+    [value]=""
+  >
+  </mat-progress-bar>
+</div>
+
+<div class="firemaking-box">Rewards</div>

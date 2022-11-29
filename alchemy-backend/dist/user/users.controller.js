@@ -50,11 +50,58 @@ let UsersController = class UsersController {
     }
     getPlayerData(res, body) {
         return __awaiter(this, void 0, void 0, function* () {
-            return res.status(200).send({ playerData: yield this.usersService.findOneByUsername(body.username) });
+            return res.status(200).send({
+                playerData: yield this.usersService.findOneByUsername(body.username),
+            });
         });
     }
-    findOne(id) {
-        return this.usersService.findOne(+id);
+    returnTotalLevelLeaderboard(res, skill) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let returnedData = yield this.usersService.findAll();
+            let sortedObjs;
+            switch (skill.toLowerCase()) {
+                case 'total':
+                    sortedObjs = this.filterTotalLevel(returnedData);
+                    break;
+                default:
+                    sortedObjs = this.filterSkillLevel(returnedData, skill.toLowerCase());
+                    break;
+            }
+            return res.status(200).send({ playerData: sortedObjs });
+        });
+    }
+    filterTotalLevel(returnedData) {
+        return returnedData.sort(function (a, b) {
+            return (b.character.skills.woodcutting.level +
+                b.character.skills.firemaking.level +
+                b.character.skills.fishing.level +
+                b.character.skills.cooking.level +
+                b.character.skills.runecrafting.level +
+                b.character.skills.mining.level +
+                b.character.skills.smithing.level +
+                b.character.skills.thieving.level +
+                b.character.skills.fletching.level +
+                b.character.skills.crafting.level +
+                b.character.skills.herblore.level +
+                b.character.skills.agility.level -
+                (a.character.skills.woodcutting.level +
+                    a.character.skills.mining.level +
+                    a.character.skills.fishing.level +
+                    a.character.skills.cooking.level +
+                    a.character.skills.firemaking.level +
+                    a.character.skills.runecrafting.level +
+                    a.character.skills.smithing.level +
+                    a.character.skills.thieving.level +
+                    a.character.skills.fletching.level +
+                    a.character.skills.crafting.level +
+                    a.character.skills.herblore.level +
+                    a.character.skills.agility.level));
+        });
+    }
+    filterSkillLevel(returnedData, skill) {
+        return returnedData.sort(function (a, b) {
+            return b.character.skills[skill].level - a.character.skills[skill].level;
+        });
     }
 };
 __decorate([
@@ -70,7 +117,7 @@ __decorate([
     (0, swagger_1.ApiOperation)({ summary: 'Register User' }),
     (0, swagger_1.ApiResponse)({
         status: 200,
-        description: 'User Registered'
+        description: 'User Registered',
     }),
     __param(0, (0, common_1.Res)()),
     __param(1, (0, common_1.Body)()),
@@ -84,7 +131,7 @@ __decorate([
     (0, swagger_1.ApiOperation)({ summary: 'Get player data' }),
     (0, swagger_1.ApiResponse)({
         status: 200,
-        description: 'User Returned'
+        description: 'User Returned',
     }),
     __param(0, (0, common_1.Res)()),
     __param(1, (0, common_1.Body)()),
@@ -93,17 +140,18 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getPlayerData", null);
 __decorate([
-    (0, common_1.Get)(':id'),
+    (0, common_1.Get)('leaderboard'),
     (0, swagger_1.ApiResponse)({
         status: 200,
-        description: 'The found record',
+        description: 'Returns a list of users',
         type: user_entity_1.User,
     }),
-    __param(0, (0, common_1.Param)('id')),
+    __param(0, (0, common_1.Res)()),
+    __param(1, (0, common_1.Query)('skill')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", Promise)
-], UsersController.prototype, "findOne", null);
+], UsersController.prototype, "returnTotalLevelLeaderboard", null);
 UsersController = __decorate([
     (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiTags)('Alchemy'),

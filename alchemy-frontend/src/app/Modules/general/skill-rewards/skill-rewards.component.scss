@@ -1,52 +1,107 @@
 @import "~../../../../variables.scss";
 
 .progress-bar-rewards {
-    display: flex;
-    flex-direction: row;
-    width: 98%;
-    height: 20px;
-    border-radius: 5px;
-    background-color: #232a35;
+  display: flex;
+  flex-direction: row;
+  width: 98%;
+  height: 20px;
+  border-radius: 5px;
+  background-color: #232a35;
 }
 
-.skill-rewards{
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 0.5rem;
-    width: 98%;
-    box-shadow: inset 0 0 0 1px #142b2b,0 0 30px -3px #000;
-    border-top: 3px solid green;
-    background-color: $secondary-dark;
-    display: flex;
-    flex-direction: column;
-    font-size: .875rem;
-    color: white;
+.skill-rewards {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0.5rem;
+  width: 98%;
+  box-shadow: inset 0 0 0 1px #142b2b, 0 0 30px -3px #000;
+  border-top: 3px solid green;
+  background-color: $secondary-dark;
+  display: flex;
+  flex-direction: column;
+  font-size: 0.875rem;
+  color: white;
 }
 
-.rewardContainer {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
+.fade-in {
+  -webkit-animation: fadein 0.5s; /* Safari, Chrome and Opera > 12.1 */
+  -moz-animation: fadein 0.5s; /* Firefox < 16 */
+  -ms-animation: fadein 0.5s; /* Internet Explorer */
+  -o-animation: fadein 0.5s; /* Opera < 12.1 */
+  animation: fadein 0.5s;
 }
 
-.rewardIcon {
-    border-color: #0f2;
-    -webkit-box-shadow: 0 0 10px #0f2;
-    -moz-box-shadow: 0 0 10px #0f2;
-    box-shadow: 0 0 10px #0f2;
-    padding: 0.25rem;
-    margin: 1rem;
-    position: relative;
-    background-color: $primary
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-.floating {
+.countdown {
     position: absolute;
     left: 50%;
     transform: translate(-50%, 0);
-    bottom: -16px;
+    top: 10.25rem;
+    color: black;
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.rewardContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.rewardIcon {
+  border-color: #0f2;
+  -webkit-box-shadow: 0 0 10px #0f2;
+  -moz-box-shadow: 0 0 10px #0f2;
+  box-shadow: 0 0 10px #0f2;
+  padding: 0.25rem;
+  margin: 1rem;
+  position: relative;
+  background-color: $primary;
+}
+
+.floating {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+  bottom: -16px;
 }
 
 .icon {
-    width: 30px;
+  width: 30px;
 }

@@ -164,34 +164,13 @@
 
 .chat-box {
   position: fixed;
-  left: 255px;
-  bottom: 2px; 
+  left: 240px;
+  bottom: 0px; 
   width: 500px;
   background: rgba(1.0, 1.0, 1.0, 0.4);
-  padding: 10px 10px;
-  border-radius: 10px;
-  border-color: #0f2;
-  -webkit-box-shadow: 0 0 10px #0f2;
-  -moz-box-shadow: 0 0 10px #0f2;
-  box-shadow: 0 0 10px #0f2;
+  padding-left: 10px;
+  border-radius: 2px;
   visibility: hidden;
-}
-
-.fade-in {
-	opacity: 1;
-	animation-name: fadeInOpacity;
-	animation-iteration-count: 1;
-	animation-timing-function: ease-in;
-	animation-duration: 2s;
-}
-
-@keyframes fadeInOpacity {
-	0% {
-		opacity: 0;
-	}
-	100% {
-		opacity: 1;
-	}
 }
 
 .hp-box {
@@ -232,6 +211,14 @@
   background-color: $primary-dark;
 }
 
+::ng-deep .mat-drawer-inner-container {
+  background: -webkit-linear-gradient(right, #2a3445, #171923);
+  background:    -moz-linear-gradient(right, #2a3445, #171923);
+  background:     -ms-linear-gradient(right, #2a3445, #171923);
+  background:      -o-linear-gradient(right, #2a3445, #171923);
+  background:         linear-gradient(to left, #2a3445, #171923);
+}
+
 .sign-in {
   background-image: url("../assets/general/background.jpg");
   background-position: center; /* Center the image */
@@ -251,6 +238,7 @@
   background-color: $primary;
   border: 2px solid black;
   padding-right: 2rem;
+  color: white;
 }
 
 .hpBox-text {
@@ -265,23 +253,28 @@
 }
 
 .progress-bar-hp {
-  background-color: #ff0000;
+  background-color: $primary;
   height: 0.75rem;
   margin-top: 0.25rem;
   color: $secondary;
 }
 
-::ng-deep .mat-progress-bar-fill::after {
+// ::ng-deep .mat-progress-bar-fill::after {
+//   background: #2a3445;
+//   background: -webkit-linear-gradient(left, #2a3445, #171923);
+//   background:    -moz-linear-gradient(left, #2a3445, #171923);
+//   background:     -ms-linear-gradient(left, #2a3445, #171923);
+//   background:      -o-linear-gradient(left, #2a3445, #171923);
+//   background:         linear-gradient(to right, #2a3445, #171923);
+// }
+
+::ng-deep .mat-progress-bar-buffer {
   background-color: $primary;
 }
 
-::ng-deep .mat-progress-bar-buffer {
-  background-color: $warn;
-}
-
-::ng-deep .mat-progress-bar {
-  border-radius: 2px;
-}
+// ::ng-deep .mat-progress-bar {
+//   border-radius: 2px;
+// }
 
 ::ng-deep .mat-drawer-inner-container {
   overflow-y: hidden !important;
@@ -376,7 +369,7 @@
 .expand-box {
   position: fixed;
   right: 5px;
-  bottom: 5px; 
+  bottom: 45px; 
   background: $primary;
   color: white;
   border-color: #0f2;
@@ -390,7 +383,7 @@
   width: 5rem;
   padding: 0;
   right: 5px;
-  bottom: 50px; 
+  bottom: 90px; 
   background: $primary;
   color: white;
   border-color: #0f2;

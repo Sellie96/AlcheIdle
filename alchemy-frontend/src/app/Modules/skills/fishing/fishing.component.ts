@@ -25,7 +25,7 @@ export class FishingComponent implements OnInit {
   sub: any;
   fishActive: boolean = false;
   playerCharacter!: PlayerData;
-  activeFish!: Fish;
+  activeFish!: Fish | undefined;
   fishers: number = 0;
   fishTypes: Fish[] = fishTypesToCatch;
   lockedFish: number[] = lockedFish;
@@ -59,26 +59,21 @@ export class FishingComponent implements OnInit {
   }
 
   startTimer(fish: Fish) {
-    this.activeFish = fish;
-    if (this.playerCharacter.character.skills.fishing.level >= fish.level) {
-      if (this.sub) {
-        this.sub.unsubscribe();
-      }
-      const time = fish.time * 10;
-      const timer$ = interval(50);
+    if(this.activeFish === fish) {
+      this.activeFish = undefined;
+    } 
 
-      this.sub = timer$.subscribe(async (sec) => {
-        this.fishProgress = 0 + (sec * 50) / +time;
-        this.curSec = sec / 2;
-        if (this.curSec >= +time) {
-          this.sub.unsubscribe();
-          setTimeout(() => {
-            this.fishProgress = 0;
-            this.completeFishing(fish);
-          }, 250);
-        }
-      });
-    } else return;
+    else if(this.activeFish === undefined) {
+      this.activeFish = fish;
+    }
+    
+    else if(this.activeFish !== fish) {
+      this.activeFish = undefined;
+      setTimeout(() => this.activeFish = fish, 100);
+    }
+    else {
+      this.activeFish = fish;
+    }
   }
 
   async completeFishing(fish: Fish) {

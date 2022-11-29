@@ -4,8 +4,7 @@
 
     <div class="chat-box">
       <div tabindex="1" #chatDiv class="chat-text {{item.name}}" *ngFor="let item of messages">
-        [{{item.date || item.time}}] <mat-icon style="display: inline-flex;
-        vertical-align: middle;">person</mat-icon> {{item.name}}: {{ item.message }}
+        [{{item.date || item.time}}] <img *ngIf="item.name !== 'Server' " width="20rem" src="../../../assets/chat-icons/normal.png"> {{item.name}}: {{ item.message }}
             <mat-divider></mat-divider>
       </div>
     </div>

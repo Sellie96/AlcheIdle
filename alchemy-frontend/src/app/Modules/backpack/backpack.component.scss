@@ -7,7 +7,12 @@
     max-width: 96%;
     box-shadow: 0 1px 2px rgb(33 34 35/50%),0 1px 2px rgb(26 26 27/50%);
     border-top: 3px solid green;
-    background-color: $primary-dark;
+    background: #2a3445;
+    background: -webkit-linear-gradient(right, #2a3445, #171923);
+    background:    -moz-linear-gradient(right, #2a3445, #171923);
+    background:     -ms-linear-gradient(right, #2a3445, #171923);
+    background:      -o-linear-gradient(right, #2a3445, #171923);
+    background:         linear-gradient(to left, #2a3445, #171923);
     display: relative;
     text-align: center;
     color: white;
@@ -41,7 +46,11 @@
 
 
 .backpack-background {
-    background-color: $primary-dark;
+    background: #2a3445;
+    background: -webkit-linear-gradient(right, #2a3445, #171923);
+    background:    -moz-linear-gradient(right, #2a3445, #171923);
+    background:     -ms-linear-gradient(right, #2a3445, #171923);
+    background:      -o-linear-gradient(right, #2a3445, #171923);
     border: 1px solid $primary;
     width: 96%;
     margin-left: 2rem;

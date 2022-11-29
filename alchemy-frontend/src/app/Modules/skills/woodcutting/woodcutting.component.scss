@@ -2,7 +2,11 @@
 
 .woodcutting-box {
     width: 22rem;
-    background-color: $primary-dark;
+    background: #2a3445;
+    background: -webkit-linear-gradient(right, #2a3445, #171923);
+    background:    -moz-linear-gradient(right, #2a3445, #171923);
+    background:     -ms-linear-gradient(right, #2a3445, #171923);
+    background:      -o-linear-gradient(right, #2a3445, #171923);
     display: inline-flex;
     align-items: center;
     justify-content: center;

@@ -2,10 +2,11 @@
   [playerCharacter]="playerCharacter.character.skills.woodcutting"
   [players]="woodcutters"
 ></app-skill-information>
-<app-skill-rewards
+<app-skill-rewards *ngIf="activeTree"
   [playerCharacter]="playerCharacter.character.skills.woodcutting"
   [skillProgress]="treeProgress"
   [activeNode]="activeTree"
+  (finished)="completeWoodcutting(activeTree)"
 >
 </app-skill-rewards>
 <span *ngFor="let tree of treeTypes">

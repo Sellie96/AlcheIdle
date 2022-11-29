@@ -41,7 +41,8 @@ let UsersService = class UsersService {
         this.messagesGateway = messagesGateway;
     }
     findAll() {
-        return this.usersRepository.find();
+        return this.usersRepository.find({ select: ['character']
+        });
     }
     findOne(id) {
         return this.usersRepository.findOneBy({ id });
@@ -84,7 +85,6 @@ let UsersService = class UsersService {
                 });
             }
             if (user.character.skills.woodcutting.xpCurrent >= this.shouldLevelup(user.character.skills.woodcutting.level)) {
-                user.character.skills.woodcutting.xpCurrent = 0;
                 user.character.skills.woodcutting.level += 1;
                 this.messagesService.create({
                     name: 'Server',
@@ -169,7 +169,6 @@ let UsersService = class UsersService {
                 });
             }
             if (user.character.skills.thieving.xpCurrent >= this.shouldLevelup(user.character.skills.thieving.level)) {
-                user.character.skills.thieving.xpCurrent = 0;
                 user.character.skills.thieving.level += 1;
                 this.messagesService.create({
                     name: 'Server',
@@ -221,7 +220,6 @@ let UsersService = class UsersService {
                 });
             }
             if (user.character.skills.fishing.xpCurrent >= this.shouldLevelup(user.character.skills.fishing.level)) {
-                user.character.skills.fishing.xpCurrent = 0;
                 user.character.skills.fishing.level += 1;
                 this.messagesService.create({
                     name: 'Server',
@@ -273,7 +271,6 @@ let UsersService = class UsersService {
                 });
             }
             if (user.character.skills.mining.xpCurrent >= this.shouldLevelup(user.character.skills.mining.level)) {
-                user.character.skills.mining.xpCurrent = 0;
                 user.character.skills.mining.level += 1;
                 this.messagesService.create({
                     name: 'Server',
@@ -322,7 +319,6 @@ let UsersService = class UsersService {
                 });
             }
             if (user.character.skills.agility.xpCurrent >= this.shouldLevelup(user.character.skills.agility.level)) {
-                user.character.skills.agility.xpCurrent = 0;
                 user.character.skills.agility.level += 1;
                 this.messagesService.create({
                     name: 'Server',

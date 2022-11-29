@@ -1,0 +1,32 @@
+table {
+  width: 100%;
+  min-height: 100%;
+  overflow-y: scroll;
+}
+
+::ng-deep .mat-table {
+  background: #2a3445;
+  color: white !important;
+}
+
+::ng-deep .mat-paginator {
+  background: #2a3445;
+  color: white !important;
+  margin: 0 auto !important;
+}
+
+::ng-deep .mat-cell {
+  background: #2a3445;
+  color: white !important;
+}
+
+::ng-deep .mat-header-cell {
+  background: #2a3445;
+  color: white !important;
+  font-size: medium;
+}
+
+::ng-deep .mat-tab-label-content {
+  color: white !important;
+  font-size: medium;
+}

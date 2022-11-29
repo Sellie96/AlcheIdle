@@ -3,9 +3,11 @@
   [players]="fishers"
 ></app-skill-information>
 <app-skill-rewards
+  *ngIf="activeFish"
   [playerCharacter]="playerCharacter.character.skills.fishing"
   [skillProgress]="fishProgress"
   [activeNode]="activeFish"
+  (finished)="completeFishing(activeFish)"
 >
 </app-skill-rewards>
 <span *ngFor="let fish of fishTypes">

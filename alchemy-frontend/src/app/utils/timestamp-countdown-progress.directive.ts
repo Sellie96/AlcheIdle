@@ -38,38 +38,39 @@ export class TimestampCountdownDirectiveProgress implements OnInit, OnChanges, O
     this.startTimer()
   }
 
-  startTimer() {
-    this.sub = timer(0, 10).pipe(
+startTimer() {
+  const interval = 10; // interval in milliseconds
+  this.sub = timer(0, interval)
+    .pipe(
       takeUntil(this._destroyer$),
       repeatWhen(() => this._refresh$.pipe(
         takeWhile(() => true)
-      )
-      ),
+      )),
       untilDestroyed(this)
-    ).subscribe(() => {
+    )
+    .subscribe(() => {
       const now: any = DateTime.now();
       const diffMili = this._timestampTime.diff(now);
 
-      let today: any = new Date();
-      let total: any = this._timestampTime - this.now2;
-      let progress: number = today - this.now2;
-
+      // Calculate percentage of elapsed time
+      const total = this._timestampTime - this.now2;
+      const progress = now - this.now2;
       let currPercent = Math.round((progress / total) * 100);
 
       this.renderer.removeStyle(this.elementRef.nativeElement.children[0].children[2], 'transform');
 
-      if(diffMili.milliseconds <= 10) {
-        this.now2 = DateTime.now();
+      if (diffMili.milliseconds <= interval) {
+        this.now2 = now;
         currPercent = 0;
         this.sub.unsubscribe();
         this._destroyer$.next(true);
         this.isFinished.next(true);
         this.startTimer();
       } else {
-        this.renderer.setStyle(this.elementRef.nativeElement.children[0].children[2], 'width', currPercent + '%');
+        this.renderer.setStyle(this.elementRef.nativeElement.children[0].children[2], 'width', `${currPercent}%`);
       }
     });
-  }
+}
 
 
   ngOnDestroy(): void {

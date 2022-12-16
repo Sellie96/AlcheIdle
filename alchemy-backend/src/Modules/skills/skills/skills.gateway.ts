@@ -6,6 +6,8 @@ import { MessagesService } from 'src/Modules/messages/messages.service';
 import { User } from 'src/user/user.entity';
 import { UsersService } from 'src/user/users.service';
 import { AgilityService } from '../agility/agility.service';
+import { CookingService } from '../cooking/cooking.service';
+import { FiremakingService } from '../firemaking/firemaking.service';
 import { FishingService } from '../fishing/fishing.service';
 import { MiningService } from '../mining/mining.service';
 import { ThievingService } from '../thieving/thieving.service';
@@ -25,9 +27,10 @@ export class SkillsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     private readonly fishingService: FishingService,
     private readonly woodcuttingService: WoodcuttingService,
     private readonly thievingService: ThievingService,
+    private readonly firemakingService: FiremakingService,
+    private readonly cookingService: CookingService,
     private authService: AuthService,
     private usersService: UsersService,
-    private messagesService: MessagesService
     ) {}
 
   async handleConnection(@ConnectedSocket() client: Socket) {
@@ -65,25 +68,30 @@ export class SkillsGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('skillingActive')
   async create(@MessageBody() skilling: SkillingDto, @ConnectedSocket() client: Socket) {
-    let returnSkillingData;
-    switch(skilling.type.skillType) {
-        case 'mining':
-            returnSkillingData = await this.miningService.addToMiningActive({username: skilling.username, oreType: skilling.type, jwt: skilling.jwt, timestamp: skilling.timestamp});
-            break;
-        case 'agility':
-            returnSkillingData = await this.agilityService.addToAgilityActive({username: skilling.username, courseType: skilling.type, jwt: skilling.jwt, timestamp: skilling.timestamp});
-            break;
-        case 'fishing':
-            returnSkillingData = await this.fishingService.addToFishingActive({username: skilling.username, fishType: skilling.type, jwt: skilling.jwt, timestamp: skilling.timestamp});
-            break;
-        case 'woodcutting':
-            returnSkillingData = await this.woodcuttingService.addToWoodcuttingActive({username: skilling.username, treeType: skilling.type, jwt: skilling.jwt, timestamp: skilling.timestamp});
-            break;
-        case 'thieving':  
-            returnSkillingData = await this.thievingService.addToThievingActive({username: skilling.username, thievingOption: skilling.type, jwt: skilling.jwt, timestamp: skilling.timestamp});
-            break;
-        default: console.log('error in skills gateway');
+    const servicesMap = {
+      mining: this.miningService,
+      agility: this.agilityService,
+      fishing: this.fishingService,
+      woodcutting: this.woodcuttingService,
+      thieving: this.thievingService,
+      firemaking: this.firemakingService,
+      cooking: this.cookingService,
+    };
+  
+    const service = servicesMap[skilling.type.skillType];
+  
+    if (!service) {
+      console.log('error in skills gateway');
+      return;
     }
+  
+    const returnSkillingData = await service.addToActive({
+      username: skilling.username,
+      type: skilling.type,
+      jwt: skilling.jwt,
+      timestamp: skilling.timestamp,
+    });
+  
     this.server.to(client.id).emit('skillingActive', returnSkillingData);
   }
 

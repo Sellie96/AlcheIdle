@@ -8,6 +8,8 @@ import { Thieving } from 'src/Modules/skills/thieving/entities/thieving.entity';
 import { Fishing } from 'src/Modules/skills/fishing/entities/fishing.entity';
 import { Mining } from 'src/Modules/skills/mining/entities/message.entity';
 import { Agility } from 'src/Modules/skills/agility/entities/message.entity';
+import { Firemaking } from 'src/Modules/skills/firemaking/entities/firemaking.entity';
+import { Cooking } from 'src/Modules/skills/cooking/entities/cooking.entity';
 export declare class UsersService {
     private usersRepository;
     private messagesService;
@@ -40,4 +42,41 @@ export declare class UsersService {
         user: User;
         marksAmount: number;
     }>;
+    updateFiremakingByUsername(firemaking: Firemaking): Promise<"You don't have any logs to burn!" | {
+        user: User;
+        ashes: {
+            name: string;
+            amount: number;
+            value: number;
+        };
+        ashesAmount: number;
+    }>;
+    updateCookingByUsername(cooking: Cooking): Promise<"You don't have any fish to burn!" | {
+        user: User;
+        reward: {
+            name: string;
+            amount: number;
+            value: number;
+        };
+        amount: number;
+    }>;
+    updateSkillByUsername(skill: any): Promise<{
+        user: User;
+        reward: {
+            name: string;
+            amount: number;
+            value: any;
+        };
+        amount: number;
+    }>;
+    addItemToBackpack(user: User, skill: {
+        type: {
+            name: any;
+        };
+    }, reward: any, rewardAmount: number): void;
+    removeItemFromBackpack(user: User, skill: {
+        type: {
+            name: any;
+        };
+    }): string;
 }

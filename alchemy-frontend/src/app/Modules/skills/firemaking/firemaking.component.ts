@@ -44,7 +44,18 @@ export class FiremakingComponent implements OnInit {
 
   logsInStorage: number = 0;
   logNames = FiremakingLogNames;
-  currentLogSelected = 'logs';
+  currentLogSelected = {
+    name: LogNames.logs,
+    skillType: 'firemaking',
+    level: 1,
+    xp: 40,
+    reward: 1,
+    time: 4,
+    value: '0',
+    amount: 0,
+  };
+
+  burningActive = false;
 
   trees = treeTypes;
 
@@ -75,74 +86,71 @@ export class FiremakingComponent implements OnInit {
         this.playerCharacter = JSON.parse(JSON.stringify(character));
       });
 
-    this.logsInStorage = this.playerCharacter.character.backpack.filter(
-      (item) => item.name.toLowerCase() === "logs"
-    ).length;
+    let test = this.playerCharacter.character.backpack.filter(
+      (item) => item.name.toLowerCase() === LogNames.logs.toLowerCase()
+    );
+
+     if(test.length > 0) {
+      this.logsInStorage = test[0].amount;
+    } else { this.logsInStorage = 0 }
 
     this.firemakingForm.setValue({
-      logs: 'logs',
+      logs: LogNames.logs,
     });
 
-    this.firemakingForm.get('logs')!.valueChanges.subscribe((val) => {
-      this.logsInStorage = this.playerCharacter.character.backpack.filter(
-        (item) => item.name.toLowerCase() === val
-      ).length;
-      this.currentLogSelected = val;
-    });
+    this.firemakingForm
+      .get(LogNames.logs.toLowerCase())!
+      .valueChanges.subscribe((val) => {
+        this.currentLogSelected =
+          this.playerCharacter.character.backpack.filter(
+            (item) => item.name.toLowerCase() === val
+          )[0];
+
+        this.logsInStorage = this.currentLogSelected.amount;
+      });
   }
 
   setPlayerData(playerData: any) {
     this.store.dispatch(new UpdateWoodcutting(playerData));
   }
 
-  startTimer(tree: Tree) {
-    this.activeTree = tree;
-    if (this.playerCharacter.character.skills.woodcutting.level >= tree.level) {
-      if (this.sub) {
-        this.sub.unsubscribe();
-      }
-      const time = (
-        tree.time *
-        10 *
-        this.playerCharacter.character.skills.woodcutting.tool!.bonus
-      ).toFixed(1);
-      const timer$ = interval(50);
-
-      this.sub = timer$.subscribe(async (sec) => {
-        this.treeProgress = 0 + (sec * 50) / +time;
-        this.curSec = sec / 2;
-        if (this.curSec >= +time) {
-          this.sub.unsubscribe();
-          setTimeout(() => {
-            this.treeProgress = 0;
-            this.completeWoodcutting(tree);
-          }, 250);
-        }
-      });
-    } else return;
-  }
-
-  async completeWoodcutting(tree: Tree) {
-    this.skillsService.skillingActive(this.playerCharacter.username, tree);
+  async completeFiremaking() {
+    this.skillsService.skillingActive(
+      this.playerCharacter.username,
+      this.currentLogSelected
+    );
 
     await this.skillsService.getSkillingUpdate().then((data: any) => {
-      this.setPlayerData(data.woodcuttingUsers.user);
+      this.setPlayerData(data.firemakingUsers.user);
       this.toastr.info(data.updateMessage, 'Update', {
         timeOut: 2000,
         positionClass: 'toast-bottom-right',
         progressBar: true,
         progressAnimation: 'increasing',
       });
+
     });
 
-    setTimeout(() => {
-      this.startTimer(tree);
-    }, 250);
+      let test = this.playerCharacter.character.backpack.filter(
+      (item) => item.name.toLowerCase() === LogNames.logs.toLowerCase()
+    );
+
+    this.logsInStorage = test[0].amount;
+
+    if(this.logsInStorage > 0) {
+      this.resetTimer();
+    }
   }
 
   resetTimer() {
-    this.timeUntilFinish = Math.floor(Date.now() / 1000) + this.activeTree.time;
+    this.timeUntilFinish =
+      Math.floor(Date.now() / 1000) + this.currentLogSelected.time;
   }
 
-  selectLogs() {}
+  activateBurn() {
+    if(this.logsInStorage > 0) {
+      this.burningActive = !this.burningActive;
+      this.resetTimer();
+    }
+  }
 }

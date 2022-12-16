@@ -11,7 +11,7 @@ export class AgilityService {
 
   constructor(private usersService: UsersService) {}
   
-  async addToAgilityActive(activeRunner: Agility) {
+  async addToActive(activeRunner: Agility) {
     const user: Agility = activeRunner;
 
     let returnedData:any = {

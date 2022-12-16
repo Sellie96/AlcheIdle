@@ -30,21 +30,24 @@ const messages_service_1 = require("../../messages/messages.service");
 const user_entity_1 = require("../../../user/user.entity");
 const users_service_1 = require("../../../user/users.service");
 const agility_service_1 = require("../agility/agility.service");
+const cooking_service_1 = require("../cooking/cooking.service");
+const firemaking_service_1 = require("../firemaking/firemaking.service");
 const fishing_service_1 = require("../fishing/fishing.service");
 const mining_service_1 = require("../mining/mining.service");
 const thieving_service_1 = require("../thieving/thieving.service");
 const woodcutting_service_1 = require("../woodcutting/woodcutting.service");
 const skill_dto_1 = require("./skill.dto");
 let SkillsGateway = class SkillsGateway {
-    constructor(miningService, agilityService, fishingService, woodcuttingService, thievingService, authService, usersService, messagesService) {
+    constructor(miningService, agilityService, fishingService, woodcuttingService, thievingService, firemakingService, cookingService, authService, usersService) {
         this.miningService = miningService;
         this.agilityService = agilityService;
         this.fishingService = fishingService;
         this.woodcuttingService = woodcuttingService;
         this.thievingService = thievingService;
+        this.firemakingService = firemakingService;
+        this.cookingService = cookingService;
         this.authService = authService;
         this.usersService = usersService;
-        this.messagesService = messagesService;
         this.users = 0;
         this.sendResponse = true;
     }
@@ -87,25 +90,26 @@ let SkillsGateway = class SkillsGateway {
     }
     create(skilling, client) {
         return __awaiter(this, void 0, void 0, function* () {
-            let returnSkillingData;
-            switch (skilling.type.skillType) {
-                case 'mining':
-                    returnSkillingData = yield this.miningService.addToMiningActive({ username: skilling.username, oreType: skilling.type, jwt: skilling.jwt, timestamp: skilling.timestamp });
-                    break;
-                case 'agility':
-                    returnSkillingData = yield this.agilityService.addToAgilityActive({ username: skilling.username, courseType: skilling.type, jwt: skilling.jwt, timestamp: skilling.timestamp });
-                    break;
-                case 'fishing':
-                    returnSkillingData = yield this.fishingService.addToFishingActive({ username: skilling.username, fishType: skilling.type, jwt: skilling.jwt, timestamp: skilling.timestamp });
-                    break;
-                case 'woodcutting':
-                    returnSkillingData = yield this.woodcuttingService.addToWoodcuttingActive({ username: skilling.username, treeType: skilling.type, jwt: skilling.jwt, timestamp: skilling.timestamp });
-                    break;
-                case 'thieving':
-                    returnSkillingData = yield this.thievingService.addToThievingActive({ username: skilling.username, thievingOption: skilling.type, jwt: skilling.jwt, timestamp: skilling.timestamp });
-                    break;
-                default: console.log('error in skills gateway');
+            const servicesMap = {
+                mining: this.miningService,
+                agility: this.agilityService,
+                fishing: this.fishingService,
+                woodcutting: this.woodcuttingService,
+                thieving: this.thievingService,
+                firemaking: this.firemakingService,
+                cooking: this.cookingService,
+            };
+            const service = servicesMap[skilling.type.skillType];
+            if (!service) {
+                console.log('error in skills gateway');
+                return;
             }
+            const returnSkillingData = yield service.addToActive({
+                username: skilling.username,
+                type: skilling.type,
+                jwt: skilling.jwt,
+                timestamp: skilling.timestamp,
+            });
             this.server.to(client.id).emit('skillingActive', returnSkillingData);
         });
     }
@@ -154,9 +158,10 @@ SkillsGateway = __decorate([
         fishing_service_1.FishingService,
         woodcutting_service_1.WoodcuttingService,
         thieving_service_1.ThievingService,
+        firemaking_service_1.FiremakingService,
+        cooking_service_1.CookingService,
         auth_service_1.AuthService,
-        users_service_1.UsersService,
-        messages_service_1.MessagesService])
+        users_service_1.UsersService])
 ], SkillsGateway);
 exports.SkillsGateway = SkillsGateway;
 //# sourceMappingURL=skills.gateway.js.map

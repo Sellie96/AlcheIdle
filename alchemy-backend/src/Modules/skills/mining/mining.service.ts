@@ -12,7 +12,7 @@ export class MiningService {
 
   constructor(private usersService: UsersService) {}
   
-  async addToMiningActive(activeMiner: Mining) {
+  async addToActive(activeMiner: Mining) {
     const user: Mining = activeMiner;
 
     let returnedData:any = {

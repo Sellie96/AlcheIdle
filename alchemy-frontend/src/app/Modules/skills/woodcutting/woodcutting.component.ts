@@ -75,7 +75,6 @@ export class WoodcuttingComponent implements OnInit, OnDestroy {
     }
     
     else if(this.activeTree !== tree) {
-      console.log('tree', tree);
       this.activeTree = undefined;
       setTimeout(() => this.activeTree = tree, 100);
     }
@@ -88,7 +87,7 @@ export class WoodcuttingComponent implements OnInit, OnDestroy {
     this.skillsService.skillingActive(this.playerCharacter.username, tree);
 
     await this.skillsService.getSkillingUpdate().then((data: any) => {
-      this.setPlayerData(data.woodcuttingUsers.user);
+      this.setPlayerData(data.rewards.user);
       this.toastr.info(data.updateMessage, 'Update', {
         timeOut: 2000,
         positionClass: 'toast-bottom-right',

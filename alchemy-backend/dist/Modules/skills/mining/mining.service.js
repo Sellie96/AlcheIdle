@@ -29,7 +29,7 @@ let MiningService = class MiningService {
         this.timeLeft = 10;
         this.clientToUser = {};
     }
-    addToMiningActive(activeMiner) {
+    addToActive(activeMiner) {
         return __awaiter(this, void 0, void 0, function* () {
             const user = activeMiner;
             let returnedData = {

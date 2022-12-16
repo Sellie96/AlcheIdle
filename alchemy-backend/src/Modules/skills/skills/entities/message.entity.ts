@@ -13,5 +13,6 @@ export interface Skill {
   reward: any;
   time: number;
   value: number;
+  amount: number;
   damage?: number;
 }

@@ -48,7 +48,6 @@ import { FishingSpotComponent } from './Modules/skills/fishing/fishing-spot/fish
 import { MiningSpotComponent } from './Modules/skills/mining/mining-spot/mining-spot.component';
 import { AgilityComponent } from './Modules/skills/agility/agility.component';
 import { AgilitySpotComponent } from './Modules/skills/agility/agility-spot/agility-spot.component';
-import { SelectLogsComponent } from './Modules/skills/firemaking/select-logs/select-logs.component';
 import { TimestampCountdownDirective } from './utils/timestamp-countdown.directive';
 import { TimestampCountdownDirectiveProgress } from './utils/timestamp-countdown-progress.directive';
 import { LeaderboardsComponent } from './Modules/leaderboards/leaderboards.component';
@@ -96,7 +95,6 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {
     FishingSpotComponent,
     MiningSpotComponent,
     AgilitySpotComponent,
-    SelectLogsComponent,
     TimestampCountdownDirective,
     TimestampCountdownDirectiveProgress,
     LeaderboardsComponent,

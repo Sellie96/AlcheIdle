@@ -16,6 +16,8 @@ const app_service_1 = require("./app.service");
 const auth_module_1 = require("./auth/auth.module");
 const shop_module_1 = require("./Modules/shop/shop.module");
 const agility_module_1 = require("./Modules/skills/agility/agility.module");
+const cooking_module_1 = require("./Modules/skills/cooking/cooking.module");
+const firemaking_module_1 = require("./Modules/skills/firemaking/firemaking.module");
 const fishing_module_1 = require("./Modules/skills/fishing/fishing.module");
 const mining_module_1 = require("./Modules/skills/mining/mining.module");
 const skilling_module_1 = require("./Modules/skills/skills/skilling.module");
@@ -43,6 +45,8 @@ AppModule = __decorate([
             fishing_module_1.FishingModule,
             mining_module_1.MiningModule,
             agility_module_1.AgilityModule,
+            firemaking_module_1.FiremakingModule,
+            cooking_module_1.CookingModule,
             skilling_module_1.SkillsModule,
             shop_module_1.ShopModule,
             schedule_1.ScheduleModule.forRoot(),

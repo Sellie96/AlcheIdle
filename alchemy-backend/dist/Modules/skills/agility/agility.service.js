@@ -29,7 +29,7 @@ let AgilityService = class AgilityService {
         this.timeLeft = 10;
         this.clientToUser = {};
     }
-    addToAgilityActive(activeRunner) {
+    addToActive(activeRunner) {
         return __awaiter(this, void 0, void 0, function* () {
             const user = activeRunner;
             let returnedData = {

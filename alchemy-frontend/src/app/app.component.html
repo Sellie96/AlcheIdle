@@ -15,6 +15,11 @@
           <p class="main-logo-text">{{ config.app }}</p>
           <p class="heading-section-text">{{ config.version }}</p>
         </mat-list-item>
+        <span class="nav-heading"
+          >General<mat-icon style="display: inline-flex; vertical-align: middle"
+            >visibility</mat-icon
+          ></span
+        >
         <div *ngFor="let skill of navLinks">
           <mat-list-item
             [routerLinkActive]="['is-active']"

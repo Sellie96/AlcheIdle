@@ -6,11 +6,13 @@ import { RegisterData } from './register.interface';
 import { UserDataCreation } from './userDefault';
 import { MessagesGateway } from 'src/Modules/messages/messages.gateway';
 import { MessagesService } from 'src/Modules/messages/messages.service';
-import { Woodcutting } from 'src/Modules/skills/woodcutting/entities/message.entity';
+import { Logs, Woodcutting } from 'src/Modules/skills/woodcutting/entities/message.entity';
 import { Thieving } from 'src/Modules/skills/thieving/entities/thieving.entity';
-import { Fishing } from 'src/Modules/skills/fishing/entities/fishing.entity';
+import { Fishes, Fishing } from 'src/Modules/skills/fishing/entities/fishing.entity';
 import { Mining } from 'src/Modules/skills/mining/entities/message.entity';
 import { Agility } from 'src/Modules/skills/agility/entities/message.entity';
+import { Firemaking } from 'src/Modules/skills/firemaking/entities/firemaking.entity';
+import { Cooking } from 'src/Modules/skills/cooking/entities/cooking.entity';
 
 @Injectable()
 export class UsersService {
@@ -36,27 +38,30 @@ export class UsersService {
 
   async updateWoodcuttingByUsername(woodcutter: Woodcutting) {
     let user = await this.findOneByUsername(woodcutter.username);
+    console.log(woodcutter);
+    user.character.skills.woodcutting.xpCurrent += +woodcutter.type.xp;
 
-    user.character.skills.woodcutting.xpCurrent += +woodcutter.treeType.xp;
+    const logAmount = user.character.skills.woodcutting.pet ? (Math.random() > 0.8 ? 2 : 1) : 1;
 
-    let logAmount = 1;
+    let logs;
 
-    if (user.character.skills.woodcutting.pet) {
-      if((Math.random() * (10 - 1) + 1) > 8)
-      logAmount = 2;
-    } else {
-      logAmount = 1;
+    switch (woodcutter.type.reward) {
+      case Logs.normal.name: logs = Logs.normal; break;
+      case Logs.oak.name: logs = Logs.oak; break;
+      case Logs.willow.name: logs = Logs.willow; break;
+      case Logs.bonsai.name: logs = Logs.bonsai; break;
+      case Logs.yew.name: logs = Logs.yew; break;
+      case Logs.magic.name: logs = Logs.magic; break;
+      case Logs.demonic.name: logs = Logs.demonic; break;
+      case Logs.divine.name: logs = Logs.divine; break;
     }
 
-    let logs = {
-      name: woodcutter.treeType.reward,
-      amount: logAmount,
-      value: woodcutter.treeType.value,
-    }
+    const existingItem = user.character.backpack.find(
+      (item) => item.name === woodcutter.type.reward
+    );
 
-    if(user.character.backpack.some((item) => item.name === woodcutter.treeType.reward)) {
-      let indexOfItem: number = user.character.backpack.findIndex((item: any) => item.name === woodcutter.treeType.reward);
-      user.character.backpack[indexOfItem].amount += logAmount;
+    if (existingItem) {
+      existingItem.amount += logAmount;
     } else {
       user.character.backpack.push(logs);
     }
@@ -66,7 +71,7 @@ export class UsersService {
       this.messagesService.create({
         name: 'Server',
         message: `${woodcutter.username} has recieved a Beaver at level ${user.character.skills.woodcutting.level}!`,
-        time: new Date().toISOString().split('T')[1].split('.')[0],
+        time: new Date().toISOString().substring(11, 19),
       });
     }
 
@@ -75,7 +80,7 @@ export class UsersService {
       this.messagesService.create({
         name: 'Server',
         message: `${woodcutter.username} has advanced woodcutting to level ${user.character.skills.woodcutting.level}!`,
-        time: new Date().toISOString().split('T')[1].split('.')[0],
+        time: new Date().toISOString().substring(11, 19),
       });
     }
 
@@ -207,10 +212,17 @@ export class UsersService {
       fishAmount = 1;
     }
 
-    let fish = {
-      name: fisher.fishType.reward,
-      amount: fishAmount,
-      value: fisher.fishType.value,
+    let fish;
+
+    switch (fisher.fishType.reward) {
+      case Fishes.prawn.name: fish = Fishes.prawn; break;
+      case Fishes.trout.name: fish = Fishes.trout; break;
+      case Fishes.salmon.name: fish = Fishes.salmon; break;
+      case Fishes.lobster.name: fish = Fishes.lobster; break;
+      case Fishes.swordfish.name: fish = Fishes.swordfish; break;
+      case Fishes.shark.name: fish = Fishes.shark; break;
+      case Fishes.whale.name: fish = Fishes.whale; break;
+      case Fishes.kraken.name: fish = Fishes.kraken; break;
     }
 
     if(user.character.backpack.some((item) => item.name === fisher.fishType.reward)) {
@@ -377,4 +389,233 @@ export class UsersService {
 
     return returnedObject;
   }
+
+  async updateFiremakingByUsername(firemaking: Firemaking) {
+    let user = await this.findOneByUsername(firemaking.username);
+
+    user.character.skills.firemaking.xpCurrent += +firemaking.type.xp;
+
+    let ashesAmount = 1;
+
+    if (user.character.skills.firemaking.pet) {
+      if((Math.random() * (10 - 1) + 1) > 8)
+      ashesAmount = ashesAmount * 2;
+    }
+
+    let ashes = {
+      name: "Ashes",
+      amount: ashesAmount,
+      value: firemaking.type.value,
+    }
+
+    if(user.character.backpack.some((item) => item.name === "Ashes")) {
+      let indexOfItem: number = user.character.backpack.findIndex((item: any) => item.name === "Ashes");
+      user.character.backpack[indexOfItem].amount += ashesAmount;
+    } else {
+      user.character.backpack.push(ashes);
+    }
+
+    if(user.character.backpack.some((item) => item.name === firemaking.type.name)) {
+      let indexOfItem: number = user.character.backpack.findIndex((item: any) => item.name === firemaking.type.name);
+      user.character.backpack[indexOfItem].amount -= 1;
+    } else {
+      return "You don't have any logs to burn!";
+    }
+
+     if((Math.random() * (10000 - 1) + 1) === 69) {
+      user.character.skills.firemaking.pet = true;
+      this.messagesService.create({
+        name: 'Server',
+        message: `${firemaking.username} has recieved a Flame Spirit at level ${user.character.skills.firemaking.level}!`,
+        time: new Date().toISOString().split('T')[1].split('.')[0],
+      });
+    }
+
+    if (user.character.skills.firemaking.xpCurrent >= this.shouldLevelup(user.character.skills.firemaking.level)) {
+      user.character.skills.firemaking.level += 1;
+      this.messagesService.create({
+        name: 'Server',
+        message: `${firemaking.username} has advanced Firemaking to level ${user.character.skills.firemaking.level}!`,
+        time: new Date().toISOString().split('T')[1].split('.')[0],
+      });
+    }
+
+    await this.usersRepository.update(
+      { username: firemaking.username },
+      {
+        character: user.character,
+      },
+    );
+
+    this.messagesGateway.findAll();
+
+    const returnedObject = {
+      user: user,
+      ashes:  ashes,
+      ashesAmount: ashesAmount,
+    }
+
+    return returnedObject;
+  }
+
+
+
+  async updateCookingByUsername(cooking: Cooking) {
+    let user = await this.findOneByUsername(cooking.username);
+
+    user.character.skills.cooking.xpCurrent += +cooking.type.xp;
+
+    let rawFoodAmount = 1;
+
+    if (user.character.skills.cooking.pet) {
+      if((Math.random() * (10 - 1) + 1) > 8)
+      rawFoodAmount = rawFoodAmount * 2;
+    }
+
+    let reward = {
+      name: `Cooked ${cooking.type.name}`,
+      amount: rawFoodAmount,
+      value: cooking.type.value,
+    }
+
+    if(user.character.backpack.some((item) => item.name === `Cooked ${cooking.type.name}`)) {
+      let indexOfItem: number = user.character.backpack.findIndex((item: any) => item.name === `Cooked ${cooking.type.name}`);
+      user.character.backpack[indexOfItem].amount += rawFoodAmount;
+    } else {
+      user.character.backpack.push(reward);
+    }
+
+    if(user.character.backpack.some((item) => item.name === cooking.type.name)) {
+      let indexOfItem: number = user.character.backpack.findIndex((item: any) => item.name === cooking.type.name);
+      user.character.backpack[indexOfItem].amount -= 1;
+    } else {
+      return "You don't have any fish to burn!";
+    }
+
+     if((Math.random() * (10000 - 1) + 1) === 69) {
+      user.character.skills.cooking.pet = true;
+      this.messagesService.create({
+        name: 'Server',
+        message: `${cooking.username} has recieved Lil' Cook at level ${user.character.skills.cooking.level}!`,
+        time: new Date().toISOString().split('T')[1].split('.')[0],
+      });
+    }
+
+    if (user.character.skills.cooking.xpCurrent >= this.shouldLevelup(user.character.skills.cooking.level)) {
+      user.character.skills.cooking.level += 1;
+      this.messagesService.create({
+        name: 'Server',
+        message: `${cooking.username} has advanced Cooking to level ${user.character.skills.cooking.level}!`,
+        time: new Date().toISOString().split('T')[1].split('.')[0],
+      });
+    }
+
+    await this.usersRepository.update(
+      { username: cooking.username },
+      {
+        character: user.character,
+      },
+    );
+
+    this.messagesGateway.findAll();
+
+    const returnedObject = {
+      user: user,
+      reward:  reward,
+      amount: reward.amount,
+    }
+
+    return returnedObject;
+  }
+
+
+
+
+
+
+
+  async updateSkillByUsername(skill: any) {
+    let user = await this.findOneByUsername(skill.username);
+
+    user.character.skills[skill.type.skillType].xpCurrent += +skill.type.xp;
+
+    let rewardAmount = 1;
+
+    if (user.character.skills[skill.type.skillType].pet) {
+      if((Math.random() * (10 - 1) + 1) > 8)
+      rewardAmount = rewardAmount * 2;
+    }
+
+    let reward = {
+      name: `${skill.type.name}`,
+      amount: rewardAmount,
+      value: skill.type.value,
+    }
+
+    this.addItemToBackpack(user, skill, reward ,rewardAmount);
+
+    // this.removeItemFromBackpack(user, skill);
+
+    const randomNumber = Math.random() * (10000 - 1) + 1;
+
+    if (randomNumber === 69) {
+      user.character.skills[skill.type.skillType].pet = true;
+      this.messagesService.create({
+        name: 'Server',
+        message: `${skill.username} has recieved Lil' Cook at level ${user.character.skills[skill.type.skillType].level}!`,
+        time: new Date().toISOString().split('T')[1].split('.')[0],
+      });
+    }
+
+    const currentXP = user.character.skills[skill.type.skillType].xpCurrent;
+    const currentLevel = user.character.skills[skill.type.skillType].level;
+    
+    if (currentXP >= this.shouldLevelup(currentLevel)) {
+      user.character.skills[skill.type.skillType].level += 1;
+      this.messagesService.create({
+        name: 'Server',
+        message: `${skill.username} has advanced ${skill.type.skillType} to level ${currentLevel + 1}!`,
+        time: new Date().toISOString().split('T')[1].split('.')[0],
+      });
+    }
+
+    await this.usersRepository.update(
+      { username: skill.username },
+      {
+        character: user.character,
+      },
+    );
+
+    this.messagesGateway.findAll();
+
+    const returnedObject = {
+      user: user,
+      reward:  reward,
+      amount: reward.amount,
+    }
+
+    return returnedObject;
+  }
+
+
+  addItemToBackpack(user: User, skill: { type: { name: any; }; }, reward: any, rewardAmount: number) {
+    const item = user.character.backpack.find((item) => item.name === skill.type.name);
+    if (item) {
+      item.amount += rewardAmount;
+      console.log(reward)
+    } else {
+      console.log(reward)
+      user.character.backpack.push(reward);
+    }
+  }
+  
+  removeItemFromBackpack(user: User, skill: { type: { name: any; }; }) {
+    const item = user.character.backpack.find((item) => item.name === skill.type.name);
+    if (item) {
+      item.amount -= 1;
+    } else {
+      return "You have no more items!";
+    }
+  }
+
 }

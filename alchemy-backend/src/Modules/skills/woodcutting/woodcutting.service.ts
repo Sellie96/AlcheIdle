@@ -1,39 +1,30 @@
 import { Injectable } from '@nestjs/common';
 import { Woodcutting } from './entities/message.entity';
-import { Cron, CronExpression } from '@nestjs/schedule';
 import { UsersService } from 'src/user/users.service';
 
 @Injectable()
 export class WoodcuttingService {
-
-  woodCuttingUsers: Woodcutting[] = [];
+  woodCuttingUsers: Map<string, Woodcutting> = new Map();
   startWoodcutting: boolean = true;
   timeLeft: number = 10;
   clientToUser = {};
 
   constructor(private usersService: UsersService) {}
-  
-  async addToWoodcuttingActive(activeWoodcutter: Woodcutting) {
-    const user: Woodcutting = activeWoodcutter;
 
-    let returnedData:any = {
+  async addToActive(activeWoodcutter: Woodcutting) {
+    const woodcutter: Woodcutting = activeWoodcutter;
+
+    const updatedData: any = {
       updateMessage: '',
-      woodcuttingUsers: {},
+      rewards: {},
     };
 
-    if(this.woodCuttingUsers.some(
-      (woodcutter) => woodcutter.username === user.username)) {
-        if(this.woodCuttingUsers.some(
-          (woodcutter) => woodcutter.timestamp + 11 < user.timestamp)) {
-            returnedData.woodcuttingUsers = await this.usersService.updateWoodcuttingByUsername(user);
-          }
-      } else {
-      this.woodCuttingUsers.push(user);
-      returnedData.woodcuttingUsers = await this.usersService.updateWoodcuttingByUsername(user);
-    }
+    this.woodCuttingUsers.set(woodcutter.username, woodcutter);
 
-    returnedData.updateMessage = `You gain ${returnedData.woodcuttingUsers.logAmount}x ${user.treeType.reward} and ${user.treeType.xp} XP!`;
+    updatedData.rewards = await this.usersService.updateSkillByUsername(woodcutter);
 
-    return returnedData;
+    updatedData.updateMessage = `You gain ${updatedData.rewards.reward.amount}x ${woodcutter.type.reward} and ${woodcutter.type.xp} XP!`;
+
+    return updatedData;
   }
 }

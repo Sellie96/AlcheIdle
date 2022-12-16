@@ -28,7 +28,7 @@ let FishingService = class FishingService {
         this.timeLeft = 10;
         this.clientToUser = {};
     }
-    addToFishingActive(activeFish) {
+    addToActive(activeFish) {
         return __awaiter(this, void 0, void 0, function* () {
             const user = activeFish;
             let returnedData = {

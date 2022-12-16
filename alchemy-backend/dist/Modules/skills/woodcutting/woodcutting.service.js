@@ -24,29 +24,22 @@ const users_service_1 = require("../../../user/users.service");
 let WoodcuttingService = class WoodcuttingService {
     constructor(usersService) {
         this.usersService = usersService;
-        this.woodCuttingUsers = [];
+        this.woodCuttingUsers = new Map();
         this.startWoodcutting = true;
         this.timeLeft = 10;
         this.clientToUser = {};
     }
-    addToWoodcuttingActive(activeWoodcutter) {
+    addToActive(activeWoodcutter) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = activeWoodcutter;
-            let returnedData = {
+            const woodcutter = activeWoodcutter;
+            const updatedData = {
                 updateMessage: '',
-                woodcuttingUsers: {},
+                rewards: {},
             };
-            if (this.woodCuttingUsers.some((woodcutter) => woodcutter.username === user.username)) {
-                if (this.woodCuttingUsers.some((woodcutter) => woodcutter.timestamp + 11 < user.timestamp)) {
-                    returnedData.woodcuttingUsers = yield this.usersService.updateWoodcuttingByUsername(user);
-                }
-            }
-            else {
-                this.woodCuttingUsers.push(user);
-                returnedData.woodcuttingUsers = yield this.usersService.updateWoodcuttingByUsername(user);
-            }
-            returnedData.updateMessage = `You gain ${returnedData.woodcuttingUsers.logAmount}x ${user.treeType.reward} and ${user.treeType.xp} XP!`;
-            return returnedData;
+            this.woodCuttingUsers.set(woodcutter.username, woodcutter);
+            updatedData.rewards = yield this.usersService.updateSkillByUsername(woodcutter);
+            updatedData.updateMessage = `You gain ${updatedData.rewards.reward.amount}x ${woodcutter.type.reward} and ${woodcutter.type.xp} XP!`;
+            return updatedData;
         });
     }
 };

@@ -11,7 +11,7 @@ export class FishingService {
 
   constructor(private usersService: UsersService) {}
   
-  async addToFishingActive(activeFish: Fishing) {
+  async addToActive(activeFish: Fishing) {
     const user: Fishing = activeFish;
 
     let returnedData:any = {

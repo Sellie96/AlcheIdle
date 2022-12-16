@@ -12,6 +12,8 @@ const auth_module_1 = require("../../../auth/auth.module");
 const messages_module_1 = require("../../messages/messages.module");
 const users_module_1 = require("../../../user/users.module");
 const agility_module_1 = require("../agility/agility.module");
+const cooking_module_1 = require("../cooking/cooking.module");
+const firemaking_module_1 = require("../firemaking/firemaking.module");
 const fishing_module_1 = require("../fishing/fishing.module");
 const mining_module_1 = require("../mining/mining.module");
 const thieving_module_1 = require("../thieving/thieving.module");
@@ -30,6 +32,8 @@ SkillsModule = __decorate([
             (0, common_1.forwardRef)(() => woodcutting_module_1.WoodcuttingModule),
             (0, common_1.forwardRef)(() => thieving_module_1.ThievingModule),
             (0, common_1.forwardRef)(() => messages_module_1.MessagesModule),
+            (0, common_1.forwardRef)(() => firemaking_module_1.FiremakingModule),
+            (0, common_1.forwardRef)(() => cooking_module_1.CookingModule)
         ],
         controllers: [],
         providers: [skills_gateway_1.SkillsGateway],

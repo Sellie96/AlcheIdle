@@ -24,26 +24,19 @@ const users_service_1 = require("../../../user/users.service");
 let ThievingService = class ThievingService {
     constructor(usersService) {
         this.usersService = usersService;
-        this.thievingUsers = [];
+        this.thievingUsers = new Map();
         this.timeLeft = 10;
         this.clientToUser = {};
     }
-    addToThievingActive(activeThief) {
+    addToActive(activeThief) {
         return __awaiter(this, void 0, void 0, function* () {
             const user = activeThief;
             let returnedData = {
                 updateMessage: '',
                 thievingUsers: {},
             };
-            if (this.thievingUsers.some((thief) => thief.username === user.username)) {
-                if (this.thievingUsers.some((thief) => thief.timestamp + 11 < user.timestamp)) {
-                    returnedData.thievingUsers = yield this.usersService.updateThievingByUsername(user);
-                }
-            }
-            else {
-                this.thievingUsers.push(user);
-                returnedData.thievingUsers = yield this.usersService.updateThievingByUsername(user);
-            }
+            this.thievingUsers.set(user.username, user);
+            returnedData.thievingUsers = yield this.usersService.updateThievingByUsername(user);
             returnedData.updateMessage = `You gain ${returnedData.thievingUsers.gold} Gold and ${user.thievingOption.xp} XP!`;
             return returnedData;
         });

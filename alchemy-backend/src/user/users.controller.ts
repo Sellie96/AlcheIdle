@@ -8,6 +8,7 @@ import {
   Request,
   Res,
   Query,
+  HttpStatus,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -22,6 +23,22 @@ import { LocalAuthGuard } from 'src/auth/strategies/local-auth.guard';
 import { RegisterData } from './register.interface';
 import { User } from './user.entity';
 import { UsersService } from './users.service';
+
+const skills = [
+  'woodcutting',
+  'firemaking',
+  'fishing',
+  'cooking',
+  'runecrafting',
+  'mining',
+  'smithing',
+  'thieving',
+  'fletching',
+  'crafting',
+  'herblore',
+  'agility',
+  'total',
+];
 
 @ApiBearerAuth()
 @ApiTags('Alchemy')
@@ -44,13 +61,13 @@ export class UsersController {
     status: 200,
     description: 'User Registered',
   })
-  async create(@Res() res, @Body() createUser: RegisterData): Promise<User> {
+  async registerUser(@Res() res, @Body() createUser: RegisterData): Promise<User> {
     if (await this.usersService.doesUserExist(createUser.username)) {
-      return res.status(403).send({ message: 'User already exists' });
-    } else {
-      this.usersService.register(createUser);
-      return res.status(200).send({ message: 'User registered' });
+      return res.status(HttpStatus.FORBIDDEN).send({ message: 'User already exists' });
     }
+  
+    this.usersService.register(createUser);
+    return res.status(HttpStatus.OK).send({ message: 'User registered' });
   }
 
   @Post('profile')
@@ -60,10 +77,13 @@ export class UsersController {
     status: 200,
     description: 'User Returned',
   })
-  async getPlayerData(@Res() res, @Body() body: any): Promise<User> {
-    return res.status(200).send({
-      playerData: await this.usersService.findOneByUsername(body.username),
-    });
+  async getPlayerData(@Res() res, @Body('username') username: string): Promise<User> {
+    try {
+      const playerData = await this.usersService.findOneByUsername(username);
+      return res.status(200).send({ playerData });
+    } catch (error) {
+      return res.status(500).send({ error: 'Failed to retrieve player data' });
+    }
   }
 
   @Get('leaderboard')
@@ -72,59 +92,53 @@ export class UsersController {
     description: 'Returns a list of users',
     type: User,
   })
-  async returnTotalLevelLeaderboard(
+  async getLeaderboard(
     @Res() res,
-    @Query('skill') skill: String,
+    @Query('skill') skill: string,
   ): Promise<User> {
-    let returnedData: any = await this.usersService.findAll();
-
-    let sortedObjs: any[];
-
-    switch (skill.toLowerCase()) {
-      case 'total':
-        sortedObjs = this.filterTotalLevel(returnedData);
-        break;
-      default:
-        sortedObjs = this.filterSkillLevel(returnedData, skill.toLowerCase());
-        break;
+    // Validate the skill query parameter
+    if (!skill || !skills.includes(skill.toLowerCase())) {
+      return res.status(400).send({ error: 'Invalid skill specified' });
     }
+
+    const returnedData = await this.usersService.findAll();
+
+    const sortedObjs = this.filterLeaderboard(
+      returnedData,
+      skill.toLowerCase(),
+    );
 
     return res.status(200).send({ playerData: sortedObjs });
   }
 
-  filterTotalLevel(returnedData: any[]) {
-   return returnedData.sort(function (a, b) {
-      return (
-        b.character.skills.woodcutting.level +
-        b.character.skills.firemaking.level +
-        b.character.skills.fishing.level +
-        b.character.skills.cooking.level +
-        b.character.skills.runecrafting.level +
-        b.character.skills.mining.level +
-        b.character.skills.smithing.level +
-        b.character.skills.thieving.level +
-        b.character.skills.fletching.level +
-        b.character.skills.crafting.level +
-        b.character.skills.herblore.level +
-        b.character.skills.agility.level -
-        (a.character.skills.woodcutting.level +
-          a.character.skills.mining.level +
-          a.character.skills.fishing.level +
-          a.character.skills.cooking.level +
-          a.character.skills.firemaking.level +
-          a.character.skills.runecrafting.level +
-          a.character.skills.smithing.level +
-          a.character.skills.thieving.level +
-          a.character.skills.fletching.level +
-          a.character.skills.crafting.level +
-          a.character.skills.herblore.level +
-          a.character.skills.agility.level)
-      );
+  private filterLeaderboard(data: any, skill: string): any[] {
+    data.sort(
+      (a: { [x: string]: number }, b: { [x: string]: number }) =>
+        b[skill] - a[skill],
+    );
+
+    return data;
+  }
+
+  filterTotalLevel(returnedData: any[], skills: any[]) {
+    return returnedData.sort((a: { character: { skills: { [x: string]: { level: any; }; }; }; }, b: { character: { skills: { [x: string]: { level: any; }; }; }; }) => {
+      const aTotalLevel = skills.reduce((total: any, skill: string | number) => {
+        return total + a.character.skills[skill].level;
+      }, 0);
+  
+      const bTotalLevel = skills.reduce((total: any, skill: string | number) => {
+        return total + b.character.skills[skill].level;
+      }, 0);
+  
+      return bTotalLevel - aTotalLevel;
     });
   }
 
-  filterSkillLevel(returnedData, skill) {
-   return returnedData.sort(function (a, b) {
+  filterSkillLevel(returnedData: any[], skill: string | number) {
+    return returnedData.sort(function (
+      a: { character: { skills: { [x: string]: { level: number } } } },
+      b: { character: { skills: { [x: string]: { level: number } } } },
+    ) {
       return b.character.skills[skill].level - a.character.skills[skill].level;
     });
   }

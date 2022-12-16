@@ -3,63 +3,121 @@
   [players]="1"
 ></app-skill-information>
 
-<form [formGroup]="firemakingForm" class="firemaking-box">
-  <mat-form-field style="margin-top: 1rem" appearance="fill">
-    <mat-label style="color: white">Select your logs</mat-label>
-    <mat-select formControlName="logs">
-      <div *ngFor="let logs of logNames">
-        <mat-option value="{{ logs }}">
+<mat-grid-list
+  cols="3"
+  rowHeight="1.5:1"
+  gutterSize="1rem"
+  style="margin-top: 1rem"
+>
+  <mat-grid-tile class="firemaking-box grid">
+    <form [formGroup]="firemakingForm">
+      <mat-card class="firemaking-box">
+        <mat-form-field style="margin-top: 1rem" appearance="fill">
+          <mat-label style="color: white">Select your logs</mat-label>
+          <mat-select formControlName="logs">
+            <div *ngFor="let logs of logNames">
+              <mat-option value="{{ logs }}">
+                <img
+                  style="width: 16px"
+                  src="../../../../assets/items/{{
+                    logs.charAt(0).toUpperCase() + logs.slice(1)
+                  }}.png"
+                />
+                {{ logs | titlecase }}</mat-option
+              >
+            </div>
+          </mat-select>
+        </mat-form-field>
+        <mat-card-header>
+          <mat-card-title>{{
+            currentLogSelected.name | titlecase
+          }}</mat-card-title>
+          <mat-card-subtitle style="color: white">{{
+            logsInStorage | number
+          }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
           <img
-            style="width: 16px"
-            src="../../../../assets/items/{{ logs.charAt(0).toUpperCase() + logs.slice(1) }}.png"
+            mat-card-image
+            style="width: 3rem"
+            src="../../../../assets/items/{{
+              currentLogSelected.name.charAt(0).toUpperCase() +
+                currentLogSelected.name.slice(1)
+            }}.png"
+            alt="Logs"
           />
-          {{ logs | titlecase }}</mat-option
-        >
+        </mat-card-content>
+        <mat-card-actions>
+          <div class="rewardContainer">
+            <div class="rewardIcon">
+              <span class="floating"> {{ 20 }} </span>
+              <img
+                class="icon"
+                src="../../../../assets/items/{{
+                  currentLogSelected.name.charAt(0).toUpperCase() +
+                    currentLogSelected.name.slice(1)
+                }}.png"
+                alt="None"
+              />
+            </div>
+            <div class="rewardIcon">
+              <span class="floating">{{ 4 }}</span>
+              <img class="icon" src="./assets/general/hourglass.png" />
+            </div>
+          </div>
+        </mat-card-actions>
+      </mat-card>
+    </form>
+  </mat-grid-tile>
+  <mat-grid-tile class="firemaking-box grid">
+    <button
+      (click)="activateBurn()"
+      mat-raised-button
+      color="warn"
+      style="width: 96%"
+    >
+      Burn
+    </button>
+
+    <span style="width: 100%" *ngIf="burningActive">
+      <span
+        appTimestampCountdown
+        [timestamp]="timeUntilFinish || 0"
+        (isFinished)="completeFiremaking()"
+      ></span>
+
+      <mat-progress-bar
+        class="progress-bar"
+        color="accent"
+        mode="determinate"
+        anima
+        appTimestampCountdownProgress
+        [timestamp]="timeUntilFinish || 0"
+      ></mat-progress-bar>
+    </span>
+  </mat-grid-tile>
+  <mat-grid-tile class="firemaking-box grid"
+    >
+    <h4 *ngIf="!burningActive">Inactive</h4>
+    <div *ngIf="burningActive" class="fire">
+      <div class="logs">
+        <div class="log l1"></div>
+        <div class="log l2"></div>
       </div>
-    </mat-select>
-  </mat-form-field>
-
-  <div>
-    <img
-      style="width: 64px; position: absolute; left: 70px"
-      src="../../../../assets/items/{{ currentLogSelected.charAt(0).toUpperCase() + currentLogSelected.slice(1) }}.png"
-    />
-    Normal Logs
-    <p>{{ logsInStorage | number }}</p>
-    <div class="rewardContainer">
-      <div class="rewardIcon">
-        <span class="floating"> 20 </span>
-        <img class="icon" src="../../../../assets/items/{{ currentLogSelected.charAt(0).toUpperCase() + currentLogSelected.slice(1) }}.png" alt="None" />
+      <div class="flames">
+        <div class="flame f1"></div>
+        <div class="flame f2"></div>
+        <div class="flame f3"></div>
       </div>
-      <div class="rewardIcon">
-        <span class="floating">{{ 4 }}</span>
-        <img class="icon" src="./assets/general/hourglass.png" />
-      </div>
-    </div>
-  </div>
-</form>
-
-<div class="firemaking-box">
-  <button
-    mat-button
-    style="background-color: red; color: black; margin-top: 0.5rem"
-  >
-    Burn Logs
-  </button>
-
-  <span
-    appTimestampCountdown
-    [timestamp]=" timeUntilFinish || 0"
-    (isFinished)="resetTimer()"
-  ></span>
-
-  <mat-progress-bar
-    class="progress-bar"
-    mode="determinate"
-    [color]="'primary'"
-    [value]=""
-  >
-  </mat-progress-bar>
-</div>
-
-<div class="firemaking-box">Rewards</div>
+      <div class="sparks">
+        <div class="spark s1"></div>
+        <div class="spark s2"></div>
+        <div class="spark s3"></div>
+        <div class="spark s4"></div>
+        <div class="spark s5"></div>
+        <div class="spark s6"></div>
+        <div class="spark s7"></div>
+        <div class="spark s8"></div>
+      </div></div
+  ></mat-grid-tile>
+</mat-grid-list>

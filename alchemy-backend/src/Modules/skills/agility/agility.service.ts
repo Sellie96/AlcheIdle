@@ -23,11 +23,11 @@ export class AgilityService {
       (runners) => runners.username === user.username)) {
         if(this.agilityUsers.some(
           (runners) => runners.timestamp + 11 < user.timestamp)) {
-            returnedData.agilityUsers = await this.usersService.updateAgilityByUsername(user);
+            returnedData.agilityUsers = await this.usersService.updateSkillByUsername(user);
           }
       } else {
       this.agilityUsers.push(user);
-      returnedData.agilityUsers = await this.usersService.updateAgilityByUsername(user);
+      returnedData.agilityUsers = await this.usersService.updateSkillByUsername(user);
     }
 
     returnedData.updateMessage = `You gain ${returnedData.agilityUsers.marksAmount}x Agility Marks and ${user.courseType.xp} XP!`;

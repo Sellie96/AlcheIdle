@@ -26,11 +26,11 @@ export class FiremakingService {
         )
       ) {
         returnedData.firemakingUsers =
-          await this.usersService.updateFiremakingByUsername(user);
+          await this.usersService.updateSkillByUsername(user);
       }
     } else {
       this.firemakingUsers.push(user);
-      returnedData.firemakingUsers = await this.usersService.updateFiremakingByUsername(user);
+      returnedData.firemakingUsers = await this.usersService.updateSkillByUsername(user);
     }
 
     returnedData.updateMessage = `You gain ${user.type.reward}x ${returnedData.firemakingUsers.ashes.name} and ${user.type.xp} XP!`;

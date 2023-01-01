@@ -7,19 +7,74 @@ export declare function UserDataCreation(registerData: RegisterData): Promise<{
         characterName: string;
         characterAlignment: string;
         combatStats: {
-            hpCurrent: number;
-            hpMax: number;
-            attack: number;
-            defence: number;
-            strength: number;
-            magic: number;
-            ranged: number;
-        };
-        currencies: {
-            gold: number;
-            energy: number;
-            lifeForce: number;
-            gems: number;
+            stats: {
+                health: number;
+                maxHealth: number;
+                mana: number;
+                maxMana: number;
+                strength: number;
+                dexterity: number;
+                intelligence: number;
+                endurance: number;
+                agility: number;
+                luck: number;
+            };
+            defenses: {
+                armor: number;
+                maxArmor: number;
+                magicResistance: number;
+            };
+            combat: {
+                criticalHitChance: number;
+                criticalHitDamage: number;
+                attackSpeed: number;
+                castSpeed: number;
+                accuracy: number;
+                evasion: number;
+                blockChance: number;
+                parryChance: number;
+            };
+            elemental: {
+                fireResistance: number;
+                iceResistance: number;
+                lightningResistance: number;
+                fireAffinity: number;
+                iceAffinity: number;
+                lightningAffinity: number;
+                fireWeakness: number;
+                iceWeakness: number;
+                lightningWeakness: number;
+            };
+            magic: {
+                healingPower: number;
+                spellPower: number;
+            };
+            progression: {
+                experiencePoints: number;
+                level: number;
+                gold: number;
+                inventorySize: number;
+                encumbrance: number;
+                skillPoints: number;
+                talentPoints: number;
+            };
+            resource: {
+                rage: number;
+                energy: number;
+                comboPoints: number;
+                fireCharges: number;
+                iceCharges: number;
+                lightningCharges: number;
+            };
+            debuffResistances: {
+                poisonResistance: number;
+                bleedResistance: number;
+                stunResistance: number;
+                confuseResistance: number;
+                charmResistance: number;
+                fearResistance: number;
+                silenceResistance: number;
+            };
         };
         skills: {
             agility: {
@@ -121,6 +176,23 @@ export declare function UserDataCreation(registerData: RegisterData): Promise<{
             };
         };
         backpack: any[];
-        equipment: any[];
+        equipment: {
+            head: {};
+            neck: {};
+            shoulders: {};
+            chest: {};
+            hands: {};
+            waist: {};
+            legs: {};
+            feet: {};
+            ring1: {};
+            ring2: {};
+            trinket1: {};
+            trinket2: {};
+            mainHand: {};
+            offHand: {};
+            necklace: {};
+            cape: {};
+        };
     };
 }>;

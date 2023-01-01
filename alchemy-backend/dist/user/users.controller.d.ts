@@ -10,7 +10,9 @@ export declare class UsersController {
     registerUser(res: any, createUser: RegisterData): Promise<User>;
     getPlayerData(res: any, username: string): Promise<User>;
     getLeaderboard(res: any, skill: string): Promise<User>;
-    private filterLeaderboard;
+    private getTotalLevel;
+    private getTotalXp;
     filterTotalLevel(returnedData: any[], skills: any[]): any[];
     filterSkillLevel(returnedData: any[], skill: string | number): any[];
+    flatten(arr: any[]): any[];
 }

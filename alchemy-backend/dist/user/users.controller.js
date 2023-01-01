@@ -41,8 +41,7 @@ const skills = [
     'fletching',
     'crafting',
     'herblore',
-    'agility',
-    'total',
+    'agility'
 ];
 let UsersController = class UsersController {
     constructor(usersService, authService) {
@@ -78,13 +77,29 @@ let UsersController = class UsersController {
                 return res.status(400).send({ error: 'Invalid skill specified' });
             }
             const returnedData = yield this.usersService.findAll();
-            const sortedObjs = this.filterLeaderboard(returnedData, skill.toLowerCase());
-            return res.status(200).send({ playerData: sortedObjs });
+            let leaderboardData = returnedData.map((obj, index) => ({
+                name: obj.character.characterName,
+                mode: obj.character.characterAlignment,
+                level: this.getTotalLevel(obj.character.skills),
+                xp: this.getTotalXp(obj.character.skills),
+            }));
+            leaderboardData = leaderboardData.sort((a, b) => b.level - a.level).map((obj, index) => (Object.assign(Object.assign({}, obj), { ranking: index + 1 })));
+            return res.status(200).send({ playerData: leaderboardData });
         });
     }
-    filterLeaderboard(data, skill) {
-        data.sort((a, b) => b[skill] - a[skill]);
-        return data;
+    getTotalLevel(returnedData) {
+        let totalLevel = 0;
+        skills.forEach(value => {
+            totalLevel += returnedData[value].level;
+        });
+        return totalLevel;
+    }
+    getTotalXp(returnedData) {
+        let totalXp = 0;
+        skills.forEach(value => {
+            totalXp += returnedData[value].xpCurrent;
+        });
+        return totalXp;
     }
     filterTotalLevel(returnedData, skills) {
         return returnedData.sort((a, b) => {
@@ -101,6 +116,18 @@ let UsersController = class UsersController {
         return returnedData.sort(function (a, b) {
             return b.character.skills[skill].level - a.character.skills[skill].level;
         });
+    }
+    flatten(arr) {
+        const flattenedArray = [];
+        for (const element of arr) {
+            if (Array.isArray(element)) {
+                flattenedArray.push(...this.flatten(element));
+            }
+            else {
+                flattenedArray.push(element);
+            }
+        }
+        return flattenedArray;
     }
 };
 __decorate([

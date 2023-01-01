@@ -21,7 +21,7 @@ export class ThievingService {
 
     this.thievingUsers.set(user.username, user);
     
-    returnedData.thievingUsers = await this.usersService.updateThievingByUsername(user);
+    returnedData.thievingUsers = await this.usersService.updateSkillByUsername(user);
   
 
     returnedData.updateMessage = `You gain ${returnedData.thievingUsers.gold} Gold and ${user.thievingOption.xp} XP!`;

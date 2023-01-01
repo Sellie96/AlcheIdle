@@ -6,7 +6,7 @@ import { Socket } from 'ngx-socket-io';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, Subject, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { CreateCharacter } from '../stateManagement/character/character.actions';
+import { CreateCharacter } from '../../../../AlchIdle/src/app/state/character.actions';
 import { PlayerData } from '../stateManagement/character/CharacterDataTypes';
 
 

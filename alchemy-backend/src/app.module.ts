@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
+import { CombatModule } from './Modules/combat/combat.module';
 import { ShopModule } from './Modules/shop/shop.module';
 import { AgilityModule } from './Modules/skills/agility/agility.module';
 import { CookingModule } from './Modules/skills/cooking/cooking.module';
@@ -38,6 +39,7 @@ import { UsersModule } from './user/users.module';
     CookingModule,
     SkillsModule,
     ShopModule,
+    CombatModule,
     ScheduleModule.forRoot(),
   ],
   controllers: [AppController],

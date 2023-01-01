@@ -26,11 +26,11 @@ export class CookingService {
         )
       ) {
         returnedData.cookingUsers =
-          await this.usersService.updateCookingByUsername(user);
+          await this.usersService.updateSkillByUsername(user);
       }
     } else {
       this.cookingUsers.push(user);
-      returnedData.cookingUsers = await this.usersService.updateCookingByUsername(user);
+      returnedData.cookingUsers = await this.usersService.updateSkillByUsername(user);
     }
 
     returnedData.updateMessage = `You gain ${returnedData.cookingUsers.reward.amount}x ${returnedData.cookingUsers.reward.name} and ${user.type.xp} XP!`;

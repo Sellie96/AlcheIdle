@@ -55,8 +55,8 @@ export class ShopService {
   }
 
   buyItemUpdate(userData: User, item: Item, itemToBuy: any) {
-    if (userData.character.currencies.gold >= item.value) {
-      userData.character.currencies.gold -= item.value;
+    if (userData.character.combatStats.progression.gold >= item.value) {
+      userData.character.combatStats.progression.gold -= item.value;
 
       userData.character.skills.woodcutting.tool = itemToBuy;
 
@@ -77,8 +77,8 @@ export class ShopService {
   }
 
   buyPotionUpdate(userData: User, item: Item, itemToBuy: any) {
-    if (userData.character.currencies.gold >= item.value) {
-      userData.character.currencies.gold -= item.value;
+    if (userData.character.combatStats.progression.gold >= item.value) {
+      userData.character.combatStats.progression.gold -= item.value;
 
       if (
         userData.character.backpack.some((item) => item.name === itemToBuy.name)

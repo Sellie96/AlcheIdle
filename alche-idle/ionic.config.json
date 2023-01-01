@@ -1,7 +1,0 @@
-{
-  "name": "Alche Idle",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "angular"
-}

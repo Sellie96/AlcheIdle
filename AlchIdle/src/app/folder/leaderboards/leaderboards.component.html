@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>NGX Data Table</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    <!-- Theme classes dark, material, bootstrap -->
+    <ngx-datatable
+    class="dark"
+    [rows]="rows"
+    [columns]="[{ name: 'Ranking' }, { name: 'Name' }, { name: 'XP' }, {name: 'Level'}, {name: 'Mode'}]"
+    [columnMode]="ColumnMode.force"
+    [headerHeight]="50"
+    [footerHeight]="50"
+    rowHeight="auto"
+    [limit]="18"
+  >
+  </ngx-datatable>
+  </div>
+</ion-content>
+

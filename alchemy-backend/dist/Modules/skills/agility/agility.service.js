@@ -38,12 +38,12 @@ let AgilityService = class AgilityService {
             };
             if (this.agilityUsers.some((runners) => runners.username === user.username)) {
                 if (this.agilityUsers.some((runners) => runners.timestamp + 11 < user.timestamp)) {
-                    returnedData.agilityUsers = yield this.usersService.updateAgilityByUsername(user);
+                    returnedData.agilityUsers = yield this.usersService.updateSkillByUsername(user);
                 }
             }
             else {
                 this.agilityUsers.push(user);
-                returnedData.agilityUsers = yield this.usersService.updateAgilityByUsername(user);
+                returnedData.agilityUsers = yield this.usersService.updateSkillByUsername(user);
             }
             returnedData.updateMessage = `You gain ${returnedData.agilityUsers.marksAmount}x Agility Marks and ${user.courseType.xp} XP!`;
             return returnedData;

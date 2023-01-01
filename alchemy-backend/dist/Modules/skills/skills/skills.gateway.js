@@ -26,7 +26,6 @@ const websockets_1 = require("@nestjs/websockets");
 const decorators_1 = require("@nestjs/websockets/decorators");
 const socket_io_1 = require("socket.io");
 const auth_service_1 = require("../../../auth/auth.service");
-const messages_service_1 = require("../../messages/messages.service");
 const user_entity_1 = require("../../../user/user.entity");
 const users_service_1 = require("../../../user/users.service");
 const agility_service_1 = require("../agility/agility.service");

@@ -23,11 +23,11 @@ export class FishingService {
       (fisher) => fisher.username === user.username)) {
         if(this.fishingUsers.some(
           (fisher) => fisher.timestamp + 11 < user.timestamp)) {
-            returnedData.fishingUsers = await this.usersService.updateFishingByUsername(user);
+            returnedData.fishingUsers = await this.usersService.updateSkillByUsername(user);
           }
       } else {
       this.fishingUsers.push(user);
-      returnedData.fishingUsers = await this.usersService.updateFishingByUsername(user);
+      returnedData.fishingUsers = await this.usersService.updateSkillByUsername(user);
     }
 
     returnedData.updateMessage = `You gain ${returnedData.fishingUsers.fishAmount}x ${user.fishType.reward} and ${user.fishType.xp} XP!`;

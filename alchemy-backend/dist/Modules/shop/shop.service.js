@@ -69,8 +69,8 @@ let ShopService = class ShopService {
         });
     }
     buyItemUpdate(userData, item, itemToBuy) {
-        if (userData.character.currencies.gold >= item.value) {
-            userData.character.currencies.gold -= item.value;
+        if (userData.character.combatStats.progression.gold >= item.value) {
+            userData.character.combatStats.progression.gold -= item.value;
             userData.character.skills.woodcutting.tool = itemToBuy;
             this.usersRepository.update({ username: userData.username }, {
                 character: userData.character,
@@ -85,8 +85,8 @@ let ShopService = class ShopService {
         }
     }
     buyPotionUpdate(userData, item, itemToBuy) {
-        if (userData.character.currencies.gold >= item.value) {
-            userData.character.currencies.gold -= item.value;
+        if (userData.character.combatStats.progression.gold >= item.value) {
+            userData.character.combatStats.progression.gold -= item.value;
             if (userData.character.backpack.some((item) => item.name === itemToBuy.name)) {
                 let indexOfItem = userData.character.backpack.findIndex((item) => item.name === itemToBuy.name);
                 userData.character.backpack[indexOfItem].amount += itemToBuy.amount;

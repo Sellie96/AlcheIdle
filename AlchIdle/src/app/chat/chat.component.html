@@ -1,0 +1,13 @@
+<div class="chat-ui">
+  <div class="chat-ui-text-area">
+
+    <div class="chat-box">
+      <div tabindex="1" #chatDiv class="chat-text {{item.name}}" *ngFor="let item of messages">
+        [{{item.date || item.time}}] <img *ngIf="item.name !== 'Server' " width="20rem" src="../../../assets/chat-icons/normal.png"> {{item.name}}: {{ item.message }}
+      </div>
+    </div>
+    <ion-item>
+      <ion-textarea (keyup.enter)="addChat()" [formControl]="message" placeholder="Type to chat..."></ion-textarea>
+    </ion-item>
+  </div>
+</div>

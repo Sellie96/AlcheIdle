@@ -2,7 +2,6 @@ import { MessageBody, OnGatewayConnection, OnGatewayDisconnect, SubscribeMessage
 import { ConnectedSocket, WebSocketServer } from '@nestjs/websockets/decorators';
 import { Server, Socket } from 'socket.io';
 import { AuthService } from 'src/auth/auth.service';
-import { MessagesService } from 'src/Modules/messages/messages.service';
 import { User } from 'src/user/user.entity';
 import { UsersService } from 'src/user/users.service';
 import { AgilityService } from '../agility/agility.service';

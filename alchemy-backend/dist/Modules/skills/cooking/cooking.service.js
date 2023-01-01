@@ -38,12 +38,12 @@ let CookingService = class CookingService {
             if (this.cookingUsers.some((cooker) => cooker.username === user.username)) {
                 if (this.cookingUsers.some((cooker) => cooker.timestamp + 11 < user.timestamp)) {
                     returnedData.cookingUsers =
-                        yield this.usersService.updateCookingByUsername(user);
+                        yield this.usersService.updateSkillByUsername(user);
                 }
             }
             else {
                 this.cookingUsers.push(user);
-                returnedData.cookingUsers = yield this.usersService.updateCookingByUsername(user);
+                returnedData.cookingUsers = yield this.usersService.updateSkillByUsername(user);
             }
             returnedData.updateMessage = `You gain ${returnedData.cookingUsers.reward.amount}x ${returnedData.cookingUsers.reward.name} and ${user.type.xp} XP!`;
             return returnedData;

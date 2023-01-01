@@ -36,7 +36,7 @@ let ThievingService = class ThievingService {
                 thievingUsers: {},
             };
             this.thievingUsers.set(user.username, user);
-            returnedData.thievingUsers = yield this.usersService.updateThievingByUsername(user);
+            returnedData.thievingUsers = yield this.usersService.updateSkillByUsername(user);
             returnedData.updateMessage = `You gain ${returnedData.thievingUsers.gold} Gold and ${user.thievingOption.xp} XP!`;
             return returnedData;
         });

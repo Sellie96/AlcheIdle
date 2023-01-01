@@ -38,12 +38,12 @@ let MiningService = class MiningService {
             };
             if (this.miningUsers.some((miners) => miners.username === user.username)) {
                 if (this.miningUsers.some((miners) => miners.timestamp + 11 < user.timestamp)) {
-                    returnedData.miningUsers = yield this.usersService.updateMiningByUsername(user);
+                    returnedData.miningUsers = yield this.usersService.updateSkillByUsername(user);
                 }
             }
             else {
                 this.miningUsers.push(user);
-                returnedData.miningUsers = yield this.usersService.updateMiningByUsername(user);
+                returnedData.miningUsers = yield this.usersService.updateSkillByUsername(user);
             }
             returnedData.updateMessage = `You gain ${returnedData.miningUsers.oreAmount}x ${user.oreType.reward} and ${user.oreType.xp} XP!`;
             return returnedData;

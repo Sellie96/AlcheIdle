@@ -36,8 +36,7 @@ const skills = [
   'fletching',
   'crafting',
   'herblore',
-  'agility',
-  'total',
+  'agility'
 ];
 
 @ApiBearerAuth()
@@ -100,24 +99,45 @@ export class UsersController {
     if (!skill || !skills.includes(skill.toLowerCase())) {
       return res.status(400).send({ error: 'Invalid skill specified' });
     }
-
+  
     const returnedData = await this.usersService.findAll();
 
-    const sortedObjs = this.filterLeaderboard(
-      returnedData,
-      skill.toLowerCase(),
-    );
+  
+    // Add a ranking property to each user object based on their skill level
+  
+    // Return only the CharacterName, characterAlignment, Skill Total level and skill total xp properties of each user object
+    let leaderboardData = returnedData.map((obj, index) => ({
+      name: obj.character.characterName,
+      mode: obj.character.characterAlignment,
+      level: this.getTotalLevel(obj.character.skills),
+      xp: this.getTotalXp(obj.character.skills),
+    }));
 
-    return res.status(200).send({ playerData: sortedObjs });
+    leaderboardData = leaderboardData.sort((a, b) => b.level - a.level).map((obj, index) => ({  ...obj, ranking: index + 1 }));
+  
+    return res.status(200).send({ playerData: leaderboardData });
   }
 
-  private filterLeaderboard(data: any, skill: string): any[] {
-    data.sort(
-      (a: { [x: string]: number }, b: { [x: string]: number }) =>
-        b[skill] - a[skill],
-    );
+  private getTotalLevel(returnedData: any) {
+    let totalLevel: number = 0;
 
-    return data;
+    skills.forEach(value => {
+      totalLevel += returnedData[value].level
+
+    })
+
+    return totalLevel;
+  }
+
+  private getTotalXp(returnedData: any) {
+
+    let totalXp: number = 0;
+
+    skills.forEach(value => {
+      totalXp += returnedData[value].xpCurrent
+    })
+
+    return totalXp;
   }
 
   filterTotalLevel(returnedData: any[], skills: any[]) {
@@ -141,5 +161,18 @@ export class UsersController {
     ) {
       return b.character.skills[skill].level - a.character.skills[skill].level;
     });
+  }
+
+
+  flatten(arr: any[]): any[] {
+    const flattenedArray: any[] = [];
+    for (const element of arr) {
+      if (Array.isArray(element)) {
+        flattenedArray.push(...this.flatten(element));
+      } else {
+        flattenedArray.push(element);
+      }
+    }
+    return flattenedArray;
   }
 }

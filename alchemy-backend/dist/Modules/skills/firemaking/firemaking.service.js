@@ -38,12 +38,12 @@ let FiremakingService = class FiremakingService {
             if (this.firemakingUsers.some((firemaker) => firemaker.username === user.username)) {
                 if (this.firemakingUsers.some((firemaker) => firemaker.timestamp + 11 < user.timestamp)) {
                     returnedData.firemakingUsers =
-                        yield this.usersService.updateFiremakingByUsername(user);
+                        yield this.usersService.updateSkillByUsername(user);
                 }
             }
             else {
                 this.firemakingUsers.push(user);
-                returnedData.firemakingUsers = yield this.usersService.updateFiremakingByUsername(user);
+                returnedData.firemakingUsers = yield this.usersService.updateSkillByUsername(user);
             }
             returnedData.updateMessage = `You gain ${user.type.reward}x ${returnedData.firemakingUsers.ashes.name} and ${user.type.xp} XP!`;
             return returnedData;

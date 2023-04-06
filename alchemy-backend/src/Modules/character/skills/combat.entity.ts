@@ -49,9 +49,6 @@ export class Combat {
   accuracy: number;
 
   @Column()
-  evasion: number;
-
-  @Column()
   blockChance: number;
 
   @Column()
@@ -63,13 +60,13 @@ export class Defences {
   armor: number;
 
   @Column()
-  maxArmor: number;
+  magicResistance: number;
 
   @Column()
-  magicResistance: number;
+  evasion: number;
 }
 
-export class Elemental {
+export class Resistances {
   @Column()
   fireResistance: number;
 
@@ -80,30 +77,19 @@ export class Elemental {
   lightningResistance: number;
 
   @Column()
-  fireAffinity: number;
+  poisonResistance: number;
 
   @Column()
-  iceAffinity: number;
+  bleedResistance: number;
 
   @Column()
-  lightningAffinity: number;
+  stunResistance: number;
 
   @Column()
-  fireWeakness: number;
+  confuseResistance: number;
 
   @Column()
-  iceWeakness: number;
-
-  @Column()
-  lightningWeakness: number;
-}
-
-export class Magic {
-  @Column()
-  healingPower: number;
-
-  @Column()
-  spellPower: number;
+  silenceResistance: number;
 }
 
 export class Progression {
@@ -120,58 +106,11 @@ export class Progression {
   inventorySize: number;
 
   @Column()
-  encumbrance: number;
-
-  @Column()
   skillPoints: number;
 
   @Column()
   talentPoints: number;
 }
-
-export class Resource {
-  @Column()
-  rage: number;
-
-  @Column()
-  energy: number;
-
-  @Column()
-  comboPoints: number;
-
-  @Column()
-  fireCharges: number;
-
-  @Column()
-  iceCharges: number;
-
-  @Column()
-  lightningCharges: number;
-}
-
-export class DebuffResistances {
-  @Column()
-  poisonResistance: number;
-
-  @Column()
-  bleedResistance: number;
-
-  @Column()
-  stunResistance: number;
-
-  @Column()
-  confuseResistance: number;
-
-  @Column()
-  charmResistance: number;
-
-  @Column()
-  fearResistance: number;
-
-  @Column()
-  silenceResistance: number;
-}
-
 
 @Entity()
 export class CombatStats {
@@ -185,17 +124,8 @@ export class CombatStats {
   defenses: Defences;
 
   @Column()
-  elemental: Elemental;
-
-  @Column()
-  magic: Magic;
+  resistances: Resistances;
 
   @Column()
   progression: Progression;
-
-  @Column()
-  resource: Resource;
-
-  @Column()
-  debuffResistances: DebuffResistances;
 }

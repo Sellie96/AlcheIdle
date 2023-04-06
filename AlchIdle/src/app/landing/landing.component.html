@@ -1,0 +1,93 @@
+<div class="landing-background">
+  <ion-grid>
+    <ion-row>
+      <ion-col class="heading-margin"
+        ><ion-button class="button-text" fill="clear">Home</ion-button></ion-col
+      >
+      <ion-col
+        ><ion-button class="button-text" fill="clear"
+          >About us</ion-button
+        ></ion-col
+      >
+      <ion-col
+        ><ion-button class="button-text" fill="clear"
+          >Features</ion-button
+        ></ion-col
+      >
+      <ion-col
+        ><ion-button class="button-text" fill="clear"
+          >Guide</ion-button
+        ></ion-col
+      >
+      <ion-col
+        ><ion-button class="button-text" fill="clear">FAQ</ion-button></ion-col
+      >
+      <ion-col
+        ><ion-button class="button-text" fill="clear"
+          >Community</ion-button
+        ></ion-col
+      >
+      <ion-col>
+        <ion-button id="open-modal" class="button-text" fill="clear"
+          >Play<ion-icon name="enter-outline"></ion-icon
+        ></ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid style="margin-top: 14rem">
+    <ion-row>
+      <ion-col>
+
+      </ion-col>
+
+      <ion-col>
+        <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
+          <ng-template>
+            <ion-header>
+              <ion-toolbar>
+                <ion-buttons slot="start">
+                  <ion-button (click)="cancel()">Cancel</ion-button>
+                </ion-buttons>
+                <ion-title style="text-align: center;">Enter Elixora</ion-title>
+                <ion-buttons slot="end">
+                  <ion-button (click)="switchToRegister()" [strong]="true">
+                    Register
+                  </ion-button>
+                </ion-buttons>
+              </ion-toolbar>
+            </ion-header>
+            <ion-content *ngIf="!this.register" class="ion-padding">
+              <app-login></app-login>
+            </ion-content>
+            <ion-content *ngIf="this.register" class="ion-padding">
+              <app-register></app-register>
+            </ion-content>
+          </ng-template>
+        </ion-modal>
+      </ion-col>
+      <ion-col></ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid>
+    <ion-row>
+      <ion-col class="main-content-area">
+        <span class="main-text">{{ "Unleash the power of Alchemy" }}</span>
+        <br />
+        <br />
+        <span class="sub-text">{{
+          "Combine elements to create rare compounds, earn coins, and unlock upgrades to become a master alchemist. Ready to discover the secrets of the universe and amass a fortune?"
+        }}</span>
+        <br />
+        <br />
+        <br />
+        <ion-button size="large" class="button-text" fill="clear"
+          >Play Now</ion-button
+        >
+        <ion-button size="large" class="button-text" fill="clear"
+          >Learn More</ion-button
+        >
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid> </ion-grid>
+</div>

@@ -2,8 +2,8 @@
   <div class="chat-ui-text-area">
 
     <div class="chat-box">
-      <div tabindex="1" #chatDiv class="chat-text {{item.name}}" *ngFor="let item of messages">
-        [{{item.date || item.time}}] <img *ngIf="item.name !== 'Server' " width="20rem" src="../../../assets/chat-icons/normal.png"> {{item.name}}: {{ item.message }}
+      <div tabindex="1" #chatDiv class="chat-text {{message.name}}" *ngFor="let message of messages">
+        [{{message.time}}] <img *ngIf="message.name !== 'Server' " width="20rem" src="../../../assets/chat-icons/normal.png"> {{message.name}}: {{ message.message }}
       </div>
     </div>
     <ion-item>

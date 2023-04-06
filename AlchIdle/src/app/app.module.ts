@@ -1,3 +1,4 @@
+import { LandingComponent } from './landing/landing.component';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
@@ -6,9 +7,10 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './landing/login/login.component';
+import { RegisterComponent } from './landing/register/register.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClient, HttpClientModule, HttpHandler } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule, HttpHandler } from '@angular/common/http';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { ChatComponent } from './chat/chat.component';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
@@ -17,6 +19,8 @@ import { NgxsModule } from '@ngxs/store';
 import { environment } from 'src/environments/environment';
 import { CharacterState } from './state/character.state';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
+import { AbilityComponent } from './ability/ability.component';
+import { JwtInterceptor } from './utils/jwt.interceptor';
 
 const config: SocketIoConfig = { url: 'http://localhost:3000', options: {
   extraHeaders: {
@@ -28,7 +32,10 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {
   declarations: [
     AppComponent,
     LoginComponent,
-    ChatComponent
+    ChatComponent,
+    LandingComponent,
+    RegisterComponent,
+    AbilityComponent
   ],
   imports: [
     BrowserModule,
@@ -47,6 +54,9 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {
   providers: [
     { provide: RouteReuseStrategy,
       useClass: IonicRouteStrategy
+    },
+    {
+      provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true
     },
     AppComponent,
     HttpClient

@@ -1,97 +1,94 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ToastController } from '@ionic/angular';
 import { Store } from '@ngxs/store';
-import { catchError, Subject, tap, throwError } from 'rxjs';
+import { catchError, Subject, switchMap, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { CreateCharacter } from '../state/character.actions';
 import { PlayerData } from '../state/CharacterDataTypes';
-
+import { ToastService } from '../utils/toast.service';
+import { LoginForm, LoginResponse, RegisterForm } from './Account';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AccountService {
-  baseUrl = environment.apiUrl;
+
   private authStatusListener = new Subject<boolean>();
-  private token: string = "";
+  private token: string = '';
+
+  baseUrl = environment.apiUrl;
   isAuthenticated = false;
 
   constructor(
     private httpClient: HttpClient,
-    private toastController: ToastController,
+    private toastr: ToastService,
     private store: Store
-    ) {}
+  ) {}
 
-  getAuthStatusListener() {
-    return this.authStatusListener.asObservable();
-  }
-
-  getToken() {
-    return this.token;
-  }
-
-  getIsAuth(){
-    return this.isAuthenticated;
-  }
-
-  async login(model: any) {
-    this.httpClient.post<{access_token:string, userData: PlayerData, message: string}>(`${this.baseUrl}/users/login`, model).pipe(
-        tap(async (response: { access_token: string; userData: PlayerData; message: string}) => {
+  async login(loginModel: LoginForm) {
+    this.httpClient
+      .post<LoginResponse>(`${this.baseUrl}/users/login`, loginModel)
+      .pipe(
+        tap(
+          async (response: LoginResponse) => {
             this.token = response.access_token;
             if (this.token) {
-                this.isAuthenticated = true;
-                this.authStatusListener.next(true);
-                this.saveAuthData(this.token);
-                this.store.dispatch(new CreateCharacter(response.userData));
-                window.location.reload();
-                let toast = this.toastController.create({
-                  message: response.message,
-                  duration: 1500,
-                  position: 'top'
-                })
-        
-               await (await toast).present()
+              this.isAuthenticated = true;
+              this.authStatusListener.next(true);
+              this.saveAuthData(this.token);
+              this.store.dispatch(new CreateCharacter(response.userData));
+              window.location.reload();
+              (await this.toastr.getSuccessToast(response.message)).present();
             }
-        }),
-        catchError(error => {
+          }
+        ),
+        catchError(async (error) => {
+          (await this.toastr.getErrorToast()).present();
           return throwError(() => new Error(error));
-      })
-    ).subscribe();
-}
-
-  async register(model: any) {
-    this.httpClient.post<{message: string}>(`${this.baseUrl}/users/register`, model).subscribe(
-      async (response) => {
-       let toast = this.toastController.create({
-          message: response.message,
-          duration: 1500,
-          position: 'top'
         })
+      )
+      .subscribe();
+  }
 
-       await (await toast).present()
-      },
-      async (error) => {
-        let toast = this.toastController.create({
-          message: error.message,
-          duration: 1500,
-          position: 'top'
+  async register(registerModel: RegisterForm) {
+    this.httpClient
+      .post<{ message: string }>(`${this.baseUrl}/users/register`, registerModel)
+      .pipe(
+        switchMap(async (response) => {
+          (await this.toastr.getSuccessToast(response.message)).present();
+  
+          setTimeout(() => {
+            let data: LoginForm = {
+              username: registerModel.username,
+              password: registerModel.password
+            }
+            this.login(data)
+         }, 500);
         })
-
-       await (await toast).present()
-      }
-    );
+      )
+      .subscribe(
+        async (response) => {
+          // Handle successful login
+        },
+        async (_) => {
+          (await this.toastr.getErrorToast()).present();
+        }
+      );
   }
 
   getPlayerData(username: string) {
-    this.httpClient.post<{playerData: PlayerData}>(`${this.baseUrl}/users/profile`, {username: username}).subscribe(
-      (response) => {
-        this.store.dispatch(new CreateCharacter(response.playerData));
-      },
-      (error) => {
-        console.log(error, 'error');
-      }
-    );
+    this.httpClient
+      .post<{ playerData: PlayerData }>(`${this.baseUrl}/users/profile`, {
+        username: username,
+      })
+      .subscribe(
+        (response) => {
+          this.store.dispatch(new CreateCharacter(response.playerData));
+        },
+        async (_) => {
+          (await this.toastr.getErrorToast()).present();
+        }
+      );
   }
 
   logout() {
@@ -107,21 +104,36 @@ export class AccountService {
     localStorage.removeItem('token');
   }
 
-  autoAuthUser(){
+  autoAuthUser() {
     const authInformation = this.getAuthData();
-    this.token = authInformation!.token;
-    this.isAuthenticated = true;
-    this.authStatusListener.next(true);
-  }
-private getAuthData() {
-  const token = localStorage.getItem('token');
-
-  if (!token) {
-    return null;
+    if (authInformation) {
+      this.token = authInformation.token;
+      this.isAuthenticated = true;
+      this.authStatusListener.next(this.isAuthenticated);
+    }
   }
 
-  return { token };
-}
 
-  
+  private getAuthData() {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      return null;
+    }
+
+    return { token };
+  }
+
+  getAuthStatusListener() {
+    return this.authStatusListener.asObservable();
+  }
+
+  getToken() {
+    return this.token;
+  }
+
+  getIsAuth() {
+    return this.isAuthenticated;
+  }
+
 }

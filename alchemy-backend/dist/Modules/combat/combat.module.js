@@ -12,6 +12,7 @@ const auth_module_1 = require("../../auth/auth.module");
 const messages_module_1 = require("../messages/messages.module");
 const users_module_1 = require("../../user/users.module");
 const combat_gateway_1 = require("./combat.gateway");
+const combat_service_1 = require("./combat.service");
 const monster_service_1 = require("./monster/monster.service");
 let CombatModule = class CombatModule {
 };
@@ -23,7 +24,7 @@ CombatModule = __decorate([
             (0, common_1.forwardRef)(() => messages_module_1.MessagesModule),
         ],
         controllers: [],
-        providers: [combat_gateway_1.CombatGateway, monster_service_1.MonsterService],
+        providers: [combat_gateway_1.CombatGateway, monster_service_1.MonsterService, combat_service_1.CombatService],
         exports: [combat_gateway_1.CombatGateway],
     })
 ], CombatModule);

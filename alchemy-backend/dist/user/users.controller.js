@@ -77,12 +77,23 @@ let UsersController = class UsersController {
                 return res.status(400).send({ error: 'Invalid skill specified' });
             }
             const returnedData = yield this.usersService.findAll();
-            let leaderboardData = returnedData.map((obj, index) => ({
-                name: obj.character.characterName,
-                mode: obj.character.characterAlignment,
-                level: this.getTotalLevel(obj.character.skills),
-                xp: this.getTotalXp(obj.character.skills),
-            }));
+            let leaderboardData;
+            if (skill === 'all') {
+                leaderboardData = returnedData.map((obj, index) => ({
+                    name: obj.character.characterName,
+                    mode: obj.character.characterAlignment,
+                    level: this.getTotalLevel(obj.character.skills),
+                    xp: this.getTotalXp(obj.character.skills),
+                }));
+            }
+            else {
+                leaderboardData = returnedData.map((obj, index) => ({
+                    name: obj.character.characterName,
+                    mode: obj.character.characterAlignment,
+                    level: this.getLevel(obj.character.skills, skill),
+                    xp: this.getXp(obj.character.skills, skill),
+                }));
+            }
             leaderboardData = leaderboardData.sort((a, b) => b.level - a.level).map((obj, index) => (Object.assign(Object.assign({}, obj), { ranking: index + 1 })));
             return res.status(200).send({ playerData: leaderboardData });
         });
@@ -99,6 +110,16 @@ let UsersController = class UsersController {
         skills.forEach(value => {
             totalXp += returnedData[value].xpCurrent;
         });
+        return totalXp;
+    }
+    getLevel(returnedData, skill) {
+        let totalLevel = 0;
+        totalLevel += returnedData[skill.toLowerCase()].level;
+        return totalLevel;
+    }
+    getXp(returnedData, skill) {
+        let totalXp = 0;
+        totalXp += returnedData[skill.toLowerCase()].xpCurrent;
         return totalXp;
     }
     filterTotalLevel(returnedData, skills) {

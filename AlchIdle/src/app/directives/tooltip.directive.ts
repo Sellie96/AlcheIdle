@@ -1,77 +1,46 @@
-import { Directive, ElementRef, Inject, Input, OnInit, SecurityContext, TemplateRef } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
-
+import { Directive, ElementRef, HostListener, Input, Renderer2, TemplateRef, ViewContainerRef } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Directive({
-    selector: '[appTooltip]'
+  selector: '[myTooltip]'
 })
-export class TooltipDirective implements OnInit {
-    constructor(private elementRef: ElementRef,
-        @Inject(DomSanitizer) private sanitizer: DomSanitizer
-        ) { }
+export class MyTooltipDirective {
+  @Input('myTooltip') tooltipTemplate!: TemplateRef<any>;
 
-    @Input() html!: TemplateRef<any>;
+  private tooltip!: HTMLElement | null;
 
-    ngOnInit() {
-        // Get the image element
-        const imageElement = this.elementRef.nativeElement;
+  constructor(
+    private elementRef: ElementRef,
+    private renderer: Renderer2,
+    private sanitizer: DomSanitizer,
+    private viewContainerRef: ViewContainerRef
+  ) { }
 
-        // Create the tooltip element and append it to the image element
-        const tooltipElement = document.createElement('div');
-        tooltipElement.classList.add('tooltip');
-        imageElement.appendChild(tooltipElement);
+  @HostListener('mouseenter') onMouseEnter() {
+    this.showTooltip();
+  }
 
-        // Set up the mouseenter event listener to show the tooltip
-        imageElement.addEventListener('mouseenter', () => {
-            tooltipElement.style.position = 'absolute';
-            tooltipElement.style.top = '0';
-            // Show the tooltip
-            tooltipElement.style.zIndex = '9999';
-            tooltipElement.style.display = 'block';
-            tooltipElement.style.backgroundColor = '#663399';
+  @HostListener('mouseleave') onMouseLeave() {
+    this.hideTooltip();
+  }
 
-            // Set the font and text style of the tooltip element
-            tooltipElement.style.fontFamily = 'Arial, sans-serif';
-            tooltipElement.style.fontSize = '14px';
-            tooltipElement.style.color = 'white';
-            tooltipElement.style.textAlign = 'center';
+  private showTooltip() {
+    this.tooltip = this.renderer.createElement('div');
 
-            // Set the background color and border of the tooltip element
-            tooltipElement.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
-            tooltipElement.style.border = '1px solid #333';
-            tooltipElement.style.borderRadius = '4px';
+    // Create a new view and attach it to the tooltip element
+    const view = this.viewContainerRef.createEmbeddedView(this.tooltipTemplate);
+    this.renderer.appendChild(this.tooltip, view.rootNodes[0]);
 
-            // Set the padding and box shadow of the tooltip element
-            tooltipElement.style.padding = '8px';
-            tooltipElement.style.boxShadow = '2px 2px 8px rgba(0, 0, 0, 0.5)';
+    // Append the tooltip to the host element
+    this.renderer.appendChild(this.elementRef.nativeElement, this.tooltip);
+  }
 
-            // Set the width and max-width of the tooltip element
-            tooltipElement.style.width = '400px';
-
-            // Set the position and left offset of the tooltip element
-            tooltipElement.style.position = 'absolute';
-            tooltipElement.style.left = '100%';
-
-            if (this.html) {
-                // Create a view container to hold the template
-                const viewContainer = document.createElement('div');
-                // Append the view container to the tooltip element
-                tooltipElement.appendChild(viewContainer);
-                // Create a view using the template and the view container
-                const viewRef = this.html.createEmbeddedView(null);
-                // Append the view to the view container
-                viewRef.rootNodes.forEach(rootNode => {
-                    viewContainer.appendChild(rootNode);
-                });
-            }
-        });
-
-        // Set up the mouseleave event listener to hide the tooltip
-        imageElement.addEventListener('mouseleave', () => {
-            // Hide the tooltip
-            tooltipElement.innerHTML = '';
-            tooltipElement.style.zIndex = '0';
-            tooltipElement.style.display = 'none';
-        });
+  private hideTooltip() {
+    if (this.tooltip) {
+      // Remove the tooltip and its associated view
+      this.viewContainerRef.clear();
+      this.renderer.removeChild(this.elementRef.nativeElement, this.tooltip);
+      this.tooltip = null;
     }
+  }
 }

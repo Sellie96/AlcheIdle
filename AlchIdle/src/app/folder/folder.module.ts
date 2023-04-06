@@ -14,11 +14,12 @@ import { CombatComponent } from './combat/combat.component';
 import { BackpackComponent } from './combat/backpack/backpack.component';
 import { EquipmentComponent } from './combat/equipment/equipment.component';
 import { ItemsComponent } from './combat/items/items.component';
-import { TooltipDirective } from '../directives/tooltip.directive';
+import { MyTooltipDirective } from '../directives/tooltip.directive';
 import { TimestampCountdownDirectiveProgressPlayer } from '../directives/timestamp-countdown-progress.directive';
 import { TimestampCountdownDirective } from '../directives/timestamp-countdown.directive';
 import { TimestampCountdownDirectiveProgress } from '../directives/timestamp-countdown-progressPlayer.directive';
 import { DropsComponent } from '../drops/drops.component';
+import { StatsComponent } from './combat/stats/stats.component';
 
 @NgModule({
   imports: [
@@ -37,13 +38,14 @@ import { DropsComponent } from '../drops/drops.component';
     EquipmentComponent,
     ItemsComponent,
     DropsComponent,
-    TooltipDirective,
+    StatsComponent,
+    MyTooltipDirective,
     TimestampCountdownDirectiveProgress,
     TimestampCountdownDirective,
     TimestampCountdownDirectiveProgressPlayer
   ],
   exports: [
-    TooltipDirective
+    MyTooltipDirective
   ]
 })
 export class FolderPageModule {}

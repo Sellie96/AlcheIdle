@@ -5,6 +5,7 @@ import { CharacterState } from '../state/character.state';
 import { ChatService } from './chat.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { PlayerData } from '../state/CharacterDataTypes';
+import { Message } from './chat';
 
 @UntilDestroy()
 @Component({
@@ -14,7 +15,7 @@ import { PlayerData } from '../state/CharacterDataTypes';
 })
 export class ChatComponent implements OnInit {
   public users: number = 0;
-  public messages: any[] = [];
+  public messages!: Message[];
   message: FormControl;
   playerCharacter!: PlayerData;
 
@@ -28,7 +29,7 @@ export class ChatComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.chatService.receiveChat().subscribe((messages: any) => {
+    this.chatService.receiveChat().subscribe((messages: Message[]) => {
       this.messages = messages;
       this.messages.reverse();
     });

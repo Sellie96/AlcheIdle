@@ -1,8 +1,9 @@
 import { RegisterData } from './register.interface';
 import * as bcrypt from 'bcrypt';
+import { User } from './user.entity';
 
 export async function UserDataCreation(registerData: RegisterData) {
-  const data = {
+  const data: User = {
     username: registerData.username,
     password: await bcrypt.hash(registerData.password, 10),
     asActive: true,
@@ -15,7 +16,7 @@ export async function UserDataCreation(registerData: RegisterData) {
           maxHealth: 100,
           mana: 50,
           maxMana: 50,
-          strength: 10,
+          strength: 23,
           dexterity: 10,
           intelligence: 10,
           endurance: 10,
@@ -24,59 +25,35 @@ export async function UserDataCreation(registerData: RegisterData) {
         },
         defenses: {
           armor: 0,
-          maxArmor: 0,
           magicResistance: 0,
+          evasion: 640,
         },
         combat: {
-          criticalHitChance: 5,
+          criticalHitChance: 1,
           criticalHitDamage: 50,
           attackSpeed: 5,
-          castSpeed: 1,
-          accuracy: 85,
-          evasion: 15,
-          blockChance: 10,
-          parryChance: 10,
+          castSpeed: 5,
+          accuracy: 1000,
+          blockChance: 1,
+          parryChance: 1,
         },
-        elemental: {
+        resistances: {
           fireResistance: 0,
           iceResistance: 0,
           lightningResistance: 0,
-          fireAffinity: 0,
-          iceAffinity: 0,
-          lightningAffinity: 0,
-          fireWeakness: 0,
-          iceWeakness: 0,
-          lightningWeakness: 0,
-        },
-        magic: {
-          healingPower: 0,
-          spellPower: 0,
+          poisonResistance: 0,
+          bleedResistance: 0,
+          stunResistance: 0,
+          confuseResistance: 0,
+          silenceResistance: 0,
         },
         progression: {
           experiencePoints: 0,
           level: 1,
           gold: 0,
           inventorySize: 20,
-          encumbrance: 0,
           skillPoints: 0,
           talentPoints: 0,
-        },
-        resource: {
-          rage: 0,
-          energy: 100,
-          comboPoints: 0,
-          fireCharges: 0,
-          iceCharges: 0,
-          lightningCharges: 0,
-        },
-        debuffResistances: {
-          poisonResistance: 0,
-          bleedResistance: 0,
-          stunResistance: 0,
-          confuseResistance: 0,
-          charmResistance: 0,
-          fearResistance: 0,
-          silenceResistance: 0,
         },
       },
       skills: {

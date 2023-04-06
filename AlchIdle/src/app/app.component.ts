@@ -15,6 +15,7 @@ export class AppComponent {
 
   loggedIn = false;
   loginForm = false;
+  showLanding = true;
 
   playerCharacter!: PlayerData;
 
@@ -27,16 +28,15 @@ export class AppComponent {
     this.accountService.autoAuthUser();
     if (this.accountService.getIsAuth()) {
       this.loggedIn = true;
+      this.store
+      .select((state) => CharacterState.selectCharacterStats(state.character))
+      .pipe(untilDestroyed(this))
+      .subscribe((character: PlayerData) => {
+        this.playerCharacter = character;
+      });
     } else {
       this.loggedIn = false;
     }
-
-    this.store
-    .select((state) => CharacterState.selectCharacterStats(state.character))
-    .pipe(untilDestroyed(this))
-    .subscribe((character: PlayerData) => {
-      this.playerCharacter = character;
-    });
   }
 
   public appPages = [

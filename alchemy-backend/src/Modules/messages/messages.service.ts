@@ -16,6 +16,7 @@ export class MessagesService {
       time: new Date().toISOString().split('T')[1].split('.')[0],
     };
     this.messages.push(message);
+    
     return this.messages;
   }
 

@@ -26,6 +26,7 @@ const thieving_module_1 = require("./Modules/skills/thieving/thieving.module");
 const woodcutting_module_1 = require("./Modules/skills/woodcutting/woodcutting.module");
 const user_entity_1 = require("./user/user.entity");
 const users_module_1 = require("./user/users.module");
+const character_module_1 = require("./Modules/character/character.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -50,6 +51,7 @@ AppModule = __decorate([
             cooking_module_1.CookingModule,
             skilling_module_1.SkillsModule,
             shop_module_1.ShopModule,
+            character_module_1.CharacterModule,
             combat_module_1.CombatModule,
             schedule_1.ScheduleModule.forRoot(),
         ],

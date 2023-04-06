@@ -1,64 +1,64 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>NGX Data Table</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
   <ion-grid>
     <ion-row>
       <ion-col size="12" size-sm="12">
-        <ion-progress-bar color="warning" [value]="playerCharacter.character.combatStats.progression.experiencePoints">
+        <ion-progress-bar
+          color="warning"
+          [value]="
+            playerCharacter.character.combatStats.progression.experiencePoints
+          "
+        >
         </ion-progress-bar>
       </ion-col>
-      <ion-col size="12" size-sm="4">
-        <ion-accordion-group>
-          <ion-accordion value="first">
-            <ion-item slot="header" color="light">
-              <ion-label>Fight Monsters</ion-label>
-            </ion-item>
-            <div class="ion-padding" slot="content">
-              <ion-row *ngFor="let monsters of monsterList">
-                <ion-col size="6">
-                  <ion-avatar id="hover-trigger">
-                    <img src="../../../assets/monsters/{{monsters.name}}.svg">
+      <ion-col size="12" size-sm="12">
+        <ion-segment [(ngModel)]="type2" value="default">
+          <ion-segment-button value="monsters">
+            <ion-label>Monsters</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="dungeons">
+            <ion-label>Dungeons</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="raids">
+            <ion-label>Raids</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="">
+            <ion-label>Minimise</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      </ion-col>
+      <ion-col *ngIf="type2 !== ''">
+        <div [ngSwitch]="type2">
+          <div style="min-height: 550px">
+            <div *ngSwitchCase="'monsters'">
+              <div class="ion-padding monster-container" slot="content">
+                <div class="monster-list" *ngFor="let monsters of monsterList">
+                  <ion-avatar
+                    style="margin: auto"
+                    (click)="setOpen(true, monsters)"
+                    id="hover-trigger"
+                  >
+                  <img src="../../../assets/monsters/{{monsters.name}}.svg" alt="Example Image">
                   </ion-avatar>
-                  <ion-popover trigger="hover-trigger" triggerAction="hover">
-                    <ng-template>
-                      <ion-content class="ion-padding">{{monsters.name}}</ion-content>
-                    </ng-template>
-                  </ion-popover>
-                </ion-col>
-                <ion-col size="6">
-                  <ion-button color="danger" expand="full" (click)="spawnMonster(monsters.name)"
-                    expand="full">Hunt</ion-button>
-                  <ion-button expand="full" (click)="setOpen(true, monsters)" color="primary"
-                    expand="full">Loot</ion-button>
-                </ion-col>
-              </ion-row>
+                  <ion-label>
+                    <span style="text-align: center">{{ monsters.name }}</span>
+                    <br />
+                    <span style="text-align: center">
+                      (Level {{ monsters.level }})</span
+                    >
+                  </ion-label>
+                  <ion-button
+                    color="danger"
+                    (click)="spawnMonster(monsters.name)"
+                    expand="block"
+                    >Hunt</ion-button
+                  >
+                </div>
+              </div>
             </div>
-          </ion-accordion>
-        </ion-accordion-group>
-      </ion-col>
-      <ion-col size="12" size-sm="4">
-        <ion-accordion-group>
-          <ion-accordion value="first">
-            <ion-item slot="header" color="light">
-              <ion-label>Delve Dungeons</ion-label>
-            </ion-item>
-            <div class="ion-padding" slot="content">First Content</div>
-          </ion-accordion>
-        </ion-accordion-group>
-      </ion-col>
-      <ion-col size="12" size-sm="4">
-        <ion-accordion-group>
-          <ion-accordion value="first">
-            <ion-item slot="header" color="light">
-              <ion-label>Raid The Depths</ion-label>
-            </ion-item>
-            <div class="ion-padding" slot="content">First Content</div>
-          </ion-accordion>
-        </ion-accordion-group>
+            <div style="margin-left: 0.5rem" *ngSwitchCase="'dungeons'"></div>
+            <div style="margin-left: 0.5rem" *ngSwitchCase="'raids'"></div>
+          </div>
+        </div>
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -69,215 +69,383 @@
         <ion-grid>
           <ion-row>
             <ion-col size="12" size-md="6" size-lg="6">
-              <ion-progress-bar class="progress-bar" color="success"
-                [value]="playerCharacter.character.combatStats.stats.health / playerCharacter.character.combatStats.stats.maxHealth"></ion-progress-bar>
+              <ion-progress-bar
+                class="progress-bar"
+                color="success"
+                [value]="
+                  playerCharacter.character.combatStats.stats.health /
+                  playerCharacter.character.combatStats.stats.maxHealth
+                "
+              ></ion-progress-bar>
+              <span *ngIf="showCharacterHpChange" class="display-character-hp">
+                -{{ this.getCharacterHpChange() }}</span
+              >
               <ion-label>
                 <p>
-                  Health
-                  ({{playerCharacter.character.combatStats.stats.health}}/{{playerCharacter.character.combatStats.stats.maxHealth}})
+                  Health ({{
+                    playerCharacter.character.combatStats.stats.health
+                  }}/{{
+                    playerCharacter.character.combatStats.stats.maxHealth
+                  }})
                 </p>
               </ion-label>
             </ion-col>
             <ion-col size="12" size-md="6" size-lg="6">
-              <ion-progress-bar class="progress-bar" color="primary"
-                [value]="playerCharacter.character.combatStats.stats.mana / playerCharacter.character.combatStats.stats.maxMana"></ion-progress-bar>
+              <ion-progress-bar
+                class="progress-bar"
+                color="primary"
+                [value]="
+                  playerCharacter.character.combatStats.stats.mana /
+                  playerCharacter.character.combatStats.stats.maxMana
+                "
+              ></ion-progress-bar>
               <ion-label>
                 <p>
-                  Mana
-                  ({{playerCharacter.character.combatStats.stats.mana}}/{{playerCharacter.character.combatStats.stats.maxMana}})
+                  Mana ({{
+                    playerCharacter.character.combatStats.stats.mana
+                  }}/{{ playerCharacter.character.combatStats.stats.maxMana }})
+                </p>
+              </ion-label>
+            </ion-col>
+            <ion-col size="1" size-md="1" size-lg="1">
+              <ion-thumbnail class="thumb">
+                <img
+                  (click)="unequipItem('head')"
+                  *ngIf="playerCharacter.character.equipment.head.name"
+                  src="../../../assets/equipment/{{
+                    playerCharacter.character.equipment.head.name
+                  }}.png"
+                />
+                <img
+                  *ngIf="!playerCharacter.character.equipment.head?.name"
+                  alt="Silhouette of mountains"
+                  src="../../../assets/equipment/Equipment9.png"
+                />
+              </ion-thumbnail>
+
+              <ion-thumbnail class="thumb">
+                <img
+                  (click)="unequipItem('offHand')"
+                  *ngIf="playerCharacter.character.equipment.offHand?.name"
+                  src="../../../assets/equipment/{{
+                    playerCharacter.character.equipment.offHand.name
+                  }}.png"
+                />
+                <img
+                  *ngIf="!playerCharacter.character.equipment.offHand?.name"
+                  alt="Silhouette of mountains"
+                  src="../../../assets/equipment/EquipmentEmpty.png"
+                />
+              </ion-thumbnail>
+
+              <ion-thumbnail class="thumb">
+                <img
+                  (click)="unequipItem('mainHand')"
+                  *ngIf="playerCharacter.character.equipment.mainHand?.name"
+                  src="../../../assets/equipment/{{
+                    playerCharacter.character.equipment.mainHand.name
+                  }}.png"
+                />
+                <img
+                  *ngIf="!playerCharacter.character.equipment.mainHand?.name"
+                  alt="Silhouette of mountains"
+                  src="../../../assets/equipment/Equipment1.png"
+                />
+              </ion-thumbnail>
+
+              <ion-thumbnail class="thumb">
+                <img
+                  (click)="unequipItem('ring1')"
+                  *ngIf="playerCharacter.character.equipment.ring1?.name"
+                  src="../../../assets/equipment/{{
+                    playerCharacter.character.equipment.ring1.name
+                  }}.png"
+                />
+                <img
+                  *ngIf="!playerCharacter.character.equipment.ring1?.name"
+                  alt="Silhouette of mountains"
+                  src="../../../assets/equipment/Equipment6.png"
+                />
+              </ion-thumbnail>
+
+              <ion-thumbnail class="thumb">
+                <img
+                  (click)="unequipItem('feet')"
+                  *ngIf="playerCharacter.character.equipment.feet?.name"
+                  src="../../../assets/equipment/{{
+                    playerCharacter.character.equipment.feet.name
+                  }}.png"
+                />
+                <img
+                  *ngIf="!playerCharacter.character.equipment.feet?.name"
+                  alt="Silhouette of mountains"
+                  src="../../../assets/equipment/Equipment8.png"
+                />
+              </ion-thumbnail>
+            </ion-col>
+            <ion-col size="9" size-md="9" size-lg="9">
+              <img
+                class="player-background"
+                src="../../../assets/gamebg16.f3b4417f.png"
+              />
+              <img class="player-image" src="../../../assets/knight.png" />
+              <ion-label>
+                <p style="margin-top: 2.5rem; transform: translateX(35%)">
+                  Time until attack:
+                  <span
+                    appTimestampCountdown
+                    [timestamp]="timeUntilFinish || 0"
+                  ></span>
                 </p>
               </ion-label>
             </ion-col>
             <ion-col size="2" size-md="2" size-lg="2">
-              <ion-list>
-                <ion-item>
-                  <img style="width: 1rem" src="../../../assets/menu-icons/attack.png" />
-                  {{playerCharacter.character.combatStats.stats.strength | number}}
-                </ion-item>
-                <ion-item>
-                  <img style="width: 1rem" src="../../../assets/menu-icons/attack.png" />
-                  {{playerCharacter.character.combatStats.stats.endurance | number}}
-                </ion-item>
-                <ion-item>
-                  <img style="width: 1rem" src="../../../assets/menu-icons/attack.png" />
-                  {{playerCharacter.character.combatStats.stats.dexterity | number}}
-                </ion-item>
-                <ion-item>
-                  <img style="width: 1rem" src="../../../assets/menu-icons/attack.png" />
-                  {{playerCharacter.character.combatStats.stats.intelligence | number}}
-                </ion-item>
-                <ion-item>
-                  <img style="width: 1rem" src="../../../assets/menu-icons/attack.png" />
-                  {{playerCharacter.character.combatStats.stats.agility | number}}
-                </ion-item>
-                <ion-item>
-                  <img style="width: 1rem" src="../../../assets/menu-icons/attack.png" />
-                  {{playerCharacter.character.combatStats.stats.luck | number}}
-                </ion-item>
-                <ion-item>
-                  <img style="width: 1rem" src="../../../assets/menu-icons/attack.png" />
-                  {{playerCharacter.character.combatStats.stats.luck | number}}
-                </ion-item>
-              </ion-list>
-            </ion-col>
-            <ion-col size="2" size-md="2" size-lg="2">
-              <ion-reorder-group [disabled]="false" (ionItemReorder)="handleReorder($any($event))">
-                <ion-reorder>
-                  <ion-thumbnail appTooltip [html]="template" class="thumb">
-                    <img alt="Silhouette of mountains" src="../../../assets/equipment/armour_helmet.png" />
-                  </ion-thumbnail>
-                </ion-reorder>
+              <ion-thumbnail class="thumb">
+                <img
+                  (click)="unequipItem('neck')"
+                  *ngIf="playerCharacter.character.equipment.neck.name"
+                  src="../../../assets/equipment/{{
+                    playerCharacter.character.equipment.neck.name
+                  }}.png"
+                />
+                <img
+                  *ngIf="!playerCharacter.character.equipment.neck?.name"
+                  alt="Silhouette of mountains"
+                  src="../../../assets/equipment/Equipment5.png"
+                />
+              </ion-thumbnail>
 
-                <ion-reorder>
-                  <ion-thumbnail appTooltip [html]="template" class="thumb">
-                    <img alt="Silhouette of mountains" src="../../../assets/equipment/armour_cape.png" />
-                  </ion-thumbnail>
-                </ion-reorder>
+              <ion-thumbnail class="thumb">
+                <img
+                  (click)="unequipItem('chest')"
+                  *ngIf="playerCharacter.character.equipment.chest.name"
+                  src="../../../assets/equipment/{{
+                    playerCharacter.character.equipment.chest.name
+                  }}.png"
+                />
+                <img
+                  *ngIf="!playerCharacter.character.equipment.chest?.name"
+                  alt="Silhouette of mountains"
+                  src="../../../assets/equipment/Equipment3.png"
+                />
+              </ion-thumbnail>
 
-                <ion-reorder>
-                  <ion-thumbnail appTooltip [html]="template" class="thumb">
-                    <img alt="Silhouette of mountains" src="../../../assets/equipment/weapon_sword.png" />
-                  </ion-thumbnail>
-                </ion-reorder>
+              <ion-thumbnail class="thumb">
+                <img
+                  (click)="unequipItem('hands')"
+                  *ngIf="playerCharacter.character.equipment.hands?.name"
+                  src="../../../assets/equipment/{{
+                    playerCharacter.character.equipment.hands.name
+                  }}.png"
+                />
+                <img
+                  *ngIf="!playerCharacter.character.equipment.hands?.name"
+                  alt="Silhouette of mountains"
+                  src="../../../assets/equipment/Equipment4.png"
+                />
+              </ion-thumbnail>
 
-                <ion-reorder>
-                  <ion-thumbnail appTooltip [html]="template" class="thumb">
-                    <img alt="Silhouette of mountains" src="../../../assets/equipment/armour_gloves.png" />
-                  </ion-thumbnail>
-                </ion-reorder>
+              <ion-thumbnail class="thumb">
+                <img
+                  (click)="unequipItem('legs')"
+                  *ngIf="playerCharacter.character.equipment.legs.name"
+                  src="../../../assets/equipment/{{
+                    playerCharacter.character.equipment.legs.name
+                  }}.png"
+                />
+                <img
+                  *ngIf="!playerCharacter.character.equipment.legs?.name"
+                  alt="Silhouette of mountains"
+                  src="../../../assets/equipment/EquipmentEmpty.png"
+                />
+              </ion-thumbnail>
 
-                <ion-reorder>
-                  <ion-thumbnail appTooltip [html]="template" class="thumb">
-                    <img alt="Silhouette of mountains" src="../../../assets/equipment/armour_boots.png" />
-                  </ion-thumbnail>
-                </ion-reorder>
-
-              </ion-reorder-group>
-            </ion-col>
-            <ion-col size="6" size-md="6" size-lg="6">
-              <img class="player-image" src="../../../assets/knight.png">
-            </ion-col>
-            <ion-col size="2" size-md="2" size-lg="2">
-              <ion-reorder-group [disabled]="false" (ionItemReorder)="handleReorder($any($event))">
-                <ion-reorder>
-                  <ion-thumbnail appTooltip [html]="template" class="thumb">
-                    <img alt="Silhouette of mountains" src="../../../assets/equipment/misc_amulet.png" />
-                  </ion-thumbnail>
-                </ion-reorder>
-
-                <ion-reorder>
-                  <ion-thumbnail appTooltip [html]="template" class="thumb">
-                    <img alt="Silhouette of mountains" src="../../../assets/equipment/armour_platebody.png" />
-                  </ion-thumbnail>
-                </ion-reorder>
-
-                <ion-reorder>
-                  <ion-thumbnail appTooltip [html]="template" class="thumb">
-                    <img alt="Silhouette of mountains" src="../../../assets/equipment/armour_shield.png" />
-                  </ion-thumbnail>
-                </ion-reorder>
-
-                <ion-reorder>
-                  <ion-thumbnail appTooltip [html]="template" class="thumb">
-                    <img alt="Silhouette of mountains" src="../../../assets/equipment/armour_platelegs.png" />
-                  </ion-thumbnail>
-                </ion-reorder>
-
-                <ion-reorder>
-                  <ion-thumbnail appTooltip [html]="template" class="thumb">
-                    <img alt="Silhouette of mountains" src="../../../assets/equipment/misc_ring.png" />
-                  </ion-thumbnail>
-                </ion-reorder>
-              </ion-reorder-group>
+              <ion-thumbnail class="thumb">
+                <img
+                  (click)="unequipItem('ring2')"
+                  *ngIf="playerCharacter.character.equipment.ring2?.name"
+                  src="../../../assets/equipment/{{
+                    playerCharacter.character.equipment.ring2.name
+                  }}.png"
+                />
+                <img
+                  *ngIf="!playerCharacter.character.equipment.ring2?.name"
+                  alt="Silhouette of mountains"
+                  src="../../../assets/equipment/Equipment7.png"
+                />
+              </ion-thumbnail>
             </ion-col>
             <ion-col>
-              <ion-row>
-                <ion-label>
-                  <p>
-                    Time until attack: <span appTimestampCountdown [timestamp]="timeUntilFinish || 0"></span>
-                  </p>
-                </ion-label>
-              </ion-row>
+              <ion-row> </ion-row>
             </ion-col>
             <ion-col no-padding no-margin size="12" size-md="12" size-lg="12">
               <ion-row>
                 <ion-col size="12" size-md="12" size-lg="12">
-                  <ion-chip>Equipment</ion-chip>
-                  <ion-chip>Backpack</ion-chip>
-                  <ion-chip>Items</ion-chip>
-                  <ion-chip>Statistics</ion-chip>
+                  <ion-segment [(ngModel)]="type" value="default">
+                    <ion-segment-button value="statistics">
+                      <ion-label>Stats</ion-label>
+                    </ion-segment-button>
+                    <ion-segment-button value="backpack">
+                      <ion-label>Backpack</ion-label>
+                    </ion-segment-button>
+                    <ion-segment-button value="currency">
+                      <ion-label>Currency</ion-label>
+                    </ion-segment-button>
+                    <ion-segment-button value="quests">
+                      <ion-label>Quests</ion-label>
+                    </ion-segment-button>
+                  </ion-segment>
                 </ion-col>
               </ion-row>
             </ion-col>
           </ion-row>
+          <div class="stats-background" [ngSwitch]="type">
+            <img
+              style="position: relative; top: -10; left: 35%"
+              src="../../../assets/equipment/frame_top.png"
+            />
+            <div style="min-height: 550px">
+              <div *ngSwitchCase="'backpack'">
+                <app-backpack></app-backpack>
+              </div>
+              <div style="margin-left: 0.5rem" *ngSwitchCase="'statistics'">
+                <app-stats></app-stats>
+              </div>
+            </div>
+            <img
+              style="position: relative; bottom: 0; left: 35%"
+              src="../../../assets/equipment/frame_top.png"
+            />
+          </div>
         </ion-grid>
       </ion-col>
       <ion-col class="enemy-area" size="12" size-md="6" size-lg="6">
         <ion-grid>
           <ion-row>
             <ion-col size="12" size-md="12" size-lg="12">
-              <ion-progress-bar class="progress-bar" color="danger"
-                [value]="monster?.health / monster?.maxHealth"></ion-progress-bar>
+              <ion-progress-bar
+                class="progress-bar"
+                color="danger"
+                [value]="monster?.health / monster?.maxHealth"
+              ></ion-progress-bar>
               <ion-label>
+                <span *ngIf="showMonsterHpChange" class="display-monster-hp">
+                  -{{ this.getMonsterHpChange() }}</span
+                >
                 <p>
-                  Health ({{monster?.health || '-'}}/{{monster?.maxHealth || '-'}})
+                  Health ({{ monster?.health || "-" }}/{{
+                    monster?.maxHealth || "-"
+                  }})
                 </p>
               </ion-label>
             </ion-col>
             <ion-col size="2" size-md="2" size-lg="2">
               <ion-list>
-                <ion-item>
-                  <img style="width: 1rem" src="../../../assets/menu-icons/attack.png" />
-                  -
+                <ion-item tooltip="Maximum hit">
+                  <img
+                    tooltip="Maximum hit"
+                    style="width: 1rem; margin-right: 0.4rem"
+                    src="../../../assets/menu-icons/strength.png"
+                  />
+                  {{ monster?.attack || " -" }}
                 </ion-item>
                 <ion-item>
-                  <img style="width: 1rem" src="../../../assets/menu-icons/attack.png" />
-                  -
+                  <img
+                    style="width: 1rem; margin-right: 0.4rem"
+                    src="../../../assets/menu-icons/agility.png"
+                  />
+                  {{ monster?.attackSpeed || " -" }}
                 </ion-item>
                 <ion-item>
-                  <img style="width: 1rem" src="../../../assets/menu-icons/attack.png" />
-                  -
+                  <img
+                    style="width: 1rem; margin-right: 0.4rem"
+                    src="../../../assets/menu-icons/defence.png"
+                  />
+                  {{ monster?.defence || " -" }}
                 </ion-item>
                 <ion-item>
-                  <img style="width: 1rem" src="../../../assets/menu-icons/attack.png" />
-                  -
+                  <img
+                    style="width: 1rem; margin-right: 0.4rem"
+                    src="../../../assets/menu-icons/leaderboard.png"
+                  />
+                  {{ monster?.level || " -" }}
                 </ion-item>
                 <ion-item>
-                  <img style="width: 1rem" src="../../../assets/menu-icons/attack.png" />
-                  -
+                  <img
+                    style="width: 1rem; margin-right: 0.4rem"
+                    src="../../../assets/menu-icons/magic.png"
+                  />
+                  {{ monster?.xp || " -" }}
                 </ion-item>
                 <ion-item>
-                  <img style="width: 1rem" src="../../../assets/menu-icons/attack.png" />
-                  -
+                  <img
+                    style="width: 1rem; margin-right: 0.4rem"
+                    src="../../../assets/menu-icons/gold.png"
+                  />
+                  {{ monster?.gold || " -" }}
                 </ion-item>
                 <ion-item>
-                  <img style="width: 1rem" src="../../../assets/menu-icons/attack.png" />
-                  -
+                  <img
+                    style="width: 1rem; margin-right: 0.4rem"
+                    src="../../../assets/menu-icons/attack.png"
+                  />
+                  {{ calculateChanceToHit() || " -" }}%
                 </ion-item>
               </ion-list>
             </ion-col>
-            <ion-col size="2"></ion-col>
-            <ion-col size="6" size-md="6" size-lg="6">
-              <img *ngIf="monster" alt="-" class="player-image" src="../../../assets/monsters/{{monster?.name}}.svg">
-              <span *ngIf="!monster">-</span>
-            </ion-col>
-            <ion-col size="2"></ion-col>
-            <ion-col size="12">
-              <ion-row>
-              </ion-row>
+            <ion-col size="9" size-md="9" size-lg="9">
+              <div>
+                <img
+                  *ngIf="monster && monster.health && !loading"
+                  alt="-"
+                  class="player-image"
+                  src="../../../assets/monsters/{{ monster?.name }}.svg"
+                />
+                <ion-spinner
+                  *ngIf="loading"
+                  name="circles"
+                  class="loading"
+                ></ion-spinner>
+                <span *ngIf="!monster!; loading">-</span>
+              </div>
               <ion-label>
-                <p>
-                  Time until attack: <span appTimestampCountdown [timestamp]="monsterTimeUntilFinish || 0"></span>
+                <p
+                  *ngIf="monster && monster.health && !loading"
+                  style="transform: translateX(35%); margin-top: 2.5rem"
+                >
+                  Time until attack:
+                  <span
+                    appTimestampCountdown
+                    [timestamp]="monsterTimeUntilFinish || 0"
+                  ></span>
                 </p>
               </ion-label>
             </ion-col>
-            <ion-col no-padding no-margin size="12" size-md="12" size-lg="12">
+            <ion-col size="1"></ion-col>
+            <ion-col size="12">
+              <ion-row> </ion-row>
+            </ion-col>
+            <ion-col
+              style="min-height: 680px"
+              no-padding
+              no-margin
+              size="12"
+              size-md="12"
+              size-lg="12"
+            >
               <ion-row>
                 <ion-col size="6" size-md="6" size-lg="6">
-                  <ion-button expand="block" [disabled]="!monster" (click)="setOpen(true, monster)">Monster Drops</ion-button>
+                  <ion-button
+                    expand="block"
+                    [disabled]="!monster"
+                    (click)="setOpen(true, monster)"
+                    >Monster Drops</ion-button
+                  >
                 </ion-col>
                 <ion-col size="6" size-md="6" size-lg="6">
-                  <ion-button expand="full" color="warning" (click)="flee()">Flee</ion-button>
+                  <ion-button expand="full" color="warning" (click)="flee()"
+                    >Flee</ion-button
+                  >
                 </ion-col>
               </ion-row>
             </ion-col>
@@ -286,29 +454,13 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  <ng-template #template>
-    <div>
-      <h3>Equipment</h3>
-      <div>
-        <div>
-          <h4>Equipment Name</h4>
-          <p>Equipment Description</p>
-          <ul>
-            <li>Attribute 1: Value</li>
-            <li>Attribute 2: Value</li>
-            <li>Attribute 3: Value</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </ng-template>
 </ion-content>
 
 <ion-modal [isOpen]="isModalOpen">
   <ng-template>
     <ion-header>
       <ion-toolbar>
-        <ion-title>{{lootMonster.name}} Drops</ion-title>
+        <ion-title>{{ lootMonster.name }} Drops</ion-title>
         <ion-buttons slot="end">
           <ion-button (click)="setOpen(false, lootMonster)">Close</ion-button>
         </ion-buttons>

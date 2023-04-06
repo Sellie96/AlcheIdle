@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CombatStats = exports.DebuffResistances = exports.Resource = exports.Progression = exports.Magic = exports.Elemental = exports.Defences = exports.Combat = exports.Stats = void 0;
+exports.CombatStats = exports.Progression = exports.Resistances = exports.Defences = exports.Combat = exports.Stats = void 0;
 const typeorm_1 = require("typeorm");
 class Stats {
 }
@@ -79,10 +79,6 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
-], Combat.prototype, "evasion", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
 ], Combat.prototype, "blockChance", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
@@ -98,62 +94,47 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
-], Defences.prototype, "maxArmor", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
 ], Defences.prototype, "magicResistance", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Number)
+], Defences.prototype, "evasion", void 0);
 exports.Defences = Defences;
-class Elemental {
+class Resistances {
 }
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
-], Elemental.prototype, "fireResistance", void 0);
+], Resistances.prototype, "fireResistance", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
-], Elemental.prototype, "iceResistance", void 0);
+], Resistances.prototype, "iceResistance", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
-], Elemental.prototype, "lightningResistance", void 0);
+], Resistances.prototype, "lightningResistance", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
-], Elemental.prototype, "fireAffinity", void 0);
+], Resistances.prototype, "poisonResistance", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
-], Elemental.prototype, "iceAffinity", void 0);
+], Resistances.prototype, "bleedResistance", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
-], Elemental.prototype, "lightningAffinity", void 0);
+], Resistances.prototype, "stunResistance", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
-], Elemental.prototype, "fireWeakness", void 0);
+], Resistances.prototype, "confuseResistance", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
-], Elemental.prototype, "iceWeakness", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], Elemental.prototype, "lightningWeakness", void 0);
-exports.Elemental = Elemental;
-class Magic {
-}
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], Magic.prototype, "healingPower", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], Magic.prototype, "spellPower", void 0);
-exports.Magic = Magic;
+], Resistances.prototype, "silenceResistance", void 0);
+exports.Resistances = Resistances;
 class Progression {
 }
 __decorate([
@@ -175,74 +156,12 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
-], Progression.prototype, "encumbrance", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
 ], Progression.prototype, "skillPoints", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
 ], Progression.prototype, "talentPoints", void 0);
 exports.Progression = Progression;
-class Resource {
-}
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], Resource.prototype, "rage", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], Resource.prototype, "energy", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], Resource.prototype, "comboPoints", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], Resource.prototype, "fireCharges", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], Resource.prototype, "iceCharges", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], Resource.prototype, "lightningCharges", void 0);
-exports.Resource = Resource;
-class DebuffResistances {
-}
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], DebuffResistances.prototype, "poisonResistance", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], DebuffResistances.prototype, "bleedResistance", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], DebuffResistances.prototype, "stunResistance", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], DebuffResistances.prototype, "confuseResistance", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], DebuffResistances.prototype, "charmResistance", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], DebuffResistances.prototype, "fearResistance", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], DebuffResistances.prototype, "silenceResistance", void 0);
-exports.DebuffResistances = DebuffResistances;
 let CombatStats = class CombatStats {
 };
 __decorate([
@@ -259,24 +178,12 @@ __decorate([
 ], CombatStats.prototype, "defenses", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
-    __metadata("design:type", Elemental)
-], CombatStats.prototype, "elemental", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Magic)
-], CombatStats.prototype, "magic", void 0);
+    __metadata("design:type", Resistances)
+], CombatStats.prototype, "resistances", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Progression)
 ], CombatStats.prototype, "progression", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Resource)
-], CombatStats.prototype, "resource", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", DebuffResistances)
-], CombatStats.prototype, "debuffResistances", void 0);
 CombatStats = __decorate([
     (0, typeorm_1.Entity)()
 ], CombatStats);

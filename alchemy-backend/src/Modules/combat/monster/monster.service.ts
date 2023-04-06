@@ -1,68 +1,52 @@
 import { Injectable } from '@nestjs/common';
+import { DustDevil, FireSerpent, FireSpirit, FrostTroll, FrozenTerror, Goblin, GoblinArcher, GoblinBerserker, GoblinChief, Hobgoblin, LavaGolem, Mammoth, Manticore, SandBeast, SandCrab, SandGolem, SolTheProtector, TheEye } from './monster.utils';
+import { IceGiant } from './monster.utils';
+import { IceWyvern } from './monster.utils';
+import { Tangleroot } from './monster.utils';
+import { CarnivorousPlant } from './monster.utils';
+import { VampireLord } from './monster.utils';
+import { SpiderQueen } from './monster.utils';
+import { ChaoticDragon } from './monster.utils';
 
 @Injectable()
 export class MonsterService {
-    constructor() { }
+  constructor() {}
 
-    monsters = [
-        {
-            name: 'Goblin',
-            health: 100,
-            maxHealth: 100,
-            attack: 10,
-            defence: 10,
-            level: 1,
-            xp: 10,
-            attackSpeed: 4,
-            loot: [
-                {
-                    name: 'Small Potion',
-                    amount: 1,
-                    value: 10,
-                    restores: 10,
-                },
-                {
-                    name: 'Iron Axe',
-                    amount: 1,
-                    value: 10,
-                },
-            ],
-        },
-        {
-            name: 'Orc',
-            health: 200,
-            maxHealth: 200,
-            attack: 20,
-            defence: 20,
-            level: 2,
-            xp: 20,
-            attackSpeed: 4,
-            loot: [
-                {
-                    name: 'Small Potion',
-                    amount: 1,
-                    value: 10,
-                    restores: 10,
-                },
-                {
-                    name: 'Iron Axe',
-                    amount: 1,
-                    value: 10,
-                },
-            ],
-        }
-    ]
+  monsters = [
+    Goblin,
+    GoblinArcher,
+    Hobgoblin,
+    GoblinBerserker,
+    GoblinChief,
+    SandCrab,
+    SandBeast,
+    SandGolem,
+    DustDevil,
+    Manticore,
+    Mammoth,
+    FrostTroll,
+    FrozenTerror,
+    IceGiant,
+    IceWyvern,
+    Tangleroot,
+    CarnivorousPlant,
+    VampireLord,
+    SpiderQueen,
+    ChaoticDragon,
+    LavaGolem,
+    TheEye,
+    FireSpirit,
+    FireSerpent,
+    SolTheProtector
+  ];
 
-    async getMonsterListData() {
-        return this.monsters;
-    }
+  getMonsterListData() {
+    return JSON.parse(JSON.stringify(this.monsters));
+  }
 
-    async getMonsterData(monster: any) {
-        console.log(monster);
-        let copiedArray: any[] = [...this.monsters]
-        let monsterData = copiedArray.find(x => x.name === monster.monsterId);
-        console.log(monsterData);
-        return monsterData;
-      }
-
+  async getMonsterData(monster) {
+    return JSON.parse(JSON.stringify(this.monsters)).find(
+      (x) => x.name === monster.monsterId,
+    );
+  }
 }

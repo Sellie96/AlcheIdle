@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ItemReorderEventDetail } from '@ionic/angular';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Store } from '@ngxs/store';
+import { PlayerData } from 'src/app/state/CharacterDataTypes';
+import { CharacterState } from 'src/app/state/character.state';
 
+@UntilDestroy()
 @Component({
   selector: 'app-equipment',
   templateUrl: './equipment.component.html',
@@ -8,7 +13,9 @@ import { ItemReorderEventDetail } from '@ionic/angular';
 })
 export class EquipmentComponent implements OnInit {
 
-  constructor() { }
+  playerCharacter!: PlayerData;
+
+  constructor(private store: Store) { }
 
   handleReorder(ev: CustomEvent<ItemReorderEventDetail>) {
     // The `from` and `to` properties contain the index of the item
@@ -21,6 +28,13 @@ export class EquipmentComponent implements OnInit {
     ev.detail.complete();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.store
+    .select((state) => CharacterState.selectCharacterStats(state.character))
+    .pipe(untilDestroyed(this))
+    .subscribe((character: PlayerData) => {
+      this.playerCharacter = JSON.parse(JSON.stringify(character));
+    });
+  }
 
 }

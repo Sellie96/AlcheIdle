@@ -66,12 +66,6 @@ __decorate([
     __metadata("design:paramtypes", [create_message_dto_1.CreateMessageDto]),
     __metadata("design:returntype", Promise)
 ], MessagesGateway.prototype, "create", null);
-__decorate([
-    (0, websockets_1.SubscribeMessage)(''),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
-], MessagesGateway.prototype, "findAll", null);
 MessagesGateway = __decorate([
     (0, websockets_1.WebSocketGateway)({ cors: true }),
     __metadata("design:paramtypes", [messages_service_1.MessagesService])

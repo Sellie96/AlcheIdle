@@ -1,3 +1,6 @@
+import { RPGItems } from './../../../../alchemy-backend/src/Modules/combat/items.service';
+import { Interface } from "readline";
+
 export interface Skill {
   level: number;
   xpMax: number;
@@ -46,6 +49,7 @@ interface Defenses {
   armor: number;
   maxArmor: number;
   magicResistance: number;
+  evasion: number;
 }
 
 interface Combat {
@@ -54,26 +58,19 @@ interface Combat {
   attackSpeed: number;
   castSpeed: number;
   accuracy: number;
-  evasion: number;
   blockChance: number;
   parryChance: number;
 }
 
-interface Elemental {
+interface Resistances {
   fireResistance: number;
   iceResistance: number;
   lightningResistance: number;
-  fireAffinity: number;
-  iceAffinity: number;
-  lightningAffinity: number;
-  fireWeakness: number;
-  iceWeakness: number;
-  lightningWeakness: number;
-}
-
-interface Magic {
-  healingPower: number;
-  spellPower: number;
+  poisonResistance: number;
+  bleedResistance: number;
+  stunResistance: number;
+  confuseResistance: number;
+  silenceResistance: number;
 }
 
 interface Progression {
@@ -81,39 +78,16 @@ interface Progression {
   level: number;
   gold: number;
   inventorySize: number;
-  encumbrance: number;
   skillPoints: number;
   talentPoints: number;
-}
-
-interface Resource {
-  rage: number;
-  energy: number;
-  comboPoints: number;
-  fireCharges: number;
-  iceCharges: number;
-  lightningCharges: number;
-}
-
-interface DebuffResistances {
-  poisonResistance: number;
-  bleedResistance: number;
-  stunResistance: number;
-  confuseResistance: number;
-  charmResistance: number;
-  fearResistance: number;
-  silenceResistance: number;
 }
 
 export interface PlayerStats {
   stats: Stats;
   defenses: Defenses;
   combat: Combat;
-  elemental: Elemental;
-  magic: Magic;
+  resistances: Resistances;
   progression: Progression;
-  resource: Resource;
-  debuffResistances: DebuffResistances;
 }
 
 export interface PlayerData {
@@ -124,6 +98,19 @@ export interface PlayerData {
   character: Character;
 }
 
+export interface Equips {
+  head: RPGItems;
+  mainHand: RPGItems;
+  offHand: RPGItems;
+  ring1: RPGItems;
+  ring2: RPGItems;
+  feet: RPGItems;
+  neck: RPGItems;
+  chest: RPGItems;
+  legs: RPGItems;
+  hands: RPGItems;
+}
+
 export interface Character {
   characterAlignment: string;
   characterName: string;
@@ -131,7 +118,7 @@ export interface Character {
   currencies: AllCurrencies;
   skills: AllSkills;
   backpack: any[];
-  equipment: any[];
+  equipment: Equips;
 }
 
 export interface Tool {

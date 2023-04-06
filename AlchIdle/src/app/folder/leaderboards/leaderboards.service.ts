@@ -1,7 +1,7 @@
+import { ToastService } from './../../utils/toast.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { Customer } from './leaderboards.component';
 
 
 @Injectable({
@@ -10,16 +10,20 @@ import { Customer } from './leaderboards.component';
 export class LeaderboardsService {
   baseUrl = environment.apiUrl;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(
+    private httpClient: HttpClient,
+    private toastr: ToastService
+    ) { }
 
 
-  getLeaderboard(skill: string) {
+  getLeaderboard(skill: string = 'Woodcutting') {
     return this.httpClient.get<{playerData: any[]}>(`${this.baseUrl}/users/leaderboard?skill=${skill}`)
     .toPromise()
     .then(res => {
-      if (res!.playerData) {
-        return res!.playerData;
+      if (res) {
+        return res.playerData;
       } else {
+        this.toastr.getErrorToast("Failed to fetch leaderboard")
         throw new Error('Response does not contain playerData');
       }
     });

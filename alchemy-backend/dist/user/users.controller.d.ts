@@ -12,6 +12,8 @@ export declare class UsersController {
     getLeaderboard(res: any, skill: string): Promise<User>;
     private getTotalLevel;
     private getTotalXp;
+    private getLevel;
+    private getXp;
     filterTotalLevel(returnedData: any[], skills: any[]): any[];
     filterSkillLevel(returnedData: any[], skill: string | number): any[];
     flatten(arr: any[]): any[];

@@ -28,119 +28,173 @@ const socket_io_1 = require("socket.io");
 const auth_service_1 = require("../../auth/auth.service");
 const user_entity_1 = require("../../user/user.entity");
 const users_service_1 = require("../../user/users.service");
+const combat_service_1 = require("./combat.service");
 const monster_service_1 = require("./monster/monster.service");
 let CombatGateway = class CombatGateway {
-    constructor(authService, usersService, monsterService) {
+    constructor(authService, usersService, monsterService, combatService) {
         this.authService = authService;
         this.usersService = usersService;
         this.monsterService = monsterService;
+        this.combatService = combatService;
         this.users = 0;
         this.sendResponse = true;
         this.clientFightInProgress = new Map();
+        this.ongoingCombatPlayers = [];
     }
     handleConnection(client) {
+        var _a;
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const decodedToken = yield this.authService.verifyJwt(client.handshake.headers.authorization.slice(7));
-                const user = yield this.usersService.findOneByUsername(decodedToken.username);
-                if (!user) {
+                const authToken = (_a = client.handshake.headers.authorization) === null || _a === void 0 ? void 0 : _a.slice(7);
+                if (!authToken) {
+                    throw new Error('Authorization token not found');
+                }
+                const decodedToken = yield this.authService.verifyJwt(authToken);
+                this.player = yield this.usersService.findOneByUsername(decodedToken.username);
+                if (!this.player) {
+                    console.log(`User with username ${decodedToken.username} not found`);
                     client.disconnect();
+                    return;
                 }
-                else {
-                    console.log('combat connected');
-                    this.getPlayerData(user, client);
-                    this.getMonsterListData(client);
-                }
+                this.getPlayerData(client);
+                this.clientFightInProgress.set(client.id, false);
+                this.getMonsterListData(client);
+                this.currentClient = client;
             }
-            catch (_a) {
-                console.log('combat connect error');
+            catch (error) {
+                console.error(`Error while handling connection: ${error.message}`);
+                client.disconnect();
             }
         });
     }
     handleDisconnect(client) {
+        var _a;
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const decodedToken = yield this.authService.verifyJwt(client.handshake.headers.authorization.slice(7));
-                console.log(decodedToken);
-                const user = yield this.usersService.findOneByUsername(decodedToken.username);
-                if (!user) {
-                    client.disconnect();
+                const authToken = (_a = client.handshake.headers.authorization) === null || _a === void 0 ? void 0 : _a.slice(7);
+                if (!authToken) {
+                    throw new Error('Authorization token not found');
+                }
+                const decodedToken = yield this.authService.verifyJwt(authToken);
+                if (!this.player) {
+                    console.log(`User with username ${decodedToken.username} not found`);
                 }
                 else {
-                    console.log('combat disconnected');
                     clearInterval(this.playerInterval);
                     clearInterval(this.monsterInterval);
                     this.clientFightInProgress.set(client.id, false);
-                    client.disconnect();
                 }
             }
-            catch (_a) {
-                console.log('combat disconnect error');
+            catch (error) {
+                console.error(`Error while handling disconnect: ${error.message}`);
+            }
+            finally {
+                client.disconnect();
             }
         });
     }
-    handleFight(client, monsterId) {
+    startMonsterCombat(client, monsterId) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (this.clientFightInProgress.get(client.id)) {
-                console.log('client already in fight');
+            const decodedToken = yield this.authService.verifyJwt(client.handshake.headers.authorization.slice(7));
+            this.player = yield this.usersService.findOneByUsername(decodedToken.username);
+            if (this.ongoingCombatPlayers.includes(this.player.username)) {
+                client.emit('combatError', { message: `You are already engaged in a combat` });
                 return;
             }
-            this.clientFightInProgress.set(client.id, true);
-            const decodedToken = yield this.authService.verifyJwt(client.handshake.headers.authorization.slice(7));
-            const player = yield this.usersService.findOneByUsername(decodedToken.username);
-            const monster = yield this.monsterService.getMonsterData(monsterId);
-            this.server.to(client.id).emit('fightResult', monster);
-            const playerAttackInterval = 1000 * 5;
-            const attackInterval = 1000 * 4;
-            this.playerInterval = setInterval(() => __awaiter(this, void 0, void 0, function* () {
-                console.log('player interval');
-                const result = this.calculateMonsterHealth(player, monster);
-                this.server.to(client.id).emit('fightResult', result);
-                if (player.character.combatStats.stats.health <= 0 || monster.health <= 0) {
-                    clearInterval(this.playerInterval);
-                    clearInterval(this.monsterInterval);
-                    this.clientFightInProgress.set(client.id, false);
+            this.ongoingCombatPlayers.push(this.player.username);
+            let monster = yield this.findMonsterById(monsterId);
+            if (!monster) {
+                client.emit('combatError', { message: `Monster with ID ${monsterId} not found` });
+                return;
+            }
+            client.emit('updateMonster', { monster: monster });
+            client.emit('fightResult', { player: this.player, monster: monster });
+            this.combatInterval = setInterval(() => __awaiter(this, void 0, void 0, function* () {
+                this.player = yield this.usersService.findOneByUsername(decodedToken.username);
+                monster = this.combatService.calculateMonsterHealth(this.player, monster);
+                if (monster.health <= 0) {
+                    monster.health = 0;
                 }
-            }), playerAttackInterval);
-            this.monsterInterval = setInterval(() => __awaiter(this, void 0, void 0, function* () {
-                const result = this.calculatePlayerHealth(player, monster);
-                this.usersService.updateOne(result);
-                this.server.to(client.id).emit('getPlayerData', result);
-                if (player.character.combatStats.stats.health <= 0 || monster.health <= 0) {
-                    clearInterval(this.playerInterval);
-                    clearInterval(this.monsterInterval);
-                    this.clientFightInProgress.set(client.id, false);
+                client.emit('updateMonster', { monster: monster });
+                if (monster.health <= 0) {
+                    const loot = 0;
+                    const gold = 5;
+                    const xp = 5;
+                    this.player = this.combatService.updatePlayerLoot(gold, xp, this.player, monster);
+                    client.emit('monsterDeath', { loot, gold, xp });
+                    this.resetFight(client, monsterId);
+                    const index = this.ongoingCombatPlayers.indexOf(this.player.username);
+                    if (index > -1) {
+                        this.ongoingCombatPlayers.splice(index, 1);
+                    }
                 }
-            }), attackInterval);
+                this.getPlayerData(client);
+            }), this.player.character.combatStats.combat.attackSpeed * 1000);
+            this.combatIntervalMonster = setInterval(() => __awaiter(this, void 0, void 0, function* () {
+                this.player = yield this.usersService.findOneByUsername(decodedToken.username);
+                this.player = this.combatService.calculatePlayerHealth(this.player, monster);
+                console.log(this.player.character.combatStats.stats.health);
+                client.emit('updatePlayer', { player: this.player });
+                if (this.player.character.combatStats.stats.health <= 0) {
+                    this.playerDied(client);
+                }
+                this.usersService.updateOne(this.player);
+                this.getPlayerData(client);
+            }), monster.attackSpeed * 1000);
+        });
+    }
+    getMonsterListData(client) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.server
+                .to(client.id)
+                .emit('getMonsterListData', yield this.monsterService.getMonsterListData());
         });
     }
     handleFlee(client) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.clientFightInProgress.set(client.id, false);
-            clearInterval(this.playerInterval);
-            clearInterval(this.monsterInterval);
-            this.server.to(client.id).emit('flee');
+            if (this.player) {
+                const index = this.ongoingCombatPlayers.indexOf(this.player.username);
+                if (index > -1) {
+                    this.ongoingCombatPlayers.splice(index, 1);
+                }
+                clearInterval(this.combatInterval);
+                clearInterval(this.combatIntervalMonster);
+            }
         });
     }
-    getPlayerData(playerData, client) {
+    getPlayerData(client) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.server.to(client.id).emit('getPlayerData', playerData);
+            this.server.to(client.id).emit('getPlayerData', this.player);
         });
     }
-    calculatePlayerHealth(player, monster) {
-        player.character.combatStats.stats.health -= monster.attack;
-        return player;
-    }
-    calculateMonsterHealth(player, monster) {
-        const playerDamage = player.character.combatStats.stats.strength;
-        monster.health -= playerDamage;
-        return monster;
-    }
-    getMonsterListData(client) {
+    updatePlayer(client) {
         return __awaiter(this, void 0, void 0, function* () {
-            const monsterList = yield this.monsterService.getMonsterListData();
-            this.server.to(client.id).emit('getMonsterListData', monsterList);
+            let updatedData = yield this.usersService.findOneByUsername(this.player.username);
+            this.server.to(client.id).emit('updatePlayer', updatedData);
         });
+    }
+    resetFight(client, monsterId) {
+        clearInterval(this.combatInterval);
+        clearInterval(this.combatIntervalMonster);
+        const index = this.ongoingCombatPlayers.indexOf(this.player.username);
+        if (index > -1) {
+            this.ongoingCombatPlayers.splice(index, 1);
+        }
+        this.startMonsterCombat(client, monsterId);
+    }
+    findMonsterById(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.monsterService.getMonsterData(id);
+        });
+    }
+    playerDied(client) {
+        client.emit('playerDeath');
+        clearInterval(this.combatInterval);
+        clearInterval(this.combatIntervalMonster);
+        const index = this.ongoingCombatPlayers.indexOf(this.player.username);
+        if (index > -1) {
+            this.ongoingCombatPlayers.splice(index, 1);
+        }
     }
 };
 __decorate([
@@ -161,12 +215,17 @@ __decorate([
 ], CombatGateway.prototype, "handleDisconnect", null);
 __decorate([
     (0, websockets_1.SubscribeMessage)('startMonsterCombat'),
-    __param(0, (0, decorators_1.ConnectedSocket)()),
-    __param(1, (0, websockets_1.MessageBody)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [socket_io_1.Socket, String]),
     __metadata("design:returntype", Promise)
-], CombatGateway.prototype, "handleFight", null);
+], CombatGateway.prototype, "startMonsterCombat", null);
+__decorate([
+    (0, websockets_1.SubscribeMessage)('getMonsterListData'),
+    __param(0, (0, decorators_1.ConnectedSocket)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [socket_io_1.Socket]),
+    __metadata("design:returntype", Promise)
+], CombatGateway.prototype, "getMonsterListData", null);
 __decorate([
     (0, websockets_1.SubscribeMessage)('flee'),
     __param(0, (0, decorators_1.ConnectedSocket)()),
@@ -176,24 +235,24 @@ __decorate([
 ], CombatGateway.prototype, "handleFlee", null);
 __decorate([
     (0, websockets_1.SubscribeMessage)('getPlayerData'),
-    __param(0, (0, websockets_1.MessageBody)()),
-    __param(1, (0, decorators_1.ConnectedSocket)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [user_entity_1.User, socket_io_1.Socket]),
-    __metadata("design:returntype", Promise)
-], CombatGateway.prototype, "getPlayerData", null);
-__decorate([
-    (0, websockets_1.SubscribeMessage)('getMonsterListData'),
     __param(0, (0, decorators_1.ConnectedSocket)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [socket_io_1.Socket]),
     __metadata("design:returntype", Promise)
-], CombatGateway.prototype, "getMonsterListData", null);
+], CombatGateway.prototype, "getPlayerData", null);
+__decorate([
+    (0, websockets_1.SubscribeMessage)('updatePlayer'),
+    __param(0, (0, decorators_1.ConnectedSocket)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [socket_io_1.Socket]),
+    __metadata("design:returntype", Promise)
+], CombatGateway.prototype, "updatePlayer", null);
 CombatGateway = __decorate([
     (0, websockets_1.WebSocketGateway)({ cors: true }),
     __metadata("design:paramtypes", [auth_service_1.AuthService,
         users_service_1.UsersService,
-        monster_service_1.MonsterService])
+        monster_service_1.MonsterService,
+        combat_service_1.CombatService])
 ], CombatGateway);
 exports.CombatGateway = CombatGateway;
 //# sourceMappingURL=combat.gateway.js.map

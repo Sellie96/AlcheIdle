@@ -1,9 +1,29 @@
-ion-menu ion-content {
-  --background: var(--ion-item-background, var(--ion-background-color, #fff));
+
+
+ion-menu::part(backdrop) {
+  background-color: rgba(255, 0, 255, 0.5);
 }
 
-ion-menu {
-  width: 17rem;
+ion-menu::part(container) {
+  box-shadow: 4px 0px 16px rgba(255, 0, 255, 0.18);
+}
+
+:root {
+  --color1: #8360c3;
+  --color2: #608b7d;
+}
+
+:host {
+  ion-content {
+    --background: url("../assets/alchemyBG.png");
+    }
+}
+
+
+ion-split-pane {
+  --side-width: 15rem;
+  --side-max-width: 15rem;
+  --background-color: transparent;
 }
 
 
@@ -76,7 +96,6 @@ ion-menu.md ion-list#labels-list ion-list-header {
 ion-menu.md ion-item {
   --padding-start: 10px;
   --padding-end: 10px;
-  border-radius: 4px;
 }
 
 ion-menu.md ion-item.selected {
@@ -178,16 +197,18 @@ ion-item.selected {
   z-index: 10002;
 }
 
-.header {
-  background-image: url("../assets/logo/logobackground.webp");
-  background-size: cover;
-  padding: 0;
-  margin: 0;
-}
-
 .chat-box {
   position: absolute;
   bottom: 0;
   right: 0;
   width: 25rem;
+  z-index: 100;
+}
+
+.ability-bar {
+  position: absolute;
+  bottom: 2%;
+  right: 35vw;
+  width: 25rem;
+  z-index: 100;
 }

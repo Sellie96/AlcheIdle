@@ -106,12 +106,23 @@ export class UsersController {
     // Add a ranking property to each user object based on their skill level
   
     // Return only the CharacterName, characterAlignment, Skill Total level and skill total xp properties of each user object
-    let leaderboardData = returnedData.map((obj, index) => ({
-      name: obj.character.characterName,
-      mode: obj.character.characterAlignment,
-      level: this.getTotalLevel(obj.character.skills),
-      xp: this.getTotalXp(obj.character.skills),
-    }));
+    let leaderboardData;
+
+    if(skill === 'all') {
+      leaderboardData = returnedData.map((obj, index) => ({
+        name: obj.character.characterName,
+        mode: obj.character.characterAlignment,
+        level: this.getTotalLevel(obj.character.skills),
+        xp: this.getTotalXp(obj.character.skills),
+      }));
+    } else {
+      leaderboardData = returnedData.map((obj, index) => ({
+        name: obj.character.characterName,
+        mode: obj.character.characterAlignment,
+        level: this.getLevel(obj.character.skills, skill),
+        xp: this.getXp(obj.character.skills, skill),
+      }));
+    }
 
     leaderboardData = leaderboardData.sort((a, b) => b.level - a.level).map((obj, index) => ({  ...obj, ranking: index + 1 }));
   
@@ -123,20 +134,32 @@ export class UsersController {
 
     skills.forEach(value => {
       totalLevel += returnedData[value].level
-
     })
 
     return totalLevel;
   }
 
   private getTotalXp(returnedData: any) {
-
     let totalXp: number = 0;
 
     skills.forEach(value => {
       totalXp += returnedData[value].xpCurrent
     })
 
+    return totalXp;
+  }
+
+  private getLevel(returnedData: any, skill: string) {
+    let totalLevel: number = 0;
+    totalLevel += returnedData[skill.toLowerCase()].level
+
+
+    return totalLevel;
+  }
+
+  private getXp(returnedData: any, skill: string) {
+    let totalXp: number = 0;
+    totalXp += returnedData[skill.toLowerCase()].xpCurrent
     return totalXp;
   }
 

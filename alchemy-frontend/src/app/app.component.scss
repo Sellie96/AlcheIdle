@@ -369,13 +369,14 @@
 .expand-box {
   position: fixed;
   right: 5px;
-  bottom: 45px; 
+  bottom: 55px; 
   background: $primary;
   color: white;
   border-color: #0f2;
   -webkit-box-shadow: 0 0 10px #0f2;
   -moz-box-shadow: 0 0 10px #0f2;
   box-shadow: 0 0 10px #0f2;
+  z-index: 10000;
 }
 
 .expand-hp-box {
@@ -383,13 +384,14 @@
   width: 5rem;
   padding: 0;
   right: 5px;
-  bottom: 90px; 
+  bottom: 100px; 
   background: $primary;
   color: white;
   border-color: #0f2;
   -webkit-box-shadow: 0 0 10px #0f2;
   -moz-box-shadow: 0 0 10px #0f2;
   box-shadow: 0 0 10px #0f2;
+  z-index: 10000;
 }
 
 ::ng-deep .mat-list-base:hover {

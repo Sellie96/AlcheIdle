@@ -14,8 +14,11 @@ const typeorm_1 = require("@nestjs/typeorm");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const auth_module_1 = require("./auth/auth.module");
+const combat_module_1 = require("./Modules/combat/combat.module");
 const shop_module_1 = require("./Modules/shop/shop.module");
 const agility_module_1 = require("./Modules/skills/agility/agility.module");
+const cooking_module_1 = require("./Modules/skills/cooking/cooking.module");
+const firemaking_module_1 = require("./Modules/skills/firemaking/firemaking.module");
 const fishing_module_1 = require("./Modules/skills/fishing/fishing.module");
 const mining_module_1 = require("./Modules/skills/mining/mining.module");
 const skilling_module_1 = require("./Modules/skills/skills/skilling.module");
@@ -23,6 +26,7 @@ const thieving_module_1 = require("./Modules/skills/thieving/thieving.module");
 const woodcutting_module_1 = require("./Modules/skills/woodcutting/woodcutting.module");
 const user_entity_1 = require("./user/user.entity");
 const users_module_1 = require("./user/users.module");
+const character_module_1 = require("./Modules/character/character.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -43,8 +47,12 @@ AppModule = __decorate([
             fishing_module_1.FishingModule,
             mining_module_1.MiningModule,
             agility_module_1.AgilityModule,
+            firemaking_module_1.FiremakingModule,
+            cooking_module_1.CookingModule,
             skilling_module_1.SkillsModule,
             shop_module_1.ShopModule,
+            character_module_1.CharacterModule,
+            combat_module_1.CombatModule,
             schedule_1.ScheduleModule.forRoot(),
         ],
         controllers: [app_controller_1.AppController],

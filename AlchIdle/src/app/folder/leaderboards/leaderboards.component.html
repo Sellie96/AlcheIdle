@@ -1,0 +1,70 @@
+<ion-searchbar
+  placeholder="Search for a player..."
+  style="padding: 8px; margin: auto; width: 75%"
+  (keyup)="updateFilter($event)"
+  show-clear-button="focus"
+></ion-searchbar>
+
+<ion-segment [scrollable]="true" value="all">
+  <ion-segment-button (click)="setSearch('all')" value="all">
+    <ion-icon name="home"></ion-icon>
+  </ion-segment-button>
+  <ion-segment-button (click)="setSearch('woodcutting')" value="woodcutting">
+    <ion-icon name="home"></ion-icon>
+  </ion-segment-button>
+  <ion-segment-button (click)="setSearch('firemaking')" value="heart">
+    <ion-icon name="heart"></ion-icon>
+  </ion-segment-button>
+  <ion-segment-button (click)="setSearch('fishing')" value="pin">
+    <ion-icon name="pin"></ion-icon>
+  </ion-segment-button>
+  <ion-segment-button (click)="setSearch('cooking')" value="star">
+    <ion-icon name="star"></ion-icon>
+  </ion-segment-button>
+  <ion-segment-button (click)="setSearch('runecrafting')" value="call">
+    <ion-icon name="call"></ion-icon>
+  </ion-segment-button>
+  <ion-segment-button (click)="setSearch('mining')" value="globe">
+    <ion-icon name="globe"></ion-icon>
+  </ion-segment-button>
+  <ion-segment-button (click)="setSearch('smithing')" value="basket">
+    <ion-icon name="basket"></ion-icon>
+  </ion-segment-button>
+  <ion-segment-button (click)="setSearch('thieving')" value="barbell">
+    <ion-icon name="barbell"></ion-icon>
+  </ion-segment-button>
+  <ion-segment-button (click)="setSearch('fletching')" value="trash">
+    <ion-icon name="trash"></ion-icon>
+  </ion-segment-button>
+  <ion-segment-button (click)="setSearch('crafting')" value="person">
+    <ion-icon name="person"></ion-icon>
+  </ion-segment-button>
+  <ion-segment-button (click)="setSearch('herblore')" value="person">
+    <ion-icon name="person"></ion-icon>
+  </ion-segment-button>
+  <ion-segment-button (click)="setSearch('agility')" value="person">
+    <ion-icon name="person"></ion-icon>
+  </ion-segment-button>
+</ion-segment>
+
+<ion-content>
+  <div class="ion-padding">
+    <ngx-datatable
+      class="dark"
+      [rows]="rows"
+      [columns]="[
+        { name: 'Ranking' },
+        { name: 'Name' },
+        { name: 'XP' },
+        { name: 'Level' },
+        { name: 'Mode' }
+      ]"
+      [columnMode]="ColumnMode.force"
+      [headerHeight]="50"
+      [footerHeight]="50"
+      rowHeight="auto"
+      [limit]="18"
+    >
+    </ngx-datatable>
+  </div>
+</ion-content>

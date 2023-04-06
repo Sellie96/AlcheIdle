@@ -2,8 +2,8 @@ import { CreateMessageDto } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
 import { Message } from './entities/message.entity';
 export declare class MessagesService {
-    messages: Message[];
-    clientToUser: {};
+    private messages;
+    private clientToUser;
     constructor();
     create(createMessageDto: CreateMessageDto): Message[];
     identify(name: string, clientId: string): unknown[];

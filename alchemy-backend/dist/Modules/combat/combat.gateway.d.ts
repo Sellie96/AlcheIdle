@@ -1,0 +1,34 @@
+import { OnGatewayConnection, OnGatewayDisconnect } from '@nestjs/websockets';
+import { Server, Socket } from 'socket.io';
+import { AuthService } from 'src/auth/auth.service';
+import { UsersService } from 'src/user/users.service';
+import { CombatService } from './combat.service';
+import { MonsterService } from './monster/monster.service';
+export declare class CombatGateway implements OnGatewayConnection, OnGatewayDisconnect {
+    private authService;
+    private usersService;
+    private monsterService;
+    private combatService;
+    server: Server;
+    users: number;
+    sendResponse: boolean;
+    private clientFightInProgress;
+    private playerInterval;
+    private monsterInterval;
+    private player;
+    private combatInterval;
+    private combatIntervalMonster;
+    private ongoingCombatPlayers;
+    private currentClient;
+    constructor(authService: AuthService, usersService: UsersService, monsterService: MonsterService, combatService: CombatService);
+    handleConnection(client: Socket): Promise<void>;
+    handleDisconnect(client: Socket): Promise<void>;
+    startMonsterCombat(client: Socket, monsterId: string): Promise<void>;
+    getMonsterListData(client: Socket): Promise<void>;
+    handleFlee(client: Socket): Promise<void>;
+    getPlayerData(client: Socket): Promise<void>;
+    updatePlayer(client: Socket): Promise<void>;
+    private resetFight;
+    private findMonsterById;
+    playerDied(client: any): void;
+}

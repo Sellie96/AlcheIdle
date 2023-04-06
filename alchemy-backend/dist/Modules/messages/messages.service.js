@@ -17,8 +17,7 @@ let MessagesService = class MessagesService {
         this.clientToUser = {};
     }
     create(createMessageDto) {
-        const message = createMessageDto;
-        message.time = new Date().toISOString().split("T")[1].split(".")[0];
+        const message = Object.assign(Object.assign({}, createMessageDto), { time: new Date().toISOString().split('T')[1].split('.')[0] });
         this.messages.push(message);
         return this.messages;
     }

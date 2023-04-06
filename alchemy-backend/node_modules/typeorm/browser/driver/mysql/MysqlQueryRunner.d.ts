@@ -119,7 +119,7 @@ export declare class MysqlQueryRunner extends BaseQueryRunner implements QueryRu
     /**
      * Creates a new view.
      */
-    createView(view: View): Promise<void>;
+    createView(view: View, syncWithMetadata?: boolean): Promise<void>;
     /**
      * Drops the view.
      */

@@ -1,0 +1,23 @@
+<form [formGroup]="this.loginForm">
+  <ion-item style="margin: auto;">
+    <ion-label position="stacked">Enter your username</ion-label>
+    <ion-input
+      type="text"
+      placeholder="Your username"
+      formControlName="username"
+    ></ion-input>
+  </ion-item>
+  
+  <ion-item style="margin: auto; margin-top: 1rem; margin-bottom: 1rem;">
+    <ion-label position="stacked">Password</ion-label>
+    <ion-input
+      type="text"
+      placeholder="Your password"
+      formControlName="password"
+    ></ion-input>
+  </ion-item>
+  
+  <ion-button style="margin: auto; margin-top: 1rem; margin-bottom: 1rem;" color="primary" expand="block" (click)="submitLogin()">Login</ion-button>
+  
+  <ion-button style="margin: auto; margin-top: 1rem; margin-bottom: 1rem;" color="tertiary" expand="block" target="blank" href="https://discord.gg/NMnDEwWUbu">Join us on Discord</ion-button>
+</form>

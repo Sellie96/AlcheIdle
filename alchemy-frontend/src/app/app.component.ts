@@ -149,12 +149,12 @@ export class AppComponent implements OnInit {
       case navLinkEnums.fishing: return this.playerCharacter.character.skills.fishing.level;
       case navLinkEnums.cooking: return this.playerCharacter.character.skills.cooking.level;
       case navLinkEnums.firemaking: return this.playerCharacter.character.skills.firemaking.level;
-      case navLinkEnums.smithing: return this.playerCharacter.character.skills.smithing.level;
+      // case navLinkEnums.smithing: return this.playerCharacter.character.skills.smithing.level;
       case navLinkEnums.crafting: return this.playerCharacter.character.skills.crafting.level;
       case navLinkEnums.runecrafting: return this.playerCharacter.character.skills.runecrafting.level;
       case navLinkEnums.thieving: return this.playerCharacter.character.skills.thieving.level;
-      case navLinkEnums.fletching: return this.playerCharacter.character.skills.fletching.level;
-      case navLinkEnums.herblore: return this.playerCharacter.character.skills.herblore.level;
+      // case navLinkEnums.fletching: return this.playerCharacter.character.skills.fletching.level;
+      // case navLinkEnums.herblore: return this.playerCharacter.character.skills.herblore.level;
       case navLinkEnums.agility: return this.playerCharacter.character.skills.agility.level;
       default: return -1;
     }

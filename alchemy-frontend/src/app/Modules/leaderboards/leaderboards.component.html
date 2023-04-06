@@ -1,9 +1,8 @@
 <div class="leaderboard mat-elevation-z8">
-  <mat-tab-group (selectedTabChange)="tabChanged($event)" style="background-color: #34425a; min-height: 88vh; color: white;">
+  <mat-tab-group (selectedTabChange)="tabChanged($event)" style="background-color: #34425a; min-height: 87vh; color: white;">
     <mat-tab [label]="'Total'">
       <div *ngIf="!isLoadingResults || !isRateLimitReached" class="example-table-container">
-        <table mat-table [dataSource]="leaderboardData" class="example-table"
-               matSort matSortActive="created" matSortDisableClear matSortDirection="desc">
+        <table mat-table [dataSource]="dataSource" matSort matSortActive="created" matSortDisableClear matSortDirection="desc">
           <!-- Number Column -->
           <ng-container matColumnDef="position">
             <th mat-header-cell *matHeaderCellDef>Rank </th>
@@ -41,7 +40,7 @@
     </mat-tab>
     <mat-tab [label]="tab" *ngFor="let tab of skillTabs">
       <div *ngIf="!isLoadingResults || !isRateLimitReached" class="example-table-container">
-        <table mat-table [dataSource]="leaderboardData" class="example-table"
+        <table mat-table [dataSource]="dataSource" class="example-table"
                matSort matSortActive="created" matSortDisableClear matSortDirection="desc">
           <!-- Number Column -->
           <ng-container matColumnDef="position">
@@ -79,5 +78,5 @@
       </div>
     </mat-tab>
   </mat-tab-group>
-  <mat-paginator [length]="resultsLength" [pageSize]="3"></mat-paginator>
+  <mat-paginator [length]="resultsLength" [pageSize]="15"></mat-paginator>
 </div>

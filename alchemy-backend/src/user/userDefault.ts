@@ -1,8 +1,9 @@
 import { RegisterData } from './register.interface';
 import * as bcrypt from 'bcrypt';
+import { User } from './user.entity';
 
 export async function UserDataCreation(registerData: RegisterData) {
-  const data = {
+  const data: User = {
     username: registerData.username,
     password: await bcrypt.hash(registerData.password, 10),
     asActive: true,
@@ -10,19 +11,50 @@ export async function UserDataCreation(registerData: RegisterData) {
       characterName: registerData.characterName,
       characterAlignment: registerData.characterAlignment,
       combatStats: {
-        hpCurrent: 100,
-        hpMax: 100,
-        attack: 1,
-        defence: 1,
-        strength: 1,
-        magic: 1,
-        ranged: 1,
-      },
-      currencies: {
-        gold: 1,
-        energy: 1,
-        lifeForce: 1,
-        gems: 1,
+        stats: {
+          health: 100,
+          maxHealth: 100,
+          mana: 50,
+          maxMana: 50,
+          strength: 23,
+          dexterity: 10,
+          intelligence: 10,
+          endurance: 10,
+          agility: 10,
+          luck: 10,
+        },
+        defenses: {
+          armor: 0,
+          magicResistance: 0,
+          evasion: 640,
+        },
+        combat: {
+          criticalHitChance: 1,
+          criticalHitDamage: 50,
+          attackSpeed: 5,
+          castSpeed: 5,
+          accuracy: 1000,
+          blockChance: 1,
+          parryChance: 1,
+        },
+        resistances: {
+          fireResistance: 0,
+          iceResistance: 0,
+          lightningResistance: 0,
+          poisonResistance: 0,
+          bleedResistance: 0,
+          stunResistance: 0,
+          confuseResistance: 0,
+          silenceResistance: 0,
+        },
+        progression: {
+          experiencePoints: 0,
+          level: 1,
+          gold: 0,
+          inventorySize: 20,
+          skillPoints: 0,
+          talentPoints: 0,
+        },
       },
       skills: {
         agility: {
@@ -124,7 +156,24 @@ export async function UserDataCreation(registerData: RegisterData) {
         },
       },
       backpack: [],
-      equipment: [],
+      equipment: {
+        head: {},
+        neck: {},
+        shoulders: {},
+        chest: {},
+        hands: {},
+        waist: {},
+        legs: {},
+        feet: {},
+        ring1: {},
+        ring2: {},
+        trinket1: {},
+        trinket2: {},
+        mainHand: {},
+        offHand: {},
+        necklace: {},
+        cape: {},
+      },
     },
   };
 

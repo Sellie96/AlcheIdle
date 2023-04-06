@@ -29,7 +29,7 @@ let AgilityService = class AgilityService {
         this.timeLeft = 10;
         this.clientToUser = {};
     }
-    addToAgilityActive(activeRunner) {
+    addToActive(activeRunner) {
         return __awaiter(this, void 0, void 0, function* () {
             const user = activeRunner;
             let returnedData = {
@@ -38,12 +38,12 @@ let AgilityService = class AgilityService {
             };
             if (this.agilityUsers.some((runners) => runners.username === user.username)) {
                 if (this.agilityUsers.some((runners) => runners.timestamp + 11 < user.timestamp)) {
-                    returnedData.agilityUsers = yield this.usersService.updateAgilityByUsername(user);
+                    returnedData.agilityUsers = yield this.usersService.updateSkillByUsername(user);
                 }
             }
             else {
                 this.agilityUsers.push(user);
-                returnedData.agilityUsers = yield this.usersService.updateAgilityByUsername(user);
+                returnedData.agilityUsers = yield this.usersService.updateSkillByUsername(user);
             }
             returnedData.updateMessage = `You gain ${returnedData.agilityUsers.marksAmount}x Agility Marks and ${user.courseType.xp} XP!`;
             return returnedData;

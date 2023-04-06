@@ -7,5 +7,5 @@ export declare class AgilityService {
     timeLeft: number;
     clientToUser: {};
     constructor(usersService: UsersService);
-    addToAgilityActive(activeRunner: Agility): Promise<any>;
+    addToActive(activeRunner: Agility): Promise<any>;
 }

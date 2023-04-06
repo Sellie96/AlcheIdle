@@ -6,11 +6,7 @@ import { RegisterData } from './register.interface';
 import { UserDataCreation } from './userDefault';
 import { MessagesGateway } from 'src/Modules/messages/messages.gateway';
 import { MessagesService } from 'src/Modules/messages/messages.service';
-import { Woodcutting } from 'src/Modules/skills/woodcutting/entities/message.entity';
-import { Thieving } from 'src/Modules/skills/thieving/entities/thieving.entity';
-import { Fishing } from 'src/Modules/skills/fishing/entities/fishing.entity';
-import { Mining } from 'src/Modules/skills/mining/entities/message.entity';
-import { Agility } from 'src/Modules/skills/agility/entities/message.entity';
+import { Logs, Woodcutting } from 'src/Modules/skills/woodcutting/entities/message.entity';
 
 @Injectable()
 export class UsersService {
@@ -30,33 +26,45 @@ export class UsersService {
     return this.usersRepository.findOneBy({ id });
   }
 
+  async updateOne(user: User) {
+    await this.usersRepository.update(
+      { username: user.username },
+      {
+        character: user.character,
+      },
+    );
+  }
+
   async findOneByUsername(username: string): Promise<User> {
     return await this.usersRepository.findOneBy({ username: username });
   }
 
   async updateWoodcuttingByUsername(woodcutter: Woodcutting) {
     let user = await this.findOneByUsername(woodcutter.username);
+    console.log(woodcutter);
+    user.character.skills.woodcutting.xpCurrent += +woodcutter.type.xp;
 
-    user.character.skills.woodcutting.xpCurrent += +woodcutter.treeType.xp;
+    const logAmount = user.character.skills.woodcutting.pet ? (Math.random() > 0.8 ? 2 : 1) : 1;
 
-    let logAmount = 1;
+    let logs;
 
-    if (user.character.skills.woodcutting.pet) {
-      if((Math.random() * (10 - 1) + 1) > 8)
-      logAmount = 2;
-    } else {
-      logAmount = 1;
+    switch (woodcutter.type.reward) {
+      case Logs.normal.name: logs = Logs.normal; break;
+      case Logs.oak.name: logs = Logs.oak; break;
+      case Logs.willow.name: logs = Logs.willow; break;
+      case Logs.bonsai.name: logs = Logs.bonsai; break;
+      case Logs.yew.name: logs = Logs.yew; break;
+      case Logs.magic.name: logs = Logs.magic; break;
+      case Logs.demonic.name: logs = Logs.demonic; break;
+      case Logs.divine.name: logs = Logs.divine; break;
     }
 
-    let logs = {
-      name: woodcutter.treeType.reward,
-      amount: logAmount,
-      value: woodcutter.treeType.value,
-    }
+    const existingItem = user.character.backpack.find(
+      (item) => item.name === woodcutter.type.reward
+    );
 
-    if(user.character.backpack.some((item) => item.name === woodcutter.treeType.reward)) {
-      let indexOfItem: number = user.character.backpack.findIndex((item: any) => item.name === woodcutter.treeType.reward);
-      user.character.backpack[indexOfItem].amount += logAmount;
+    if (existingItem) {
+      existingItem.amount += logAmount;
     } else {
       user.character.backpack.push(logs);
     }
@@ -66,7 +74,7 @@ export class UsersService {
       this.messagesService.create({
         name: 'Server',
         message: `${woodcutter.username} has recieved a Beaver at level ${user.character.skills.woodcutting.level}!`,
-        time: new Date().toISOString().split('T')[1].split('.')[0],
+        time: new Date().toISOString().substring(11, 19),
       });
     }
 
@@ -75,7 +83,7 @@ export class UsersService {
       this.messagesService.create({
         name: 'Server',
         message: `${woodcutter.username} has advanced woodcutting to level ${user.character.skills.woodcutting.level}!`,
-        time: new Date().toISOString().split('T')[1].split('.')[0],
+        time: new Date().toISOString().substring(11, 19),
       });
     }
 
@@ -136,47 +144,53 @@ export class UsersService {
   }
 
 
-  async updateThievingByUsername(thief: Thieving) {
-    let user = await this.findOneByUsername(thief.username);
-    user.character.skills.thieving.xpCurrent += +thief.thievingOption.xp;
+  async updateSkillByUsername(skill: any) {
+    let user = await this.findOneByUsername(skill.username);
 
-    let gold = thief.thievingOption.reward;
+    user.character.skills[skill.type.skillType].xpCurrent += +skill.type.xp;
 
-    if (user.character.skills.thieving.pet) {
+    let rewardAmount = 1;
+
+    if (user.character.skills[skill.type.skillType].pet) {
       if((Math.random() * (10 - 1) + 1) > 8)
-      gold = gold * 2;
-    } else {
-      gold;
+      rewardAmount = rewardAmount * 2;
     }
 
-    user.character.currencies.gold += gold;
-
-    user.character.combatStats.hpCurrent -= thief.thievingOption.damage;
-
-    if(user.character.combatStats.hpCurrent <= 0) {
-      user.character.combatStats.hpCurrent = user.character.combatStats.hpMax;        //Needs refactor to kill character
+    let reward = {
+      name: `${skill.type.name}`,
+      amount: rewardAmount,
+      value: skill.type.value,
     }
 
-     if((Math.random() * (10 - 1) + 1) === 9) {
-      user.character.skills.thieving.pet = true;
+    this.addItemToBackpack(user, skill, reward ,rewardAmount);
+
+    // this.removeItemFromBackpack(user, skill);
+
+    const randomNumber = Math.random() * (10000 - 1) + 1;
+
+    if (randomNumber === 69) {
+      user.character.skills[skill.type.skillType].pet = true;
       this.messagesService.create({
         name: 'Server',
-        message: `${thief.username} has recieved a Fox at level ${user.character.skills.thieving.level}!`,
+        message: `${skill.username} has recieved Lil' Cook at level ${user.character.skills[skill.type.skillType].level}!`,
         time: new Date().toISOString().split('T')[1].split('.')[0],
       });
     }
 
-    if (user.character.skills.thieving.xpCurrent >= this.shouldLevelup(user.character.skills.thieving.level)) {
-      user.character.skills.thieving.level += 1;
+    const currentXP = user.character.skills[skill.type.skillType].xpCurrent;
+    const currentLevel = user.character.skills[skill.type.skillType].level;
+    
+    if (currentXP >= this.shouldLevelup(currentLevel)) {
+      user.character.skills[skill.type.skillType].level += 1;
       this.messagesService.create({
         name: 'Server',
-        message: `${thief.username} has advanced Thieving to level ${user.character.skills.thieving.level}!`,
+        message: `${skill.username} has advanced ${skill.type.skillType} to level ${currentLevel + 1}!`,
         time: new Date().toISOString().split('T')[1].split('.')[0],
       });
     }
 
     await this.usersRepository.update(
-      { username: thief.username },
+      { username: skill.username },
       {
         character: user.character,
       },
@@ -186,195 +200,32 @@ export class UsersService {
 
     const returnedObject = {
       user: user,
-      gold: gold,
+      reward:  reward,
+      amount: reward.amount,
     }
 
     return returnedObject;
   }
 
 
-  async updateFishingByUsername(fisher: Fishing) {
-    let user = await this.findOneByUsername(fisher.username);
-
-    user.character.skills.fishing.xpCurrent += +fisher.fishType.xp;
-
-    let fishAmount = 1;
-
-    if (user.character.skills.fishing.pet) {
-      if((Math.random() * (10 - 1) + 1) > 8)
-      fishAmount = 2;
+  addItemToBackpack(user: User, skill: { type: { name: any; }; }, reward: any, rewardAmount: number) {
+    const item = user.character.backpack.find((item) => item.name === skill.type.name);
+    if (item) {
+      item.amount += rewardAmount;
+      console.log(reward)
     } else {
-      fishAmount = 1;
+      console.log(reward)
+      user.character.backpack.push(reward);
     }
-
-    let fish = {
-      name: fisher.fishType.reward,
-      amount: fishAmount,
-      value: fisher.fishType.value,
-    }
-
-    if(user.character.backpack.some((item) => item.name === fisher.fishType.reward)) {
-      let indexOfItem: number = user.character.backpack.findIndex((item: any) => item.name === fisher.fishType.reward);
-      user.character.backpack[indexOfItem].amount += fishAmount;
+  }
+  
+  removeItemFromBackpack(user: User, skill: { type: { name: any; }; }) {
+    const item = user.character.backpack.find((item) => item.name === skill.type.name);
+    if (item) {
+      item.amount -= 1;
     } else {
-      user.character.backpack.push(fish);
+      return "You have no more items!";
     }
-
-     if((Math.random() * (10000 - 1) + 1) === 69) {
-      user.character.skills.fishing.pet = true;
-      this.messagesService.create({
-        name: 'Server',
-        message: `${fisher.username} has recieved a Crab at level ${user.character.skills.fishing.level}!`,
-        time: new Date().toISOString().split('T')[1].split('.')[0],
-      });
-    }
-
-    if (user.character.skills.fishing.xpCurrent >= this.shouldLevelup(user.character.skills.fishing.level)) {
-      user.character.skills.fishing.level += 1;
-      this.messagesService.create({
-        name: 'Server',
-        message: `${fisher.username} has advanced fishing to level ${user.character.skills.fishing.level}!`,
-        time: new Date().toISOString().split('T')[1].split('.')[0],
-      });
-    }
-
-    await this.usersRepository.update(
-      { username: fisher.username },
-      {
-        character: user.character,
-      },
-    );
-
-    this.messagesGateway.findAll();
-
-    const returnedObject = {
-      user: user,
-      fishAmount: fishAmount,
-    }
-
-    return returnedObject;
   }
 
-
-  async updateMiningByUsername(miner: Mining) {
-    let user = await this.findOneByUsername(miner.username);
-
-    user.character.skills.mining.xpCurrent += +miner.oreType.xp;
-
-    let oreAmount = 1;
-
-    if (user.character.skills.mining.pet) {
-      if((Math.random() * (10 - 1) + 1) > 8)
-      oreAmount = 2;
-    } else {
-      oreAmount = 1;
-    }
-
-    let ore = {
-      name: miner.oreType.reward,
-      amount: oreAmount,
-      value: miner.oreType.value,
-    }
-
-    if(user.character.backpack.some((item) => item.name === miner.oreType.reward)) {
-      let indexOfItem: number = user.character.backpack.findIndex((item: any) => item.name === miner.oreType.reward);
-      user.character.backpack[indexOfItem].amount += oreAmount;
-    } else {
-      user.character.backpack.push(ore);
-    }
-
-     if((Math.random() * (10000 - 1) + 1) === 69) {
-      user.character.skills.mining.pet = true;
-      this.messagesService.create({
-        name: 'Server',
-        message: `${miner.username} has recieved a Golem at level ${user.character.skills.mining.level}!`,
-        time: new Date().toISOString().split('T')[1].split('.')[0],
-      });
-    }
-
-    if (user.character.skills.mining.xpCurrent >= this.shouldLevelup(user.character.skills.mining.level)) {
-      user.character.skills.mining.level += 1;
-      this.messagesService.create({
-        name: 'Server',
-        message: `${miner.username} has advanced mining to level ${user.character.skills.mining.level}!`,
-        time: new Date().toISOString().split('T')[1].split('.')[0],
-      });
-    }
-
-    await this.usersRepository.update(
-      { username: miner.username },
-      {
-        character: user.character,
-      },
-    );
-
-    this.messagesGateway.findAll();
-
-    const returnedObject = {
-      user: user,
-      oreAmount: oreAmount,
-    }
-
-    return returnedObject;
-  }
-
-  async updateAgilityByUsername(agility: Agility) {
-    let user = await this.findOneByUsername(agility.username);
-
-    user.character.skills.agility.xpCurrent += +agility.courseType.xp;
-
-    let marksAmount = 1;
-
-    if (user.character.skills.agility.pet) {
-      if((Math.random() * (10 - 1) + 1) > 8)
-      marksAmount = marksAmount * 2;
-    }
-
-    let marks = {
-      name: "Agility Marks",
-      amount: marksAmount,
-      value: agility.courseType.value,
-    }
-
-    if(user.character.backpack.some((item) => item.name === "Agility Marks")) {
-      let indexOfItem: number = user.character.backpack.findIndex((item: any) => item.name === "Agility Marks");
-      user.character.backpack[indexOfItem].amount += marksAmount;
-    } else {
-      user.character.backpack.push(marks);
-    }
-
-     if((Math.random() * (10000 - 1) + 1) === 69) {
-      user.character.skills.agility.pet = true;
-      this.messagesService.create({
-        name: 'Server',
-        message: `${agility.username} has recieved a Monkey at level ${user.character.skills.agility.level}!`,
-        time: new Date().toISOString().split('T')[1].split('.')[0],
-      });
-    }
-
-    if (user.character.skills.agility.xpCurrent >= this.shouldLevelup(user.character.skills.agility.level)) {
-      user.character.skills.agility.level += 1;
-      this.messagesService.create({
-        name: 'Server',
-        message: `${agility.username} has advanced agility to level ${user.character.skills.agility.level}!`,
-        time: new Date().toISOString().split('T')[1].split('.')[0],
-      });
-    }
-
-    await this.usersRepository.update(
-      { username: agility.username },
-      {
-        character: user.character,
-      },
-    );
-
-    this.messagesGateway.findAll();
-
-    const returnedObject = {
-      user: user,
-      marksAmount: marksAmount,
-    }
-
-    return returnedObject;
-  }
 }

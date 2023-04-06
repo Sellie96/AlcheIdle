@@ -4,9 +4,9 @@ import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { Socket } from 'ngx-socket-io';
 import { ToastrService } from 'ngx-toastr';
-import { Subject } from 'rxjs';
+import { catchError, Subject, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { CreateCharacter } from '../stateManagement/character/character.actions';
+import { CreateCharacter } from '../../../../AlchIdle/src/app/state/character.actions';
 import { PlayerData } from '../stateManagement/character/CharacterDataTypes';
 
 
@@ -37,24 +37,25 @@ export class AccountService {
     return this.isAuthenticated;
   }
 
-  login(model: any) {
-    this.httpClient.post<{access_token:string, userData: PlayerData, message: string}>(`${this.baseUrl}/users/login`, model).subscribe(
-      (response) => {
-        this.token = response.access_token;
-        if (this.token) {
-        this.isAuthenticated = true;
-        this.authStatusListener.next(true);
-        this.saveAuthData(this.token);
-        this.store.dispatch(new CreateCharacter(response.userData));
-        window.location.reload();
-        this.toastrService.success(response.message);
-        }
-      },
-      (error) => {
-        this.toastrService.error(error.error.message);
-      }
-    );
-  }
+  async login(model: any) {
+    this.httpClient.post<{access_token:string, userData: PlayerData, message: string}>(`${this.baseUrl}/users/login`, model).pipe(
+        tap((response: { access_token: string; userData: PlayerData; message: string | undefined; }) => {
+            this.token = response.access_token;
+            if (this.token) {
+                this.isAuthenticated = true;
+                this.authStatusListener.next(true);
+                this.saveAuthData(this.token);
+                this.store.dispatch(new CreateCharacter(response.userData));
+                window.location.reload();
+                this.toastrService.success(response.message);
+            }
+        }),
+        catchError(error => {
+          this.toastrService.error(error.error.message);
+          return throwError(() => new Error(error));
+      })
+    ).subscribe();
+}
 
   register(model: any) {
     this.httpClient.post<{message: string}>(`${this.baseUrl}/users/register`, model).subscribe(
@@ -98,17 +99,15 @@ export class AccountService {
     this.isAuthenticated = true;
     this.authStatusListener.next(true);
   }
+private getAuthData() {
+  const token = localStorage.getItem('token');
 
-  private getAuthData() {
-    const token = localStorage.getItem("token");
-
-    if(!token){
-     return null;
-    }
-    return {
-      token: token
-    }
+  if (!token) {
+    return null;
   }
+
+  return { token };
+}
 
   
 }

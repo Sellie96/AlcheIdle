@@ -4,6 +4,58 @@ import { CombatStats } from "./skills/combat.entity";
 import { AllSkills } from "./skills/skills.entity";
 
 @Entity()
+export class Equipment {
+    @Column()
+    head: Object;
+
+    @Column()
+    neck: Object;
+
+    @Column()
+    shoulders: Object;
+
+    @Column()
+    chest: Object;
+
+    @Column()
+    hands: Object;
+
+    @Column()
+    waist: Object;
+
+    @Column()
+    legs: Object;
+
+    @Column()
+    feet: Object;
+
+    @Column()
+    ring1: Object;
+
+    @Column()
+    ring2: Object;
+
+    @Column()
+    trinket1: Object;
+
+    @Column()
+    trinket2: Object;
+
+    @Column()
+    mainHand: Object;
+
+    @Column()
+    offHand: Object;
+
+    @Column()
+    necklace: Object;
+
+    @Column()
+    cape: Object;
+}
+
+
+@Entity()
 export class Character {
     @ObjectIdColumn ()
     id?: number;
@@ -17,9 +69,6 @@ export class Character {
     @Column((type) => CombatStats)
     combatStats: CombatStats;
 
-    @Column((type) => AllCurrencies)
-    currencies: AllCurrencies;
-
     @Column((type) => AllSkills)
     skills: AllSkills;
 
@@ -27,7 +76,6 @@ export class Character {
     backpack: any[];
 
     @Column()
-    equipment: object[];
+    equipment: Equipment;
 }
-
 

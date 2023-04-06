@@ -26,7 +26,7 @@ export enum navLinkEnums {
   fletching = 'Fletching',
   crafting = 'Crafting',
   agility = 'Agility',
-  herblore = 'Herblore',
+  // herblore = 'Herblore',
 }
 
 export const navLinks = [
@@ -50,10 +50,10 @@ export const skillLinks = [
   navLinkEnums.cooking,
   navLinkEnums.runecrafting,
   navLinkEnums.mining,
-  navLinkEnums.smithing,
+  // navLinkEnums.smithing,
   navLinkEnums.thieving,
-  navLinkEnums.fletching,
-  navLinkEnums.crafting,
+  // navLinkEnums.fletching,
+  // navLinkEnums.crafting,
   navLinkEnums.agility,
-  navLinkEnums.herblore,
+  // navLinkEnums.herblore,
 ];

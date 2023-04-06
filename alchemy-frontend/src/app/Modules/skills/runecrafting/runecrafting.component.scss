@@ -1,0 +1,272 @@
+@import "~../../../../variables.scss";
+
+.firemaking-box {
+    background-color: $primary-dark;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border-radius: 5px;
+    color: white;
+    width: 100%;
+    padding-bottom: 2rem;
+}
+
+.grid {
+    border-top: 3px solid green;
+    margin-top: 1rem;
+    border-radius: 5px;
+    display: relative;
+}
+
+.progress-bar {
+    flex-direction: column;
+    height: 20px;
+}
+
+::ng-deep .mat-option {
+    background-color: $primary !important;
+    color: white !important;
+}
+
+::ng-deep .mat-option:hover {
+    background-color: $primary-dark !important;
+    color: white !important;
+}
+
+::ng-deep .mat-select-panel {
+    background-color: $primary !important;
+    color: white !important;
+    max-height: none !important;
+    border: 1px solid white;
+}
+
+::ng-deep .mat-select-value {
+    color: white !important;
+}
+
+.rewardContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.rewardIcon {
+    border-color: #0f2;
+    -webkit-box-shadow: 0 0 10px #0f2;
+    -moz-box-shadow: 0 0 10px #0f2;
+    box-shadow: 0 0 10px #0f2;
+    padding: 0.25rem;
+    margin: 0.25rem;
+    position: relative;
+    background-color: $primary
+}
+
+.floating {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+    bottom: -16px;
+}
+
+.icon {
+    width: 30px;
+}
+
+.progress-bar {
+    height: 20px;
+    width: 96%;
+    border-radius: 5px;
+    margin-top: 2rem;
+}
+
+::ng-deep .mat-grid-tile-content {
+    flex-direction: column;
+}
+
+.fire {
+	position: relative;
+	grid-column: 2 / 3;
+	grid-row: 2 / 3;
+	align-self: center;
+	justify-self: center;
+	width: 300px;
+	height: 300px;
+}
+.flame {
+	position: absolute;
+	bottom: 70px;
+	width: 100px;
+	height: 100px;
+	border-radius: 0 70%;
+	box-shadow: -10px -10px 0 10px orange, -20px -20px 0 20px yellow;
+	animation: flicker 5s ease infinite;
+}
+.f1 {
+	left: 50px;
+}
+.f3 {
+	transform: rotateZ(45deg);
+	left: 100px;
+	bottom: 100px;
+}
+.f2 {
+	transform: rotateZ(90deg);
+	left: 150px;
+}
+.log {
+	position: absolute;
+	bottom: 15px;
+	left: 50px;
+	width: 200px;
+	height: 50px;
+	background-color: brown;
+	border-radius: 10px;
+}
+.l1 {
+	transform: rotateZ(20deg);
+	box-shadow: 0 0 10px #3e2723;
+}
+.l2 {
+	transform: rotateZ(-20deg);
+	box-shadow: 0 0 10px #3e2723;
+}
+.l3 {
+	transform: rotate3d(1, 1, 1, 40deg);
+}
+.l4 {
+	transform: rotate3d(1, 1, 1, -40deg);
+}
+.spark {
+	width: 5px;
+	height: 5px;
+	background-color: orangered;
+	border-radius: 50%;
+	box-shadow: 0 0 5px 3px orange;
+	position: absolute;
+	top: 150px;
+	left: 150px;
+	opacity: 0;
+}
+.s1 {
+	animation: fadein 5s ease infinite, floatup 5s ease infinite,
+		left 5s ease infinite;
+}
+.s2 {
+	animation: fadein 5s 0.5s ease infinite, floatup 5s 0.5s ease infinite,
+		right 5s 0.5s ease infinite;
+}
+.s3 {
+	animation: fadein 5s 1s ease infinite, floatup 5s 1s ease infinite,
+		farleft 5s 1s ease infinite;
+}
+.s4 {
+	animation: fadein 5s 1.5s ease infinite, floatup 5s 1.5s ease infinite,
+		farright 5s 1.5s ease infinite;
+}
+.s5 {
+	animation: fadein 5s 2s linear infinite, floatup 5s 2s linear infinite;
+}
+.s6 {
+	animation: fadein 5s 2.5s ease infinite, floatup 5s 2.5s ease infinite,
+		left 5s 2.5s ease infinite;
+}
+.s7 {
+	animation: fadein 5s 3s ease infinite, floatup 5s 3s ease infinite,
+		right 5s 3s ease infinite;
+}
+.s8 {
+	animation: fadein 5s 3.5s ease infinite, floatup 5s 3.5s ease infinite,
+		farleft 5s 3.5s ease infinite;
+}
+
+@keyframes flicker {
+	0%,
+	100% {
+		background-color: red;
+		box-shadow: -10px -10px 0 10px orange, -15px -15px 0 15px yellow;
+	}
+	25%,
+	75% {
+		background-color: red;
+		box-shadow: -10px -10px 0 10px orangered, -20px -20px 0 20px yellow;
+	}
+	50% {
+		background-color: red;
+		box-shadow: -10px -10px 0 10px orange, -15px -15px 0 15px yellow;
+	}
+}
+
+@keyframes fadein {
+	0%,
+	100% {
+		opacity: 0;
+	}
+	75% {
+		opacity: 100%;
+	}
+}
+
+@keyframes floatup {
+	0% {
+		top: 150px;
+	}
+	100% {
+		top: -50%;
+	}
+}
+@keyframes left {
+	0% {
+		left: 150px;
+	}
+	100% {
+		left: 100px;
+	}
+}
+@keyframes right {
+	0% {
+		left: 150px;
+	}
+	100% {
+		left: 200px;
+	}
+}
+@keyframes farleft {
+	0% {
+		left: 150px;
+	}
+	100% {
+		left: 0px;
+	}
+}
+@keyframes farright {
+	0% {
+		left: 150px;
+	}
+	100% {
+		left: 300px;
+	}
+}
+@keyframes background {
+	0%,
+	50%,
+	100% {
+		box-shadow: 0 0 50px 50px orangered;
+	}
+	25%,
+	75% {
+		box-shadow: 0 0 60px 60px orangered;
+	}
+}
+
+.firecamp {
+    background-image: url("../../../../assets/general/firemaking.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.rune-button {
+    background-color: transparent;
+    color: white;
+}

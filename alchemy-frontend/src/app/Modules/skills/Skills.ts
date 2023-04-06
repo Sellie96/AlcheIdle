@@ -4,4 +4,6 @@ export enum SkillTypes {
     fishing = 'fishing',
     woodcutting = 'woodcutting',
     thieving = 'thieving',
+    firemaking = 'firemaking',
+    cooking = 'cooking',
 }

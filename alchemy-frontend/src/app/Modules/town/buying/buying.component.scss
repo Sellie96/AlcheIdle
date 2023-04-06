@@ -1,11 +1,5 @@
 @import "~../../../../variables.scss";
 
-::ng-deep .mat-dialog-container {
-  background-color: $primary-dark;
-  padding: 3rem;
-  border: 2px solid $primary;
-}
-
 .dialog-button {
     border: 2px solid $primary;
     display: flex;

@@ -1,1 +1,93 @@
-<p>runecrafting works!</p>
+<app-skill-information
+  [playerCharacter]="playerCharacter.character.skills.firemaking"
+  [players]="1"
+></app-skill-information>
+
+<mat-grid-list
+  cols="2"
+  rowHeight="1.5:1"
+  gutterSize="1rem"
+  style="margin-top: 1rem"
+>
+  <mat-grid-tile class="firemaking-box grid">
+    <form [formGroup]="firemakingForm">
+      <mat-card class="firemaking-box">
+        <mat-card-header>
+          <mat-card-title>{{
+            currentLogSelected.name | titlecase
+          }}</mat-card-title>
+          <mat-card-subtitle style="color: white">{{
+            logsInStorage | number
+          }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <img
+            mat-card-image
+            style="width: 3rem"
+            src="../../../../assets/items/{{
+              currentLogSelected.name
+            }}.png"
+            alt="Logs"
+          />
+        </mat-card-content>
+        <mat-card-actions>
+          <div class="rewardContainer">
+            <div class="rewardIcon">
+              <span class="floating"> {{ 20 }} </span>
+              <img
+                class="icon"
+                src="../../../../assets/items/{{
+                  currentLogSelected.name
+                }}.png"
+                alt="None"
+              />
+            </div>
+            <div class="rewardIcon">
+              <span class="floating">{{ 4 }}</span>
+              <img class="icon" src="./assets/general/hourglass.png" />
+            </div>
+          </div>
+        </mat-card-actions>
+      </mat-card>
+    </form>
+  </mat-grid-tile>
+  <mat-grid-tile class="firemaking-box grid">
+
+
+    <div style="display: flex;
+    flex-direction: row;">
+        <button mat-raised-button (click)="setForm('air')" class="rune-button">Air Runes</button>
+        <button mat-raised-button (click)="setForm('earth')" class="rune-button">Earth Runes</button>
+        <button mat-raised-button (click)="setForm('water')" class="rune-button">Water Runes</button>
+        <button mat-raised-button (click)="setForm('fire')" class="rune-button">Fire Runes</button>
+        <button mat-raised-button (click)="setForm('mind')" class="rune-button">Mind Runes</button>
+        <button mat-raised-button (click)="setForm('chaos')" class="rune-button">Chaos Runes</button>
+    </div>
+
+    <button
+      (click)="activateBurn()"
+      mat-raised-button
+      color="warn"
+      style="width: 96%"
+    >
+      Burn
+    </button>
+
+    <span style="width: 100%" *ngIf="burningActive">
+      <span
+        appTimestampCountdown
+        [timestamp]="timeUntilFinish || 0"
+        (isFinished)="completeFiremaking()"
+      ></span>
+
+      <mat-progress-bar
+        class="progress-bar"
+        color="accent"
+        mode="determinate"
+        anima
+        appTimestampCountdownProgress
+        [timestamp]="timeUntilFinish || 0"
+      ></mat-progress-bar>
+    </span>
+  </mat-grid-tile>
+</mat-grid-list>

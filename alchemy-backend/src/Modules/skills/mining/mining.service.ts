@@ -12,7 +12,7 @@ export class MiningService {
 
   constructor(private usersService: UsersService) {}
   
-  async addToMiningActive(activeMiner: Mining) {
+  async addToActive(activeMiner: Mining) {
     const user: Mining = activeMiner;
 
     let returnedData:any = {
@@ -24,11 +24,11 @@ export class MiningService {
       (miners) => miners.username === user.username)) {
         if(this.miningUsers.some(
           (miners) => miners.timestamp + 11 < user.timestamp)) {
-            returnedData.miningUsers = await this.usersService.updateMiningByUsername(user);
+            returnedData.miningUsers = await this.usersService.updateSkillByUsername(user);
           }
       } else {
       this.miningUsers.push(user);
-      returnedData.miningUsers = await this.usersService.updateMiningByUsername(user);
+      returnedData.miningUsers = await this.usersService.updateSkillByUsername(user);
     }
 
     returnedData.updateMessage = `You gain ${returnedData.miningUsers.oreAmount}x ${user.oreType.reward} and ${user.oreType.xp} XP!`;

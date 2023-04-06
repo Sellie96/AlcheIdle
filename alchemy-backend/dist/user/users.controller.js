@@ -29,6 +29,20 @@ const jwt_auth_guard_1 = require("../auth/strategies/jwt-auth.guard");
 const local_auth_guard_1 = require("../auth/strategies/local-auth.guard");
 const user_entity_1 = require("./user.entity");
 const users_service_1 = require("./users.service");
+const skills = [
+    'woodcutting',
+    'firemaking',
+    'fishing',
+    'cooking',
+    'runecrafting',
+    'mining',
+    'smithing',
+    'thieving',
+    'fletching',
+    'crafting',
+    'herblore',
+    'agility'
+];
 let UsersController = class UsersController {
     constructor(usersService, authService) {
         this.usersService = usersService;
@@ -37,71 +51,104 @@ let UsersController = class UsersController {
     login(req) {
         return this.authService.login(req.user);
     }
-    create(res, createUser) {
+    registerUser(res, createUser) {
         return __awaiter(this, void 0, void 0, function* () {
             if (yield this.usersService.doesUserExist(createUser.username)) {
-                return res.status(403).send({ message: 'User already exists' });
+                return res.status(common_1.HttpStatus.FORBIDDEN).send({ message: 'User already exists' });
+            }
+            this.usersService.register(createUser);
+            return res.status(common_1.HttpStatus.OK).send({ message: 'User registered' });
+        });
+    }
+    getPlayerData(res, username) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const playerData = yield this.usersService.findOneByUsername(username);
+                return res.status(200).send({ playerData });
+            }
+            catch (error) {
+                return res.status(500).send({ error: 'Failed to retrieve player data' });
+            }
+        });
+    }
+    getLeaderboard(res, skill) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!skill || !skills.includes(skill.toLowerCase())) {
+                return res.status(400).send({ error: 'Invalid skill specified' });
+            }
+            const returnedData = yield this.usersService.findAll();
+            let leaderboardData;
+            if (skill === 'all') {
+                leaderboardData = returnedData.map((obj, index) => ({
+                    name: obj.character.characterName,
+                    mode: obj.character.characterAlignment,
+                    level: this.getTotalLevel(obj.character.skills),
+                    xp: this.getTotalXp(obj.character.skills),
+                }));
             }
             else {
-                this.usersService.register(createUser);
-                return res.status(200).send({ message: 'User registered' });
+                leaderboardData = returnedData.map((obj, index) => ({
+                    name: obj.character.characterName,
+                    mode: obj.character.characterAlignment,
+                    level: this.getLevel(obj.character.skills, skill),
+                    xp: this.getXp(obj.character.skills, skill),
+                }));
             }
+            leaderboardData = leaderboardData.sort((a, b) => b.level - a.level).map((obj, index) => (Object.assign(Object.assign({}, obj), { ranking: index + 1 })));
+            return res.status(200).send({ playerData: leaderboardData });
         });
     }
-    getPlayerData(res, body) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return res.status(200).send({
-                playerData: yield this.usersService.findOneByUsername(body.username),
-            });
+    getTotalLevel(returnedData) {
+        let totalLevel = 0;
+        skills.forEach(value => {
+            totalLevel += returnedData[value].level;
         });
+        return totalLevel;
     }
-    returnTotalLevelLeaderboard(res, skill) {
-        return __awaiter(this, void 0, void 0, function* () {
-            let returnedData = yield this.usersService.findAll();
-            let sortedObjs;
-            switch (skill.toLowerCase()) {
-                case 'total':
-                    sortedObjs = this.filterTotalLevel(returnedData);
-                    break;
-                default:
-                    sortedObjs = this.filterSkillLevel(returnedData, skill.toLowerCase());
-                    break;
-            }
-            return res.status(200).send({ playerData: sortedObjs });
+    getTotalXp(returnedData) {
+        let totalXp = 0;
+        skills.forEach(value => {
+            totalXp += returnedData[value].xpCurrent;
         });
+        return totalXp;
     }
-    filterTotalLevel(returnedData) {
-        return returnedData.sort(function (a, b) {
-            return (b.character.skills.woodcutting.level +
-                b.character.skills.firemaking.level +
-                b.character.skills.fishing.level +
-                b.character.skills.cooking.level +
-                b.character.skills.runecrafting.level +
-                b.character.skills.mining.level +
-                b.character.skills.smithing.level +
-                b.character.skills.thieving.level +
-                b.character.skills.fletching.level +
-                b.character.skills.crafting.level +
-                b.character.skills.herblore.level +
-                b.character.skills.agility.level -
-                (a.character.skills.woodcutting.level +
-                    a.character.skills.mining.level +
-                    a.character.skills.fishing.level +
-                    a.character.skills.cooking.level +
-                    a.character.skills.firemaking.level +
-                    a.character.skills.runecrafting.level +
-                    a.character.skills.smithing.level +
-                    a.character.skills.thieving.level +
-                    a.character.skills.fletching.level +
-                    a.character.skills.crafting.level +
-                    a.character.skills.herblore.level +
-                    a.character.skills.agility.level));
+    getLevel(returnedData, skill) {
+        let totalLevel = 0;
+        totalLevel += returnedData[skill.toLowerCase()].level;
+        return totalLevel;
+    }
+    getXp(returnedData, skill) {
+        let totalXp = 0;
+        totalXp += returnedData[skill.toLowerCase()].xpCurrent;
+        return totalXp;
+    }
+    filterTotalLevel(returnedData, skills) {
+        return returnedData.sort((a, b) => {
+            const aTotalLevel = skills.reduce((total, skill) => {
+                return total + a.character.skills[skill].level;
+            }, 0);
+            const bTotalLevel = skills.reduce((total, skill) => {
+                return total + b.character.skills[skill].level;
+            }, 0);
+            return bTotalLevel - aTotalLevel;
         });
     }
     filterSkillLevel(returnedData, skill) {
         return returnedData.sort(function (a, b) {
             return b.character.skills[skill].level - a.character.skills[skill].level;
         });
+    }
+    flatten(arr) {
+        const flattenedArray = [];
+        for (const element of arr) {
+            if (Array.isArray(element)) {
+                flattenedArray.push(...this.flatten(element));
+            }
+            else {
+                flattenedArray.push(element);
+            }
+        }
+        return flattenedArray;
     }
 };
 __decorate([
@@ -124,7 +171,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
-], UsersController.prototype, "create", null);
+], UsersController.prototype, "registerUser", null);
 __decorate([
     (0, common_1.Post)('profile'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
@@ -134,9 +181,9 @@ __decorate([
         description: 'User Returned',
     }),
     __param(0, (0, common_1.Res)()),
-    __param(1, (0, common_1.Body)()),
+    __param(1, (0, common_1.Body)('username')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getPlayerData", null);
 __decorate([
@@ -151,7 +198,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", Promise)
-], UsersController.prototype, "returnTotalLevelLeaderboard", null);
+], UsersController.prototype, "getLeaderboard", null);
 UsersController = __decorate([
     (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiTags)('Alchemy'),

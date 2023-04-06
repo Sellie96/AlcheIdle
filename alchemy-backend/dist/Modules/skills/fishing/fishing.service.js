@@ -28,7 +28,7 @@ let FishingService = class FishingService {
         this.timeLeft = 10;
         this.clientToUser = {};
     }
-    addToFishingActive(activeFish) {
+    addToActive(activeFish) {
         return __awaiter(this, void 0, void 0, function* () {
             const user = activeFish;
             let returnedData = {
@@ -37,12 +37,12 @@ let FishingService = class FishingService {
             };
             if (this.fishingUsers.some((fisher) => fisher.username === user.username)) {
                 if (this.fishingUsers.some((fisher) => fisher.timestamp + 11 < user.timestamp)) {
-                    returnedData.fishingUsers = yield this.usersService.updateFishingByUsername(user);
+                    returnedData.fishingUsers = yield this.usersService.updateSkillByUsername(user);
                 }
             }
             else {
                 this.fishingUsers.push(user);
-                returnedData.fishingUsers = yield this.usersService.updateFishingByUsername(user);
+                returnedData.fishingUsers = yield this.usersService.updateSkillByUsername(user);
             }
             returnedData.updateMessage = `You gain ${returnedData.fishingUsers.fishAmount}x ${user.fishType.reward} and ${user.fishType.xp} XP!`;
             return returnedData;

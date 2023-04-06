@@ -6,5 +6,5 @@ export declare class FishingService {
     timeLeft: number;
     clientToUser: {};
     constructor(usersService: UsersService);
-    addToFishingActive(activeFish: Fishing): Promise<any>;
+    addToActive(activeFish: Fishing): Promise<any>;
 }

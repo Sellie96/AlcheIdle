@@ -1,0 +1,125 @@
+<ion-app style="background-color: white" no-padding no-margin>
+  <ion-content *ngIf="showLanding && !loggedIn && !loginForm">
+    <app-landing></app-landing>
+  </ion-content>
+
+  <ion-split-pane *ngIf="loggedIn" contentId="main-content">
+    <ion-menu contentId="main-content">
+      <ion-header>
+        <ion-toolbar color="transparent">
+          <ion-list-header
+            class="header"
+            style="min-height: 8rem; padding: 0; margin: 0"
+          >
+            <img class="main-logo" src="../../assets/logo/logo.PNG" />
+            <img class="main-logo-two" src="../../assets/logo/logoText.png" />
+            <p class="main-logo-text">AlcheIdle</p>
+          </ion-list-header>
+        </ion-toolbar>
+      </ion-header>
+      <ion-list style="background-color: transparent" id="inbox-list">
+        <ion-menu-toggle
+          auto-hide="false"
+          *ngFor="let p of appPages; let i = index"
+        >
+          <ion-item
+            color="transparent"
+            routerDirection="root"
+            [routerLink]="[p.url]"
+            lines="none"
+            detail="false"
+            routerLinkActive="selected"
+          >
+            <img
+              style="width: 1.5rem"
+              slot="start"
+              src="../assets/menu-icons/{{ p.title.toLowerCase() }}.png"
+            />
+            <ion-label
+              >{{ p.title }}
+              <span style="float: right; margin-right: 0.6rem" *ngIf="p.gold">
+                {{ playerCharacter.character.combatStats.progression.gold }}
+              </span>
+              <span
+                style="float: right; margin-right: 0.6rem"
+                *ngIf="p.inventory"
+              >
+                {{ playerCharacter.character.backpack.length }}/{{
+                  playerCharacter.character.combatStats.progression
+                    .inventorySize
+                }}
+              </span>
+              <span style="float: right; margin-right: 0.6rem" *ngIf="p.level">
+                Lvl
+                {{ playerCharacter.character.combatStats.progression.level }}
+              </span>
+            </ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+      </ion-list>
+
+      <ion-list style="background-color: transparent" id="inbox-list">
+        <ion-menu-toggle
+          auto-hide="false"
+          *ngFor="let p of skills; let i = index"
+        >
+          <ion-item
+            color="transparent"
+            routerDirection="root"
+            [routerLink]="[p.url]"
+            lines="none"
+            detail="false"
+            routerLinkActive="selected"
+          >
+            <ion-icon
+              slot="start"
+              [ios]="p.icon + '-outline'"
+              [md]="p.icon + '-sharp'"
+            ></ion-icon>
+            <ion-label>{{ p.title }}</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+      </ion-list>
+
+      <ion-list style="background-color: transparent" id="labels-list">
+        <ion-list-header>Settings</ion-list-header>
+
+        <ion-item
+          color="transparent"
+          style="cursor: pointer"
+          (click)="signOut()"
+          lines="none"
+        >
+          <ion-icon name="log-out-outline"></ion-icon>
+          <ion-label style="margin-left: 1.8rem"> Sign Out</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-menu>
+    <div class="ion-page" id="main-content">
+      <ion-content class="ion-padding">
+        <ion-router-outlet class="content-background" id="main-content"></ion-router-outlet>
+        <div *ngIf="loggedIn" class="chat-box">
+          <ion-accordion-group>
+            <ion-accordion value="first">
+              <ion-item slot="header" color="light">
+                <ion-label>Global Chat</ion-label>
+              </ion-item>
+              <div class="ion-padding" slot="content">
+                <app-chat></app-chat>
+              </div>
+            </ion-accordion>
+          </ion-accordion-group>
+        </div>
+        <div *ngIf="loggedIn" class="ability-bar">
+          <div class="ion-padding" slot="content">
+            <app-ability></app-ability>
+          </div>
+        </div>
+      </ion-content>
+    </div>
+  </ion-split-pane>
+
+  <ion-content *ngIf="!showLanding && !loggedIn && !loginForm">
+    <app-login></app-login>
+  </ion-content>
+</ion-app>

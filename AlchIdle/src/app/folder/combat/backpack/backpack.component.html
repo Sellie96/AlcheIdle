@@ -1,0 +1,56 @@
+<div style="display: flex; flex-direction: row; flex-wrap: wrap; width: 100%;">
+  <div
+    (click)="equipItem(item)"
+    style="margin: 0.5rem"
+    *ngFor="let item of playerCharacter.character.backpack"
+    [myTooltip]="template"
+    #tooltipContent
+  >
+
+  <div style="position: relative; cursor: pointer;">
+    <img
+      style="width: 4rem"
+      src="../../../../assets/equipment/EquipmentEmpty.png"
+    />
+    <img
+      style="width: 4rem; position: absolute; left: -0rem; z-index: 5;"
+      src="../../../../assets/equipment/{{item.name}}.png"
+    />
+  </div>
+
+    <ng-template #template>
+      <div class="my-tooltip">
+        <div>
+          <div>
+            <h3 style="text-align: center">{{ item.name }}</h3>
+            <span style="font-style: italic">
+              <p>{{ item.itemType }}</p>
+              <p *ngIf="item.equipable">Equipable</p>
+              <p *ngIf="item.stackable">Stackable</p>
+            </span>
+            <div style="text-align: center">
+              <ul>
+                <h3 style="text-decoration: underline; font-style: italic;" *ngIf="item.stats.offense">Offense</h3>
+                <li *ngFor="let offenseStat of item.stats.offense">
+                  {{ offenseStat.name }}: {{ offenseStat.value }}
+                </li>
+                <h3 style="text-decoration: underline; font-style: italic;" *ngIf="item.stats.offense">Attributes</h3>
+                <li *ngFor="let attributes of item.stats.attributes">
+                  {{ attributes.name }}: {{ attributes.value }}
+                </li>
+                <h3 style="text-decoration: underline; font-style: italic;" *ngIf="item.stats.defence">Defence</h3>
+                <li *ngFor="let defence of item.stats.defence">
+                  {{ defence.name }}: {{ defence.value }}
+                </li>
+                <h3 style="text-decoration: underline; font-style: italic;" *ngIf="item.stats.defence">Resists</h3>
+                <li *ngFor="let resists of item.stats.resists">
+                  {{ resists.name }}: {{ resists.value }}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div>

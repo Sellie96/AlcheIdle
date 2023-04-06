@@ -5,23 +5,23 @@ import { Message } from './entities/message.entity';
 
 @Injectable()
 export class MessagesService {
-
-  messages: Message[] = [];
-
-  clientToUser = {};
+  private messages: Message[] = [];
+  private clientToUser = {};
 
   constructor() {}
-  
+
   create(createMessageDto: CreateMessageDto) {
-    const message = createMessageDto;
-    message.time = new Date().toISOString().split("T")[1].split(".")[0]
+    const message = {
+      ...createMessageDto,
+      time: new Date().toISOString().split('T')[1].split('.')[0],
+    };
     this.messages.push(message);
+    
     return this.messages;
   }
 
   identify(name: string, clientId: string) {
     this.clientToUser[clientId] = name;
-
     return Object.values(this.clientToUser);
   }
 

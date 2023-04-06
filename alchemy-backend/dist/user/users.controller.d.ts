@@ -7,9 +7,14 @@ export declare class UsersController {
     private readonly authService;
     constructor(usersService: UsersService, authService: AuthService);
     login(req: any): any;
-    create(res: any, createUser: RegisterData): Promise<User>;
-    getPlayerData(res: any, body: any): Promise<User>;
-    returnTotalLevelLeaderboard(res: any, skill: String): Promise<User>;
-    filterTotalLevel(returnedData: any[]): any[];
-    filterSkillLevel(returnedData: any, skill: any): any;
+    registerUser(res: any, createUser: RegisterData): Promise<User>;
+    getPlayerData(res: any, username: string): Promise<User>;
+    getLeaderboard(res: any, skill: string): Promise<User>;
+    private getTotalLevel;
+    private getTotalXp;
+    private getLevel;
+    private getXp;
+    filterTotalLevel(returnedData: any[], skills: any[]): any[];
+    filterSkillLevel(returnedData: any[], skill: string | number): any[];
+    flatten(arr: any[]): any[];
 }

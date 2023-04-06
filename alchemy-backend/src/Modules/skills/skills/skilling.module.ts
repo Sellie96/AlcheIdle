@@ -3,6 +3,8 @@ import { AuthModule } from 'src/auth/auth.module';
 import { MessagesModule } from 'src/Modules/messages/messages.module';
 import { UsersModule } from 'src/user/users.module';
 import { AgilityModule } from '../agility/agility.module';
+import { CookingModule } from '../cooking/cooking.module';
+import { FiremakingModule } from '../firemaking/firemaking.module';
 import { FishingModule } from '../fishing/fishing.module';
 import { MiningModule } from '../mining/mining.module';
 import { ThievingModule } from '../thieving/thieving.module';
@@ -20,6 +22,9 @@ import { SkillsGateway } from './skills.gateway';
     forwardRef(() => WoodcuttingModule),
     forwardRef(() => ThievingModule),
     forwardRef(() => MessagesModule),
+    forwardRef(() => FiremakingModule),
+    forwardRef(() => CookingModule)
+
   ],
   controllers: [],
   providers: [SkillsGateway],

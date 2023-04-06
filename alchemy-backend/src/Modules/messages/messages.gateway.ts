@@ -43,7 +43,6 @@ export class MessagesGateway
     this.server.emit('findAllMessages', this.messagesService.create(createMessageDto));
   }
 
-  @SubscribeMessage('')
   findAll() {
     this.server.emit('findAllMessages', this.messagesService.findAll());
   }

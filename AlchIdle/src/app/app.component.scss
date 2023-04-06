@@ -1,0 +1,214 @@
+
+
+ion-menu::part(backdrop) {
+  background-color: rgba(255, 0, 255, 0.5);
+}
+
+ion-menu::part(container) {
+  box-shadow: 4px 0px 16px rgba(255, 0, 255, 0.18);
+}
+
+:root {
+  --color1: #8360c3;
+  --color2: #608b7d;
+}
+
+:host {
+  ion-content {
+    --background: url("../assets/alchemyBG.png");
+    }
+}
+
+
+ion-split-pane {
+  --side-width: 15rem;
+  --side-max-width: 15rem;
+  --background-color: transparent;
+}
+
+
+ion-menu.md ion-content {
+  --padding-bottom: 20px;
+  --offset-bottom: auto !important;
+  --overflow: hidden;
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+ion-menu.md ion-content:hover {
+  --padding-bottom: 20px;
+  --offset-bottom: auto !important;
+  overflow: auto;
+
+  ::-webkit-scrollbar {
+    display: contents;
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+}
+
+ion-menu.md ion-list {
+  padding: 20px 0;
+}
+
+ion-menu.md ion-note {
+  margin-bottom: 30px;
+}
+
+ion-menu.md ion-list-header,
+ion-menu.md ion-note {
+  padding-left: 10px;
+}
+
+ion-menu.md ion-list#inbox-list {
+  border-bottom: 1px solid var(--ion-color-step-150, #d7d8da);
+}
+
+ion-menu.md ion-list#inbox-list ion-list-header {
+  font-size: 22px;
+  font-weight: 600;
+
+  min-height: 20px;
+}
+
+ion-menu.md ion-list#labels-list ion-list-header {
+  font-size: 16px;
+
+  margin-bottom: 18px;
+
+  color: #757575;
+
+  min-height: 26px;
+}
+
+ion-menu.md ion-item {
+  --padding-start: 10px;
+  --padding-end: 10px;
+}
+
+ion-menu.md ion-item.selected {
+  --background: rgba(var(--ion-color-primary-rgb), 0.14);
+}
+
+ion-menu.md ion-item.selected ion-icon {
+  color: var(--ion-color-primary);
+}
+
+ion-menu.md ion-item ion-icon {
+  color: #616e7e;
+}
+
+ion-menu.md ion-item ion-label {
+  font-weight: 500;
+}
+
+ion-menu.ios ion-content {
+  --padding-bottom: 20px;
+}
+
+ion-menu.ios ion-list {
+  padding: 20px 0 0 0;
+}
+
+ion-menu.ios ion-note {
+  line-height: 24px;
+  margin-bottom: 20px;
+}
+
+ion-menu.ios ion-item {
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --min-height: 50px;
+}
+
+ion-menu.ios ion-item.selected ion-icon {
+  color: var(--ion-color-primary);
+}
+
+ion-menu.ios ion-item ion-icon {
+  font-size: 24px;
+  color: #73849a;
+}
+
+ion-menu.ios ion-list#labels-list ion-list-header {
+  margin-bottom: 8px;
+}
+
+ion-menu.ios ion-list-header,
+ion-menu.ios ion-note {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+ion-menu.ios ion-note {
+  margin-bottom: 8px;
+}
+
+ion-note {
+  display: inline-block;
+  font-size: 16px;
+
+  color: var(--ion-color-medium-shade);
+}
+
+ion-item.selected {
+  --color: var(--ion-color-primary);
+}
+
+.main-logo {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translate(-50%, 0);
+  width: 8rem;
+  z-index: 10000;
+}
+
+.main-logo-two {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+  top: 6.1rem;
+  width: 8rem;
+  z-index: 10001;
+}
+
+.main-logo-text {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+  top: 5rem;
+  color: black;
+  font-family: 'Mariage';
+  font-weight: 800;
+  font-size: 1rem;
+  z-index: 10002;
+}
+
+.chat-box {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 25rem;
+  z-index: 100;
+}
+
+.ability-bar {
+  position: absolute;
+  bottom: 2%;
+  right: 35vw;
+  width: 25rem;
+  z-index: 100;
+}

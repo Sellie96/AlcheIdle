@@ -1,0 +1,99 @@
+<ion-grid>
+  <ion-row>
+    <ion-col size="4" size-md="4" size-lg="4">
+      <h3 class="subheading">Offense</h3>
+      HP: {{ playerCharacter.character.combatStats.stats.health }} /
+      {{ playerCharacter.character.combatStats.stats.maxHealth }}
+      <br />
+      Mana: {{ playerCharacter.character.combatStats.stats.mana }} /
+      {{ playerCharacter.character.combatStats.stats.maxMana }}
+      <br />
+      Crit Chance:
+      {{ playerCharacter.character.combatStats.combat.criticalHitChance }}
+      <br />
+      Crit Damage:
+      + {{ playerCharacter.character.combatStats.combat.criticalHitDamage }} %
+      <br />
+      Attack Speed:
+      {{ playerCharacter.character.combatStats.combat.attackSpeed }}
+      <br />
+      Accuracy: {{ playerCharacter.character.combatStats.combat.accuracy }}
+      <br />
+      <h3 class="subheading">Attributes</h3>
+      Strength: {{ playerCharacter.character.combatStats.stats.strength }}
+      <br />
+      Dexterity: {{ playerCharacter.character.combatStats.stats.dexterity }}
+      <br />
+      Intelligence:
+      {{ playerCharacter.character.combatStats.stats.intelligence }}
+      <br />
+      Endurance: {{ playerCharacter.character.combatStats.stats.endurance }}
+      <br />
+      Agility: {{ playerCharacter.character.combatStats.stats.agility }}
+      <br />
+      Luck: {{ playerCharacter.character.combatStats.stats.luck }}
+    </ion-col>
+    <ion-col size="4" size-md="4" size-lg="4">
+      <h3 class="subheading">Defence</h3>
+      Armor: {{ playerCharacter.character.combatStats.defenses.armor }}
+      <br />
+      Evasion: {{ playerCharacter.character.combatStats.defenses.evasion }}
+      <br />
+      Magic Resist:
+      {{ playerCharacter.character.combatStats.defenses.magicResistance }}
+      <br />
+      Block Chance:
+      {{ playerCharacter.character.combatStats.combat.blockChance }}
+      <br />
+      Parry Chance:
+      {{ playerCharacter.character.combatStats.combat.parryChance }}
+      <br />
+      <h3 class="subheading">Resists</h3>
+      Fire Res:
+      {{ playerCharacter.character.combatStats.resistances.fireResistance }}
+      <br />
+      Ice Res:
+      {{ playerCharacter.character.combatStats.resistances.iceResistance }}
+      <br />
+      Lightining Res:
+      {{
+        playerCharacter.character.combatStats.resistances.lightningResistance
+      }}
+      <br />
+      Poison Res:
+      {{ playerCharacter.character.combatStats.resistances.poisonResistance }}
+      <br />
+      Bleed Res:
+      {{ playerCharacter.character.combatStats.resistances.bleedResistance }}
+      <br />
+      Stun Res:
+      {{ playerCharacter.character.combatStats.resistances.stunResistance }}
+      <br />
+      Confuse Res:
+      {{ playerCharacter.character.combatStats.resistances.confuseResistance }}
+      <br />
+      Silence Res:
+      {{ playerCharacter.character.combatStats.resistances.silenceResistance }}
+    </ion-col>
+    <ion-col size="4" size-md="4" size-lg="4">
+      <h3 class="subheading">Progression</h3>
+      XP:
+      {{ playerCharacter.character.combatStats.progression.experiencePoints }} /
+      {{ calculateXpForLevel() }}
+      <br />
+      Level: {{ playerCharacter.character.combatStats.progression.level }}
+      <br />
+      Invent Size:
+      {{ playerCharacter.character.combatStats.progression.inventorySize }}
+      <br />
+      Skill Points:
+      {{ playerCharacter.character.combatStats.progression.skillPoints }}
+      <br />
+      Talent Points:
+      {{ playerCharacter.character.combatStats.progression.talentPoints }}
+      <br />
+      Evasion: {{ playerCharacter.character.combatStats.defenses.evasion }}
+      <br />
+    </ion-col>
+  </ion-row>
+</ion-grid>

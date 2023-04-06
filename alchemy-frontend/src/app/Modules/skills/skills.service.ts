@@ -1,11 +1,6 @@
-import { HostListener, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { AccountService } from 'src/app/_services/account.service';
-import { Course } from './agility/Agility';
-import { Fish } from './fishing/Fishing';
-import { Ore } from './mining/Mining';
-import { Thieving } from './thieving/Thieving';
-import { Tree } from './woodcutting/Trees';
 
 @Injectable({
   providedIn: 'root',

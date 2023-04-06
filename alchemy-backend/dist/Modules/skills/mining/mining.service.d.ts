@@ -7,5 +7,5 @@ export declare class MiningService {
     timeLeft: number;
     clientToUser: {};
     constructor(usersService: UsersService);
-    addToMiningActive(activeMiner: Mining): Promise<any>;
+    addToActive(activeMiner: Mining): Promise<any>;
 }

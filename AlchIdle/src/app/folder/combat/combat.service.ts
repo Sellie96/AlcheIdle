@@ -19,6 +19,12 @@ export class CombatService {
     });
   }
 
+  useItem(itemName: String, amount: number) {
+    this.socket.emit('useItem', {
+      itemName: itemName
+    });
+  }
+
   flee() {
     this.socket.emit('flee');
   }
@@ -39,8 +45,17 @@ export class CombatService {
     return this.socket.fromEvent('updateMonster');
   }
 
+  getMonsterLoot(): Observable<any> {
+    return this.socket.fromEvent('monsterDeath');
+  }
+
   getMonsterListData() {
     this.socket.emit('getMonsterListData');
     return this.socket.fromEvent('getMonsterListData');
   }
+
+  checkIfLevelUp(): Observable<any>  {
+    return this.socket.fromEvent('levelUp');
+  }
+
 }

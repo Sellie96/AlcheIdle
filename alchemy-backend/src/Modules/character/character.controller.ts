@@ -4,6 +4,7 @@ import { JwtAuthGuard } from 'src/auth/strategies/jwt-auth.guard';
 import { Request } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
 import { CharacterService, Item } from './character.service';
+import { RPGItems } from '../combat/items.service';
 
 @ApiBearerAuth()
 @ApiTags('Character')
@@ -49,6 +50,25 @@ export class CharacterController {
 
     return {
       message: 'Unequipped',
+      player: returnedData,
+    };
+  }
+
+  @Post('sellItem')
+  @UseGuards(JwtAuthGuard)
+  async sellItem(@Request() req, @Body() item: any) {
+    const decodedToken = await this.authService.verifyJwt(
+      req.headers.authorization.slice(7),
+    );
+
+
+    let returnedData = await this.characterService.sellItem(
+      decodedToken.username,
+      item,
+    );
+
+    return {
+      message: 'Item has been sold for',
       player: returnedData,
     };
   }

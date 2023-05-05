@@ -1,3 +1,4 @@
+
 import { LandingComponent } from './landing/landing.component';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -21,6 +22,9 @@ import { CharacterState } from './state/character.state';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { AbilityComponent } from './ability/ability.component';
 import { JwtInterceptor } from './utils/jwt.interceptor';
+import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
+import { LootOpeningComponent } from './loot-opening/loot-opening.component';
+import { InventoryComponent } from './inventory/inventory.component';
 
 const config: SocketIoConfig = { url: 'http://localhost:3000', options: {
   extraHeaders: {
@@ -35,7 +39,9 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {
     ChatComponent,
     LandingComponent,
     RegisterComponent,
-    AbilityComponent
+    AbilityComponent,
+    LootOpeningComponent,
+    InventoryComponent
   ],
   imports: [
     BrowserModule,
@@ -50,6 +56,7 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {
     NgxDatatableModule,
     SocketIoModule.forRoot(config),
     environment.production ? [] : NgxsReduxDevtoolsPluginModule.forRoot(),
+    LoadingBarRouterModule
   ],
   providers: [
     { provide: RouteReuseStrategy,

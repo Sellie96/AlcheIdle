@@ -35,7 +35,7 @@ export class LandingComponent implements OnInit {
   }
 
   switchToRegister() {
-    this.register = true;
+    this.register = !this.register;
   }
 
 }

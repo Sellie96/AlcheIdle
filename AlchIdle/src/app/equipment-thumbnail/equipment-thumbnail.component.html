@@ -1,0 +1,12 @@
+<ion-thumbnail class="thumb">
+  <img
+    (click)="unequipItem()"
+    *ngIf="equipmentName"
+    src="../../../assets/equipment/{{ equipmentName }}.png"
+  />
+  <img
+    *ngIf="!equipmentName"
+    alt="Silhouette of mountains"
+    src="../../../assets/equipment/{{ defaultImage }}"
+  />
+</ion-thumbnail>

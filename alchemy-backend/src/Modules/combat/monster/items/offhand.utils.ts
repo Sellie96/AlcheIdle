@@ -19,7 +19,7 @@ export const BronzeShield = new RPGItems(
       { name: ResistStat.BLEED_RES, value: 1 },
     ],
   },
-  0.03,
+  0.08,
   false,
   1,
   1,

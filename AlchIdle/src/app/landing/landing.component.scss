@@ -1,19 +1,24 @@
 .main-text {
-  font-size: 50px;
-  font-family: "Zona Pro";
-  font-weight: 600;
+  font-family: Cinzel Decorative, serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  text-shadow: 0 0 8px #15ac67, 0 0 18px #15ac67;
+  font-size: 3rem;
 }
 
 .sub-text {
   margin-top: 2rem;
   color: gray;
+  text-shadow: 0 0 0px #15ac67, 0 0 1px #15ac67;
 }
 
 .button-text {
   color: white;
-  font-size: 22px;
-  font-family: "Zona Pro";
-  font-weight: 500;
+  font-size: 20px;
+  font-family: Cinzel Decorative, serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  text-shadow: 0 0 8px #15ac67, 0 0 18px #15ac67;
 }
 
 .header-text {
@@ -27,31 +32,48 @@
     0px 0px 10px rgb(20, 121, 0), 0px 0px 5px #553300, 0px 0px 5px #553300;
 }
 
-.landing-background {
-  background-image: url("../../assets/alchemyBG.png");
-  background-repeat: no-repeat;
-  padding: 0;
-  margin: 0;
-  min-height: 130vh;
-  min-width: 100vw;
-}
-
 .main-content-area {
   max-width: 27%;
-  margin-left: 20rem;
+  margin-left: 4rem;
 }
 
 .heading-margin {
-    margin-left: 50rem;
+  margin-left: 50rem;
 }
 
 @media only screen and (max-width: 600px) {
-    .main-content-area {
-        max-width: 100%;
-        margin-left: 1rem;
-    }
-
-    .heading-margin {
-        margin-left: 0rem;
-    }
+  .main-content-area {
+    max-width: 100%;
+    margin-left: 1rem;
   }
+
+  .heading-margin {
+    margin-left: 0rem;
+  }
+}
+
+
+ion-modal {
+  --border-radius: 16px;
+  --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  font-family: Cinzel Decorative, serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  text-shadow: 0 0 2px #15ac67, 0 0 4px #15ac67;
+  opacity: 1;
+}
+
+ion-modal::part(backdrop) {
+  background: rgb(0, 107, 9);
+  opacity: 1;
+}
+
+ion-modal ion-toolbar {
+  --background: rgba(0, 88, 7, 1);
+  --color: white;
+}
+
+ion-modal ion-content {
+  --background: rgba(0, 88, 7, 1);
+  --color: white;
+}

@@ -8,6 +8,15 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CombatService = void 0;
 const users_service_1 = require("./../../user/users.service");
@@ -19,53 +28,74 @@ let CombatService = class CombatService {
         this.messagesService = messagesService;
         this.usersService = usersService;
     }
-    updatePlayerLoot(gold, xp, player, monster) {
-        if (player.character.backpack.length <
-            player.character.combatStats.progression.inventorySize) {
-            const totalDropRate = monster.loot.reduce((sum, item) => sum + item.dropChance, 0);
+    updatePlayerLoot(gold, xp, player, monster, client) {
+        return __awaiter(this, void 0, void 0, function* () {
             const randomNumber = Math.random();
             let selected = null;
             let cumulativeDropRate = 0;
-            if (randomNumber < totalDropRate) {
-                for (const item of monster.loot) {
-                    cumulativeDropRate += item.dropChance;
-                    if (randomNumber < cumulativeDropRate) {
-                        selected = item;
-                        break;
+            if (player.character.backpack.length <
+                player.character.combatStats.progression.inventorySize) {
+                const totalDropRate = monster.loot.reduce((sum, item) => sum + item.dropChance, 0);
+                if (randomNumber < totalDropRate) {
+                    for (const item of monster.loot) {
+                        cumulativeDropRate += item.dropChance;
+                        if (randomNumber < cumulativeDropRate) {
+                            selected = item;
+                            break;
+                        }
                     }
                 }
-            }
-            if ((selected === null || selected === void 0 ? void 0 : selected.name) !== undefined) {
-                player.character.backpack.push(selected);
-                if (selected.special) {
-                    this.messagesService.create({
-                        name: "Server",
-                        message: `${player.username} has recieved ${selected.name}`,
-                        time: new Date().toISOString().split('T')[1].split('.')[0]
-                    });
+                if ((selected === null || selected === void 0 ? void 0 : selected.name) !== undefined) {
+                    player = yield this.usersService.findOneByUsername(player.username);
+                    const item = player.character.backpack.find((item) => item.name === selected.name);
+                    if (selected.stackable && item) {
+                        item.amount += selected.amount;
+                    }
+                    else {
+                        player.character.backpack.push(selected);
+                    }
+                    player.character.combatStats.progression.experiencePoints += xp;
+                    player.character.combatStats.progression.gold += gold;
+                    this.checkIfLevelUp(player, client);
+                    if (selected.special) {
+                        this.messagesService.create({
+                            name: 'Server',
+                            message: `${player.username} has recieved ${selected.name}`,
+                            time: new Date().toISOString().split('T')[1].split('.')[0],
+                        });
+                    }
+                    yield this.usersService.updateOne(player);
+                    return [selected];
                 }
             }
-        }
-        player.character.combatStats.progression.experiencePoints += xp;
-        player.character.combatStats.progression.gold += gold;
-        player = this.checkIfLevelUp(player);
-        this.usersService.updateOne(player);
-        return player;
+            yield this.usersService.updateOne(player);
+            return [];
+        });
     }
-    checkIfLevelUp(player) {
-        let total = 0;
-        for (let i = 0; i < player.character.combatStats.progression.level; i++) {
-            total += Math.floor(i + 300 * Math.pow(2, i / 7));
-        }
-        if (player.character.combatStats.progression.experiencePoints >= total) {
-            player.character.combatStats.progression.level++;
-            this.messagesService.create({
-                name: "Server",
-                message: `${player.username} has reached level ${player.character.combatStats.progression.level}`,
-                time: new Date().toISOString().split('T')[1].split('.')[0]
-            });
-        }
-        return player;
+    checkIfLevelUp(player, client) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let total = 0;
+            for (let i = 0; i < player.character.combatStats.progression.level; i++) {
+                total += Math.floor(i + 300 * Math.pow(2, i / 7));
+            }
+            if (player.character.combatStats.progression.experiencePoints >= total) {
+                player.character.combatStats.progression.level++;
+                player.character.combatStats.stats.maxHealth += 10;
+                player.character.combatStats.stats.health = player.character.combatStats.stats.maxHealth;
+                if (player.character.combatStats.progression.level % 2 === 0) {
+                    player.character.combatStats.stats.strength += 1;
+                    player.character.combatStats.defenses.evasion += 10;
+                }
+                this.messagesService.create({
+                    name: 'Server',
+                    message: `${player.username} has reached level ${player.character.combatStats.progression.level}`,
+                    time: new Date().toISOString().split('T')[1].split('.')[0],
+                });
+                client.emit('levelUp', player.character.combatStats.progression.level);
+            }
+            yield this.usersService.updateOne(player);
+            return;
+        });
     }
     addItemToBackpack(user, skill, reward, rewardAmount) {
         const item = user.character.backpack.find((item) => item.name === skill.type.name);
@@ -116,7 +146,11 @@ let CombatService = class CombatService {
         let chanceToHit = 0;
         if (monster) {
             if (player.character.combatStats.combat.accuracy > monster.evasion) {
-                chanceToHit = (1 - monster.evasion / (player.character.combatStats.combat.accuracy * 2)) * 100;
+                chanceToHit =
+                    (1 -
+                        monster.evasion /
+                            (player.character.combatStats.combat.accuracy * 2)) *
+                        100;
             }
             else {
                 chanceToHit =

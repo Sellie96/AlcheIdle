@@ -15,5 +15,5 @@ exports.LeatherChaps = new items_service_1.RPGItems('Leather Chaps', items_servi
         { name: items_service_1.ResistStat.POISON_RES, value: 1 },
         { name: items_service_1.ResistStat.BLEED_RES, value: 1 },
     ],
-}, 0.003, false, 1, 1);
+}, 0.01, false, 1, 1);
 //# sourceMappingURL=legs.utils.js.map

@@ -15,5 +15,5 @@ exports.BronzeShield = new items_service_1.RPGItems('Bronze Shield', items_servi
         { name: items_service_1.ResistStat.POISON_RES, value: 1 },
         { name: items_service_1.ResistStat.BLEED_RES, value: 1 },
     ],
-}, 0.03, false, 1, 1);
+}, 0.08, false, 1, 1);
 //# sourceMappingURL=offhand.utils.js.map

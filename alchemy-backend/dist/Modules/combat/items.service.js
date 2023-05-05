@@ -12,6 +12,7 @@ var ItemType;
     ItemType["BOOTS"] = "Boots";
     ItemType["WEAPON"] = "Weapon";
     ItemType["SHIELD"] = "Shield";
+    ItemType["CONSUMABLE"] = "Consumable";
 })(ItemType = exports.ItemType || (exports.ItemType = {}));
 var OffenseStat;
 (function (OffenseStat) {
@@ -51,7 +52,7 @@ var ResistStat;
     ResistStat["SILENCE_RES"] = "Silence Res";
 })(ResistStat = exports.ResistStat || (exports.ResistStat = {}));
 class RPGItems {
-    constructor(name, itemType, equipable, stackable, stats, dropChance, special, amount, value) {
+    constructor(name, itemType, equipable, stackable, stats, dropChance, special, amount, value, healAmount) {
         var _a, _b, _c, _d;
         this.name = name;
         this.itemType = itemType;
@@ -67,6 +68,7 @@ class RPGItems {
         this.special = special;
         this.amount = amount;
         this.value = value;
+        this.healAmount = healAmount;
     }
 }
 exports.RPGItems = RPGItems;

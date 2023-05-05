@@ -1,31 +1,41 @@
-<form [formGroup]="this.registerForm">
-  <ion-item style="margin: auto;" fill="solid">
-    <ion-label position="floating">Email</ion-label>
-    <ion-input type="email" formControlName="email"></ion-input>
-  </ion-item>
+<form style="padding: 3rem; " [formGroup]="this.registerForm">
+  <div style="margin: auto">
+    <ion-label position="stacked">Email</ion-label>
+    <ion-input
+      type="text"
+      placeholder="Enter your email"
+      formControlName="email"
+    ></ion-input>
+  </div>
 
-  <ion-item style="margin: auto;" fill="solid">
-    <ion-label position="floating">Username</ion-label>
-    <ion-input type="text" formControlName="username"></ion-input>
-    <!-- <ion-note slot="helper">Enter a valid email</ion-note>
-    <ion-note slot="error">Invalid email</ion-note> -->
-  </ion-item>
+  <div style="margin: auto">
+    <ion-label position="stacked">Username</ion-label>
+    <ion-input
+      type="text"
+      placeholder="Your username"
+      formControlName="username"
+    ></ion-input>
+  </div>
 
-  <ion-item style="margin: auto;" fill="solid">
-    <ion-label position="floating">Character Name</ion-label>
-    <ion-input type="text" formControlName="characterName"></ion-input>
-    <!-- <ion-note slot="helper">Enter a valid email</ion-note>
-    <ion-note slot="error">Invalid email</ion-note> -->
-  </ion-item>
+  <div style="margin: auto">
+    <ion-label position="stacked">Character</ion-label>
+    <ion-input
+      type="text"
+      placeholder="Enter a character name"
+      formControlName="characterName"
+    ></ion-input>
+  </div>
 
-  <ion-item style="margin: auto;" fill="solid">
-    <ion-label position="floating">Password</ion-label>
-    <ion-input type="password" formControlName="password"></ion-input>
-    <!-- <ion-note slot="helper">Enter a valid email</ion-note>
-    <ion-note slot="error">Invalid email</ion-note> -->
-  </ion-item>
+  <div>
+    <ion-label position="stacked">Password</ion-label>
+    <ion-input
+      type="password"
+      placeholder="Your password"
+      formControlName="password"
+    ></ion-input>
+  </div>
 
-  <ion-item style="margin: auto;">
+  <div style="margin: auto">
     <ion-select
       formControlName="characterAlignment"
       value="characterAlignment"
@@ -35,21 +45,9 @@
       <ion-select-option value="normal">Normal</ion-select-option>
       <ion-select-option value="hardcore">Hardcore</ion-select-option>
     </ion-select>
-  </ion-item>
-  <ion-button
-    style="margin: auto; margin-top: 1rem; margin-bottom: 1rem"
-    color="primary"
-    expand="block"
-    (click)="submitRegistration()"
-    >Register</ion-button
-  >
+  </div>
 
-  <ion-button
-    style="margin: auto; margin-top: 1rem; margin-bottom: 1rem"
-    color="tertiary"
-    expand="block"
-    target="blank"
-    href="https://discord.gg/NMnDEwWUbu"
-    >Join us on Discord</ion-button
-  >
+  <ion-button (click)="submitRegistration()" class="button-text" fill="clear"
+    >Register<ion-icon name="enter-outline"></ion-icon
+  ></ion-button>
 </form>

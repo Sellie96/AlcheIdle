@@ -10,16 +10,6 @@ import { FolderPage } from './folder.page';
 import { TownComponent } from './town/town.component';
 import { LeaderboardsComponent } from './leaderboards/leaderboards.component';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-import { CombatComponent } from './combat/combat.component';
-import { BackpackComponent } from './combat/backpack/backpack.component';
-import { EquipmentComponent } from './combat/equipment/equipment.component';
-import { ItemsComponent } from './combat/items/items.component';
-import { MyTooltipDirective } from '../directives/tooltip.directive';
-import { TimestampCountdownDirectiveProgressPlayer } from '../directives/timestamp-countdown-progress.directive';
-import { TimestampCountdownDirective } from '../directives/timestamp-countdown.directive';
-import { TimestampCountdownDirectiveProgress } from '../directives/timestamp-countdown-progressPlayer.directive';
-import { DropsComponent } from '../drops/drops.component';
-import { StatsComponent } from './combat/stats/stats.component';
 
 @NgModule({
   imports: [
@@ -32,20 +22,8 @@ import { StatsComponent } from './combat/stats/stats.component';
   declarations: [
     FolderPage,
     TownComponent,
-    LeaderboardsComponent,
-    CombatComponent,
-    BackpackComponent,
-    EquipmentComponent,
-    ItemsComponent,
-    DropsComponent,
-    StatsComponent,
-    MyTooltipDirective,
-    TimestampCountdownDirectiveProgress,
-    TimestampCountdownDirective,
-    TimestampCountdownDirectiveProgressPlayer
+    LeaderboardsComponent
   ],
-  exports: [
-    MyTooltipDirective
-  ]
+  exports: []
 })
 export class FolderPageModule {}

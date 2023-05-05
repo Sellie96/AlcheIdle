@@ -53,6 +53,16 @@ let CharacterController = class CharacterController {
             };
         });
     }
+    sellItem(req, item) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const decodedToken = yield this.authService.verifyJwt(req.headers.authorization.slice(7));
+            let returnedData = yield this.characterService.sellItem(decodedToken.username, item);
+            return {
+                message: 'Item has been sold for',
+                player: returnedData,
+            };
+        });
+    }
 };
 __decorate([
     (0, common_1.Post)('equipItem'),
@@ -72,6 +82,15 @@ __decorate([
     __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", Promise)
 ], CharacterController.prototype, "unequipItem", null);
+__decorate([
+    (0, common_1.Post)('sellItem'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    __param(0, (0, common_2.Request)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], CharacterController.prototype, "sellItem", null);
 CharacterController = __decorate([
     (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiTags)('Character'),

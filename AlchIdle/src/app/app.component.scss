@@ -1,11 +1,9 @@
-
-
 ion-menu::part(backdrop) {
-  background-color: rgba(255, 0, 255, 0.5);
+  background-color: rgba(0, 88, 7, 1);
 }
 
 ion-menu::part(container) {
-  box-shadow: 4px 0px 16px rgba(255, 0, 255, 0.18);
+  box-shadow: 4px 0px 16px rgba(0, 88, 7, 0.18);
 }
 
 :root {
@@ -13,25 +11,18 @@ ion-menu::part(container) {
   --color2: #608b7d;
 }
 
-:host {
-  ion-content {
-    --background: url("../assets/alchemyBG.png");
-    }
-}
-
-
 ion-split-pane {
   --side-width: 15rem;
   --side-max-width: 15rem;
   --background-color: transparent;
 }
 
-
 ion-menu.md ion-content {
   --padding-bottom: 20px;
   --offset-bottom: auto !important;
   --overflow: hidden;
   overflow: auto;
+  --background-color: transparent;
 
   &::-webkit-scrollbar {
     display: none;
@@ -47,12 +38,12 @@ ion-menu.md ion-content:hover {
     display: contents;
     width: 10px;
   }
-  
+
   /* Track */
   ::-webkit-scrollbar-track {
     background: #f1f1f1;
   }
-  
+
   /* Handle */
   ::-webkit-scrollbar-thumb {
     background: #888;
@@ -186,22 +177,67 @@ ion-item.selected {
 }
 
 .main-logo-text {
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%, 0);
-  top: 5rem;
-  color: black;
-  font-family: 'Mariage';
-  font-weight: 800;
+  color: white;
+  text-align: center;
+  font-size: 30px;
+  font-family: Cinzel Decorative, serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  text-shadow: 0 0 8px #15ac67, 0 0 18px #15ac67;
+  margin-bottom: 3rem;
+}
+
+.space-start { 
+  justify-content: flex-start; 
+  align-items: center;
+}
+
+.flex-item {
+  cursor: pointer;
   font-size: 1rem;
-  z-index: 10002;
+  margin: 1rem;
+}
+
+.flex-item:hover {
+  color: #15ac67;
+}
+
+.main-text {
+  font-family: Cinzel Decorative, serif;
+  font-weight: 500;
+  text-transform: uppercase;
+  text-shadow: 0 0 8px #15ac67, 0 0 18px #15ac67;
+  font-size: 1rem;
+  text-align: center;
+  z-index: 1000;
+  color: whitesmoke;
+}
+
+.flex-container {
+  z-index: 1000;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  position: absolute;
+  max-width: fit-content;
+  background: transparent
+    linear-gradient(
+      90deg,
+      #0d16210d 0%,
+      #0d162177 23%,
+      #0d1621 52%,
+      #0d16216d 79%,
+      #0d162100 100%
+    )
+    0% 0% no-repeat padding-box;
 }
 
 .chat-box {
   position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 25rem;
+  bottom: 60px;
+  right: 60px;
+  width: 28rem;
   z-index: 100;
 }
 
@@ -211,4 +247,24 @@ ion-item.selected {
   right: 35vw;
   width: 25rem;
   z-index: 100;
+}
+
+.landing-background {
+  padding: 0;
+  margin: 0;
+  min-height: 130vh;
+  min-width: 100vw;
+  background-image: url("../assets/alchemyBG.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+ion-fab-button {
+  --background: #b7f399;
+  --background-activated: #87d361;
+  --background-hover: #a3e681;
+  --border-radius: 15px;
+  --box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3),
+    0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+  --color: black;
 }

@@ -1,0 +1,101 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 43, 0, 0.2); /* Green with 50% opacity */
+    z-index: 1; /* Make sure it is on top of other elements */
+  }
+
+.loot-opening-wrapper {
+  width: 100%;
+  overflow: hidden;
+  margin-top: 17rem;
+  border: 1px green solid;
+  border-radius: 20px;
+  padding: 5rem;
+}
+
+.loot-items {
+  display: flex;
+  flex-wrap: nowrap;
+  animation: slide 7s cubic-bezier(0.2, 0.1, 0.2, 1) 1 forwards;
+}
+
+.loot-item {
+  flex-shrink: 0;
+  width: 100px; /* adjust the width as needed */
+  height: 100px; /* adjust the height as needed */
+  margin-right: 10px; /* adjust the spacing as needed */
+}
+
+@keyframes slide {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(
+      calc(-160px * 24 - 12.6px * 23)
+    ); /* adjust the values based on the number of images and their width/spacing */
+  }
+}
+
+.loot-opening-wrapper::before {
+  content: "";
+  display: block;
+  width: 0;
+  height: 0;
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+  border-right: 15px solid white;
+  background-color: transparent;
+  margin: 0 auto; /* Center the line horizontally */
+  margin-left: 550px; /* Set the horizontal position of the line */
+  box-sizing: border-box;
+  transform: rotate(-90deg);
+}
+
+.loot-item {
+  width: 7rem;
+  height: 7rem;
+}
+
+@keyframes imageScroll {
+  0% {
+    background-position: 0px center;
+  }
+  100% {
+    background-position: -8000px center;
+  }
+}
+
+.container {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+
+.blur-item {
+    position: absolute;
+    content: '';
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    background: #053600;
+    opacity: 0.3;
+    filter: blur(120px);
+    transform: translate(-50%, -50%);
+    max-width: 473px;
+    max-height: 341px;
+    -webkit-backface-visibility: hidden;
+    -webkit-perspective: 1000;
+    -webkit-transform: translate3d(0,0,0);
+    -webkit-transform: translate(-50%,-50%) translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000;
+    transform: translate3d(0,0,0);
+    transform: translate(-50%,-50%) translateZ(0);
+}

@@ -1,125 +1,3 @@
-.player-area {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  margin: 0 0 1rem 0;
-  padding: 0 0 1rem 0;
-  border-top: 5px solid rgb(21, 255, 0);
-  border-radius: 15px;
-  min-height: 60vh;
-}
-
-.enemy-area {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  margin: 0 0 1rem 0;
-  padding: 0 0 1rem 0;
-  border-top: 5px solid rgb(255, 0, 0);
-  border-radius: 15px;
-  min-height: 60vh;
-}
-
-.progress-bar {
-  height: 0.75rem;
-  border-radius: 5px;
-}
-
-.thumb {
-  width: 4rem;
-  height: 4rem;
-  margin-bottom: 0.4rem;
-  cursor: pointer;
-}
-
-.tooltip {
-  /* Set the font and text style */
-  font-family: Arial, sans-serif;
-  font-size: 14px;
-  color: white;
-  text-align: left;
-
-  /* Set the background color and border */
-  background-color: #663399;
-  border: 1px solid #333;
-  border-radius: 4px;
-
-  /* Set the padding and box shadow */
-  padding: 8px;
-  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
-
-  /* Set the width and max-width */
-  width: 200px;
-  max-width: 90%;
-
-  /* Hide the tooltip by default */
-  display: none;
-}
-
-.tooltip::before {
-  /* Set the content and position of the pseudo-element */
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: -8px;
-
-  /* Set the size and shape of the pseudo-element */
-  width: 0;
-  height: 0;
-  border-top: 4px solid transparent;
-  border-bottom: 4px solid transparent;
-  border-right: 8px solid #333;
-
-  /* Use the transform property to rotate the pseudo-element */
-  transform: translateY(-50%);
-}
-
-.progress-bar-speed {
-  width: 0%;
-  height: 20px;
-  background-color: #e5ff00;
-  transition: width 5s;
-}
-
-.player-image {
-  /* other styles */
-  transform: rotateY(0deg); /* initial rotation */
-  transition: transform 0.3s; /* smooth transition on hover */
-  width: 18rem;
-  transform: translateX(50%);
-}
-
-.player-background {
-  position: absolute;
-  width: 24rem;
-  transform: translateX(25%);
-}
-
-@media only screen and (max-width: 1200px) {
-  .player-image {
-    /* other styles */
-    transform: rotateY(0deg); /* initial rotation */
-    transition: transform 0.3s; /* smooth transition on hover */
-    width: 18rem;
-  }
-
-  .player-background {
-    display: none;
-  }
-}
-
-.stats-background {
-  background-image: url("../../../assets/equipment/Paper.png");
-  min-height: 300px;
-  background-size: cover;
-  color: black;
-  font-family: "Zona Pro";
-  font-size: 600;
-  font-size: 20px;
-}
-
 .display-monster-hp {
   color: red;
   position: absolute;
@@ -144,17 +22,19 @@
   font-family: "Zona Pro";
 }
 
-.monster-container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  max-width: 100%;
-}
-
-.monster-list {
-  margin: 1rem;
-  max-width: 10rem;
-  cursor: pointer;
+.display-loot {
+  font-style: italic;
+  font-weight: 500;
+  font-size: xx-large;
+  font-family: Cinzel Decorative, serif;
+  text-shadow: 0 0 8px #15ac67, 0 0 18px #15ac67;
+  position: fixed;
+  bottom: 30px;
+  left: 45vw;
+  animation-name: show-loot;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  z-index: 1000;
 }
 
 @keyframes display-monster-hp {
@@ -166,10 +46,229 @@
   }
 }
 
+@keyframes show-loot {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(0, -60px);
+  }
+}
+
+.spin {
+  animation: spin 30s linear infinite;
+  left: 17%;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 .loading {
   position: absolute;
   left: 50%;
   top: 40%;
   transform: translate3d(-40%, -50%, 0) scale(6);
   margin-top: 2.5rem;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2); /* Green with 50% opacity */
+  z-index: 1; /* Make sure it is on top of other elements */
+  padding: 0;
+  margin: 0;
+}
+
+.combat-background {
+  background-image: url("../../../assets/general/combat-background.svg");
+  min-height: 60vh;
+  background-repeat: no-repeat;
+  position: fixed;
+  width: 100vw;
+  height: 60vh;
+  z-index: 0;
+}
+
+.combat-area {
+  z-index: 1000;
+}
+
+.player-section,
+.monster-section {
+  width: 45%;
+  padding: 1rem;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.progress-bars {
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem;
+}
+
+.player-stats,
+.monster-stats {
+  width: 45%;
+  margin: auto;
+  font-family: "Zona Pro";
+  font-size: 1.5rem;
+  font-weight: 600;
+  padding: 1rem;
+}
+
+progress {
+  width: 100%;
+  height: 1.5rem;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.health {
+  background-color: #f44336;
+}
+
+.stamina {
+  background-color: #4caf50;
+}
+
+.progress-bars {
+  position: relative;
+  z-index: 20;
+}
+
+.stats {
+  height: 0.5rem;
+  border-radius: 10px;
+}
+
+.fighter-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem;
+}
+
+.player-image {
+  width: 20rem;
+  height: 20rem;
+}
+
+.container {
+  position: relative;
+  min-height: 31rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.player-image {
+  width: 20rem;
+  height: auto;
+}
+
+.equipment-container {
+  position: flex;
+}
+
+.left-side,
+.right-side {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 80%;
+}
+
+.left-side {
+  right: 50%;
+}
+
+.right-side {
+  left: 50%;
+}
+
+.equipment-item {
+  width: 50px;
+  height: auto;
+}
+
+.flex-item {
+  flex-basis: 100%;
+  height: 100px;
+  text-align: center;
+  background-color: #f2f2f2;
+  border: 1px solid #ddd;
+}
+
+@media screen and (min-width: 768px) {
+  .flex-container {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .flex-item {
+    flex-basis: calc(50% - 2px); /* 2px is the border width */
+    flex-grow: 1;
+    margin: 1px;
+  }
+}
+
+.my-tooltip {
+  top: -32px;
+  position: absolute;
+  z-index: 1000;
+  color: wheat;
+  border-radius: 4px;
+  padding: 3px;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1;
+  width: 300px;
+  max-width: 300px;
+  font-family: "Zona Pro";
+  left: calc(50%);
+}
+
+.time-until-attack {
+  position: absolute;
+  top: 27px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  font-family: "Zona Pro";
+  font-size: 1.5rem;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgb(0, 0, 0);
+  text-shadow: 1px 1px rgb(148, 148, 148);
+  z-index: 1000;
+}
+
+.progress-container {
+  width: 100%;
+  height: 0.75rem;
+  justify-content: center;
+  align-items: center;
+  background-color: #e0e0e0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: #4caf50;
+  width: 0;
+  transition: width 0.15s ease-out;
 }

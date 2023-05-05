@@ -11,7 +11,13 @@ export class CombatService {
     private usersService: UsersService,
   ) {}
 
-  updatePlayerLoot(gold: number, xp: number, player: User, monster: any) {
+  async updatePlayerLoot(gold: number, xp: number, player: User, monster: any, client: any) {
+    const randomNumber = Math.random();
+
+    let selected: RPGItems | null = null;
+
+    let cumulativeDropRate = 0;
+
     if (
       player.character.backpack.length <
       player.character.combatStats.progression.inventorySize
@@ -20,12 +26,6 @@ export class CombatService {
         (sum, item) => sum + item.dropChance,
         0,
       );
-
-      const randomNumber = Math.random();
-
-      let selected: RPGItems | null = null;
-
-      let cumulativeDropRate = 0;
 
       if (randomNumber < totalDropRate) {
         for (const item of monster.loot) {
@@ -38,29 +38,42 @@ export class CombatService {
       }
 
       if (selected?.name !== undefined) {
-        player.character.backpack.push(selected);
+        player = await this.usersService.findOneByUsername(player.username);
 
-        if(selected.special) {
-          this.messagesService.create({
-            name: "Server",
-            message: `${player.username} has recieved ${selected.name}`,
-            time: new Date().toISOString().split('T')[1].split('.')[0]
-          })
+        const item = player.character.backpack.find(
+          (item) => item.name === selected.name,
+        );
+
+        if (selected.stackable && item) {
+          item.amount += selected.amount;
+        } else {
+          player.character.backpack.push(selected);
         }
+
+        player.character.combatStats.progression.experiencePoints += xp;
+        player.character.combatStats.progression.gold += gold;
+    
+        this.checkIfLevelUp(player, client);
+
+        if (selected.special) {
+          this.messagesService.create({
+            name: 'Server',
+            message: `${player.username} has recieved ${selected.name}`,
+            time: new Date().toISOString().split('T')[1].split('.')[0],
+          });
+        }
+
+
+        await this.usersService.updateOne(player);
+        return [selected];
       }
     }
 
-    player.character.combatStats.progression.experiencePoints += xp;
-    player.character.combatStats.progression.gold += gold;
-
-    player = this.checkIfLevelUp(player);
-
-    this.usersService.updateOne(player);
-
-    return player;
+    await this.usersService.updateOne(player);
+    return [];
   }
 
-  checkIfLevelUp(player: User) {
+  async checkIfLevelUp(player: User, client: any) {
     let total = 0;
     for (let i = 0; i < player.character.combatStats.progression.level; i++) {
       total += Math.floor(i + 300 * Math.pow(2, i / 7));
@@ -69,14 +82,26 @@ export class CombatService {
     if (player.character.combatStats.progression.experiencePoints >= total) {
       player.character.combatStats.progression.level++;
 
+      player.character.combatStats.stats.maxHealth += 10;
+      player.character.combatStats.stats.health = player.character.combatStats.stats.maxHealth;
+
+      if(player.character.combatStats.progression.level % 2 === 0) {
+        player.character.combatStats.stats.strength += 1;
+        player.character.combatStats.defenses.evasion += 10;
+      }
+
       this.messagesService.create({
-        name: "Server",
+        name: 'Server',
         message: `${player.username} has reached level ${player.character.combatStats.progression.level}`,
-        time: new Date().toISOString().split('T')[1].split('.')[0]
-      })
+        time: new Date().toISOString().split('T')[1].split('.')[0],
+      });
+
+      client.emit('levelUp', player.character.combatStats.progression.level);
     }
 
-    return player;
+    await this.usersService.updateOne(player);
+
+    return;
   }
 
   addItemToBackpack(
@@ -108,7 +133,6 @@ export class CombatService {
     }
   }
 
-
   calculatePlayerHealth(player: User, monster: any) {
     let chanceToHit = 0;
     if (monster) {
@@ -138,7 +162,11 @@ export class CombatService {
     let chanceToHit = 0;
     if (monster) {
       if (player.character.combatStats.combat.accuracy > monster.evasion) {
-        chanceToHit = (1 - monster.evasion / (player.character.combatStats.combat.accuracy * 2)) *100;
+        chanceToHit =
+          (1 -
+            monster.evasion /
+              (player.character.combatStats.combat.accuracy * 2)) *
+          100;
       } else {
         chanceToHit =
           (player.character.combatStats.combat.accuracy /

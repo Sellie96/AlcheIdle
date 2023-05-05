@@ -12,4 +12,8 @@ export declare class CharacterController {
         message: string;
         player: import("../../user/user.entity").User;
     }>;
+    sellItem(req: any, item: any): Promise<{
+        message: string;
+        player: import("../../user/user.entity").User;
+    }>;
 }

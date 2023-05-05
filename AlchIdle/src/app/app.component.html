@@ -1,125 +1,88 @@
-<ion-app style="background-color: white" no-padding no-margin>
-  <ion-content *ngIf="showLanding && !loggedIn && !loginForm">
-    <app-landing></app-landing>
-  </ion-content>
+<ngx-loading-bar color="green"></ngx-loading-bar>
 
-  <ion-split-pane *ngIf="loggedIn" contentId="main-content">
-    <ion-menu contentId="main-content">
-      <ion-header>
-        <ion-toolbar color="transparent">
-          <ion-list-header
-            class="header"
-            style="min-height: 8rem; padding: 0; margin: 0"
-          >
-            <img class="main-logo" src="../../assets/logo/logo.PNG" />
-            <img class="main-logo-two" src="../../assets/logo/logoText.png" />
-            <p class="main-logo-text">AlcheIdle</p>
-          </ion-list-header>
-        </ion-toolbar>
-      </ion-header>
-      <ion-list style="background-color: transparent" id="inbox-list">
-        <ion-menu-toggle
-          auto-hide="false"
-          *ngFor="let p of appPages; let i = index"
-        >
-          <ion-item
-            color="transparent"
-            routerDirection="root"
-            [routerLink]="[p.url]"
-            lines="none"
-            detail="false"
-            routerLinkActive="selected"
-          >
-            <img
-              style="width: 1.5rem"
-              slot="start"
-              src="../assets/menu-icons/{{ p.title.toLowerCase() }}.png"
-            />
-            <ion-label
-              >{{ p.title }}
-              <span style="float: right; margin-right: 0.6rem" *ngIf="p.gold">
-                {{ playerCharacter.character.combatStats.progression.gold }}
-              </span>
-              <span
-                style="float: right; margin-right: 0.6rem"
-                *ngIf="p.inventory"
-              >
-                {{ playerCharacter.character.backpack.length }}/{{
-                  playerCharacter.character.combatStats.progression
-                    .inventorySize
-                }}
-              </span>
-              <span style="float: right; margin-right: 0.6rem" *ngIf="p.level">
-                Lvl
-                {{ playerCharacter.character.combatStats.progression.level }}
-              </span>
-            </ion-label>
-          </ion-item>
-        </ion-menu-toggle>
-      </ion-list>
+<ion-app
+  *ngIf="showLanding && !loggedIn && !loginForm!; loading"
+  class="landing-background"
+  no-padding
+  no-margin
+>
+  <div>
+    <ion-content>
+      <app-landing></app-landing>
+    </ion-content>
+  </div>
+</ion-app>
 
-      <ion-list style="background-color: transparent" id="inbox-list">
-        <ion-menu-toggle
-          auto-hide="false"
-          *ngFor="let p of skills; let i = index"
-        >
-          <ion-item
-            color="transparent"
-            routerDirection="root"
-            [routerLink]="[p.url]"
-            lines="none"
-            detail="false"
-            routerLinkActive="selected"
-          >
-            <ion-icon
-              slot="start"
-              [ios]="p.icon + '-outline'"
-              [md]="p.icon + '-sharp'"
-            ></ion-icon>
-            <ion-label>{{ p.title }}</ion-label>
-          </ion-item>
-        </ion-menu-toggle>
-      </ion-list>
+<ion-app *ngIf="loggedIn" no-padding no-margin>
+  <div class="flex-container space-start">
+    <span
+      style="margin: 1rem; padding-right: 2rem; border-right: #017440 1px solid"
+      class="main-text"
+    >
+      Alchemy Idle
+    </span>
+    <ion-note
+      routerDirection="root"
+      [routerLink]="['/app/Town/Main']"
+      lines="none"
+      detail="false"
+      routerLinkActive="selected"
+      class="flex-item"
+      >Profile</ion-note
+    >
+    <ion-note
+      routerDirection="root"
+      [routerLink]="['/app/Leaderboards/Statistics']"
+      lines="none"
+      detail="false"
+      routerLinkActive="selected"
+      class="flex-item"
+      >Leaderboards</ion-note
+    >
+    <ion-note
+    routerDirection="root"
+    [routerLink]="['/inventory']"
+    lines="none"
+    detail="false"
+    routerLinkActive="selected"
+    class="flex-item"
+    >Inventory</ion-note
+  >
+    <ion-note class="flex-item">Profile</ion-note>
+    <ion-note class="flex-item">Settings</ion-note>
+    <ion-note       
+    routerDirection="root"
+    [routerLink]="['/']"
+    lines="none"
+    detail="false"
+    routerLinkActive="selected"
+    class="flex-item">Sign Out</ion-note>
+  </div>
 
-      <ion-list style="background-color: transparent" id="labels-list">
-        <ion-list-header>Settings</ion-list-header>
 
-        <ion-item
-          color="transparent"
-          style="cursor: pointer"
-          (click)="signOut()"
-          lines="none"
-        >
-          <ion-icon name="log-out-outline"></ion-icon>
-          <ion-label style="margin-left: 1.8rem"> Sign Out</ion-label>
-        </ion-item>
-      </ion-list>
-    </ion-menu>
-    <div class="ion-page" id="main-content">
-      <ion-content class="ion-padding">
-        <ion-router-outlet class="content-background" id="main-content"></ion-router-outlet>
-        <div *ngIf="loggedIn" class="chat-box">
-          <ion-accordion-group>
-            <ion-accordion value="first">
-              <ion-item slot="header" color="light">
-                <ion-label>Global Chat</ion-label>
-              </ion-item>
-              <div class="ion-padding" slot="content">
-                <app-chat></app-chat>
-              </div>
-            </ion-accordion>
-          </ion-accordion-group>
-        </div>
-        <div *ngIf="loggedIn" class="ability-bar">
-          <div class="ion-padding" slot="content">
-            <app-ability></app-ability>
-          </div>
-        </div>
-      </ion-content>
-    </div>
-  </ion-split-pane>
 
-  <ion-content *ngIf="!showLanding && !loggedIn && !loginForm">
-    <app-login></app-login>
-  </ion-content>
+  <ion-router-outlet></ion-router-outlet>
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button size="small">
+      <ion-icon name="chevron-up-circle"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button>
+        <ion-icon name="settings-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button>
+        <ion-icon name="stats-chart-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button (click)="openChat()">
+        <ion-icon name="chatbox-ellipses-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button>
+        <ion-icon name="logo-discord"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+
+  <div class="chat-box" *ngIf="showChat">
+    <app-chat></app-chat>
+  </div>
 </ion-app>

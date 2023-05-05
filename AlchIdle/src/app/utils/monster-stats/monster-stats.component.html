@@ -1,0 +1,87 @@
+<div>
+
+  <ion-row>
+
+    <ion-col size="3">
+      <ion-item class="no-background" lines="none">
+        <img class="icon-image-health" src="../../../assets/icon/hp.png" />
+        <ion-label style="margin: 0.5rem;">
+          <p>Health</p>
+          <h4>{{ monster?.health }}</h4>
+        </ion-label>
+      </ion-item>
+    </ion-col>
+
+
+    <ion-col size="3">
+      <ion-item class="no-background" lines="none">
+        <img style="width: 3rem;" class="icon-image-probability" src="../../../assets/icon/Chance.png" />
+        <ion-label style="margin: 0.5rem;">
+          <p>Attack Probability</p>
+          <h4>{{ chanceToHit.toFixed(0) }}%</h4>
+        </ion-label>
+      </ion-item>
+    </ion-col>
+
+    <ion-col size="3">
+      <ion-item class="no-background" lines="none">
+        <img style="width: 3rem;" class="icon-image-vulnerability" src="../../../assets/icon/Chance.png" />
+        <ion-label style="margin: 0.5rem;">
+          <p>Defence Probability</p>
+          <h4>{{ chanceToDodge.toFixed(0) }}%</h4>
+        </ion-label>
+      </ion-item>
+    </ion-col>
+
+    <ion-col size="3">
+      <ion-item class="no-background" lines="none">
+        <img style="width: 3rem;" class="icon-image-attack" src="../../../assets/icon/Damage.png" />
+        <ion-label style="margin: 0.5rem;">
+          <p>Damage</p>
+          <h4>{{ monster?.attack | number }}</h4>
+        </ion-label>
+      </ion-item>
+    </ion-col>
+
+    <ion-col size="3">
+      <ion-item class="no-background" lines="none">
+        <ion-icon style="margin: 0;" class="icon-image-defence" name="shield-sharp" slot="start"></ion-icon>
+        <ion-label style="margin: 0.5rem;">
+          <p>Defence</p>
+          <h4>{{ monster?.defence | number }}</h4>
+        </ion-label>
+      </ion-item>
+    </ion-col>
+
+    <ion-col size="3">
+      <ion-item class="no-background" lines="none">
+        <img style="width: 3rem;" class="icon-image-evasion" src="../../../assets/icon/evasion.png" />
+        <ion-label style="margin: 0.5rem;">
+          <p>Evasion</p>
+          <h4>{{ monster?.evasion | number }}</h4>
+        </ion-label>
+      </ion-item>
+    </ion-col>
+
+    <ion-col size="3">
+      <ion-item class="no-background" lines="none">
+        <img style="width: 3rem;" class="icon-image-accuracy" src="../../../assets/icon/accuracy.PNG" />
+        <ion-label style="margin: 0.5rem;">
+          <p>Accuracy</p>
+          <h4>{{ monster?.accuracy | number }}</h4>
+        </ion-label>
+      </ion-item>
+    </ion-col>
+
+    <ion-col size="3">
+      <ion-item class="no-background" lines="none">
+        <img style="width: 3rem;" class="icon-image-attack-speed" src="../../../assets/icon/attackSpeed.png" />
+        <ion-label style="margin: 0.5rem;">
+          <p>Attack Speed</p>
+          <h4>{{ monster?.attackSpeed | number }}</h4>
+        </ion-label>
+      </ion-item>
+    </ion-col>
+
+  </ion-row>
+</div>

@@ -1,3 +1,4 @@
+import { AccountService } from './../../account/Account.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,8 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TownComponent implements OnInit {
 
-  constructor() { }
+  constructor(private accountService: AccountService) { }
 
   ngOnInit() {}
+
+  signOut() {
+    this.accountService.logout();
+    window.location.reload();
+  }
 
 }

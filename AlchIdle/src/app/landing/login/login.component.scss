@@ -1,5 +1,5 @@
 .left-bar {
-    background-image: url("../../assets/logo/background.jpg");
+    background-image: url("../../../assets/logo/background.jpg");
     background-size: cover;
     height: 100vh;
   }
@@ -108,4 +108,13 @@
       margin-left: 6rem;
     }
     
+  }
+
+  .button-text {
+    color: white;
+    font-size: 20px;
+    font-family: Cinzel Decorative, serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    text-shadow: 0 0 8px #15ac67, 0 0 18px #15ac67;
   }

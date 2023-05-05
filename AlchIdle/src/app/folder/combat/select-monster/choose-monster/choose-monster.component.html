@@ -1,0 +1,95 @@
+<div class="main-area">
+  <div class="overlay"></div>
+  <!-- Add the overlay -->
+
+  <h2 class="main-text">Select your Enemy</h2>
+
+  <div class="container">
+    <span
+      routerDirection="root"
+      [routerLink]="['/combat/CombatArea/Select']"
+      lines="none"
+      detail="false"
+      routerLinkActive="selected"
+      class="return-text"
+    >
+      <ion-icon name="return-down-back-outline"> </ion-icon> Return
+    </span>
+    <div class="flex-left">
+      <div class="level-container">
+        <div class="level">
+          Level {{ monstersInArea[selectedIndex]?.level }}
+        </div>
+        <h1>{{ monstersInArea[selectedIndex]?.name }}</h1>
+      </div>
+
+      <p style="margin-top: 2rem">Biography</p>
+      <ion-note>{{ monstersInArea[selectedIndex]?.description }}</ion-note>
+    </div>
+
+    <img
+      class="image"
+      src="../../../../../assets/monsters/{{
+        monstersInArea[selectedIndex]?.name
+      }}.png"
+      alt="placeholder image"
+    />
+
+    <div class="menu-icons-container">
+      <ul>
+        <li (click)="chooseArea('Overgrown Farm')" class="nav-item"><ion-icon name="bug-outline"></ion-icon></li>
+        <li (click)="chooseArea('Goblin Camp')" class="nav-item"><ion-icon name="bug-outline"></ion-icon></li>
+        <li (click)="chooseArea('Chaotic Beach')" class="nav-item"><ion-icon name="bug-outline"></ion-icon></li>
+        <li (click)="chooseArea('Frozen Wastes')" class="nav-item"><ion-icon name="bug-outline"></ion-icon></li>
+        <li (click)="chooseArea('Mystic Forest')" class="nav-item"><ion-icon name="bug-outline"></ion-icon></li>
+        <li (click)="chooseArea('Volcanic Plains')" class="nav-item"><ion-icon name="bug-outline"></ion-icon></li>
+      </ul>
+    </div>
+
+    <div class="flex-right">
+
+      <ion-label>Health ({{monstersInArea[selectedIndex]?.maxHealth}})</ion-label>
+      <ion-progress-bar class="stats" value="{{(monstersInArea[selectedIndex]?.maxHealth / 10000)}}" color="success"></ion-progress-bar>
+      <br/>
+
+      <ion-label>Damage ({{monstersInArea[selectedIndex]?.attack}})</ion-label>
+      <ion-progress-bar class="stats" value="{{(monstersInArea[selectedIndex]?.attack / 1000)}}" color="danger"></ion-progress-bar>
+
+      <br/>
+
+      <ion-label>Defence ({{monstersInArea[selectedIndex]?.defence}})</ion-label>
+      <ion-progress-bar class="stats" value="{{(monstersInArea[selectedIndex]?.defence / 100)}}"></ion-progress-bar>
+
+      <br/>
+      <ion-label>Accuracy ({{monstersInArea[selectedIndex]?.accuracy}})</ion-label>
+      <ion-progress-bar class="stats" value="{{(monstersInArea[selectedIndex]?.accuracy / 10000)}}" color="medium"></ion-progress-bar>
+
+      <br/>
+      <ion-label>Evasion ({{monstersInArea[selectedIndex]?.evasion}})</ion-label>
+      <ion-progress-bar class="stats" value="{{(monstersInArea[selectedIndex]?.evasion / 10000)}}" color="secondary"></ion-progress-bar>
+
+      <br/>
+
+      <ion-button color="success" (click)="fightMonster(monstersInArea[selectedIndex]?.name)">Hunt</ion-button>
+    </div>
+  </div>
+</div>
+
+<div
+  style="position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%)"
+>
+  <div (click)="setSelectedIndex(i)" class="monster-select" style="display: inline-block" *ngFor="let monsters of monstersInArea;  let i = index">
+
+    <img *ngIf="i === selectedIndex"
+      class="select-monster selected"
+      src="../../../../../assets/monsters/{{ monsters?.name }}.png"
+      alt="placeholder image"
+    />
+
+    <img *ngIf="i !== selectedIndex"
+    class="select-monster"
+    src="../../../../../assets/monsters/{{ monsters?.name }}.png"
+    alt="placeholder image"
+  />
+  </div>
+</div>

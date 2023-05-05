@@ -29,11 +29,6 @@ export class ChatComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.chatService.receiveChat().subscribe((messages: Message[]) => {
-      this.messages = messages;
-      this.messages.reverse();
-    });
-
     this.store
     .select((state) => CharacterState.selectCharacterStats(state.character))
     .pipe(untilDestroyed(this))
@@ -43,6 +38,11 @@ export class ChatComponent implements OnInit {
   }
 
   ngAfterViewInit() {
+    this.chatService.receiveChat().subscribe((messages: Message[]) => {
+      this.messages = messages;
+      this.messages.reverse();
+    });
+
     this.chatDiv.changes.subscribe(() => {
       this.chatDiv.first.nativeElement.scrollTop = 0;
     });
@@ -53,5 +53,9 @@ export class ChatComponent implements OnInit {
       this.chatService.sendChat(this.message.value, this.playerCharacter.username);
       this.message.setValue('');
     }
+  }
+
+  customCounterFormatter(inputLength: number, maxLength: number) {
+    return `${maxLength - inputLength} characters remaining`;
   }
 }

@@ -7,6 +7,7 @@ import { UserDataCreation } from './userDefault';
 import { MessagesGateway } from 'src/Modules/messages/messages.gateway';
 import { MessagesService } from 'src/Modules/messages/messages.service';
 import { Logs, Woodcutting } from 'src/Modules/skills/woodcutting/entities/message.entity';
+import { RPGItems } from 'src/Modules/combat/items.service';
 
 @Injectable()
 export class UsersService {
@@ -164,8 +165,6 @@ export class UsersService {
 
     this.addItemToBackpack(user, skill, reward ,rewardAmount);
 
-    // this.removeItemFromBackpack(user, skill);
-
     const randomNumber = Math.random() * (10000 - 1) + 1;
 
     if (randomNumber === 69) {
@@ -218,13 +217,27 @@ export class UsersService {
       user.character.backpack.push(reward);
     }
   }
-  
-  removeItemFromBackpack(user: User, skill: { type: { name: any; }; }) {
-    const item = user.character.backpack.find((item) => item.name === skill.type.name);
-    if (item) {
-      item.amount -= 1;
+
+
+  useItem(user: User, item: any) {
+    const itemToUse: RPGItems = user.character.backpack.find((backpackItem) => item.itemName === backpackItem.name);
+
+    if (itemToUse) {
+      if(user.character.combatStats.stats.health >= user.character.combatStats.stats.maxHealth){
+        return "You are already at full health!";
+      } else {
+        itemToUse.amount -= 1;
+        user.character.combatStats.stats.health += itemToUse.healAmount;
+        if(user.character.combatStats.stats.health > user.character.combatStats.stats.maxHealth){
+          user.character.combatStats.stats.health = user.character.combatStats.stats.maxHealth;
+        }
+      }
     } else {
       return "You have no more items!";
+    }
+
+    if (itemToUse.amount <= 0) {
+      user.character.backpack = user.character.backpack.filter((item) => item.name !== itemToUse.name);
     }
   }
 

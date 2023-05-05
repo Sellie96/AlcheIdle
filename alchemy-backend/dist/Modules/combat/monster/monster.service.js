@@ -31,6 +31,10 @@ const monster_utils_8 = require("./monster.utils");
 let MonsterService = class MonsterService {
     constructor() {
         this.monsters = [
+            monster_utils_1.Onions,
+            monster_utils_1.Potatoes,
+            monster_utils_1.Breads,
+            monster_utils_1.Meats,
             monster_utils_1.Goblin,
             monster_utils_1.GoblinArcher,
             monster_utils_1.Hobgoblin,

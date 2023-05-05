@@ -1,0 +1,33 @@
+<div>
+  <span
+    routerDirection="root"
+    [routerLink]="['/app/Town/Main']"
+    lines="none"
+    detail="false"
+    routerLinkActive="selected"
+    class="return-text"
+  >
+    <ion-icon name="return-down-back-outline"> </ion-icon> Return
+  </span>
+
+  <img
+    style="position: absolute; left: 18.5%"
+    src="../../../../assets/dungeons/border-element.png"
+  />
+
+  <ion-title class="dungeon-title" style="text-align: center">
+    Select Area
+  </ion-title>
+
+  <div style="display: flex; flex-wrap: wrap; margin-left: 30rem; margin-right: 30rem;">
+    <div *ngFor="let area of appPages" (click)="fightMonster(area.title)" class="dungeon-select {{area.class}}">
+      <div style="min-height: 80%"></div>
+      <ion-label>
+        <h2 class="area-text">{{area.title}}</h2>
+      </ion-label>
+      <ion-note>
+        <ion-icon size="large" name="{{area.icon}}"></ion-icon>
+      </ion-note>
+    </div>
+  </div>
+</div>

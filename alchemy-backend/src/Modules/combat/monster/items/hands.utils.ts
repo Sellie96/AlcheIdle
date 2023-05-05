@@ -20,7 +20,7 @@ export const LeatherGloves: RPGItems = new RPGItems(
       { name: ResistStat.BLEED_RES, value: 1 },
     ],
   },
-  0.005,
+  0.006,
   false,
   1,
   1,

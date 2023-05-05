@@ -3,13 +3,22 @@ import {
   UpdateCharacter,
   CreateCharacter,
 } from './../../state/character.actions';
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  OnDestroy,
+  SimpleChanges,
+} from '@angular/core';
 import { IonProgressBar, ItemReorderEventDetail } from '@ionic/angular';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngxs/store';
 import { CharacterState } from 'src/app/state/character.state';
 import { CombatService } from './combat.service';
 import { BackpackService } from './backpack/backpack.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ToastService } from 'src/app/utils/toast.service';
+import { Subject, Subscription, map, take, takeUntil, tap } from 'rxjs';
 
 @UntilDestroy()
 @Component({
@@ -20,28 +29,20 @@ import { BackpackService } from './backpack/backpack.service';
 export class CombatComponent implements OnInit, OnDestroy {
   @ViewChild(IonProgressBar) progressBar!: IonProgressBar;
 
-  showCombatAreas = false;
-  equipment = true;
-  backpack = false;
-  items = false;
   loading = false;
 
   isModalOpen = false;
+  isModalItemCompareOpen = false;
 
   lootMonster!: any;
 
   autoFight = true;
 
   monster!: any;
-  monsterList: any[] = [];
 
   playerCharacter!: PlayerData;
 
-  monsterTimeUntilFinish = 0;
-  timeUntilFinish = 0;
-  AttackSpeed = 0;
-
-  type: string = 'statistics';
+  type: string = 'backpack';
   type2: string = '';
 
   showMonsterHpChange = false;
@@ -50,10 +51,26 @@ export class CombatComponent implements OnInit, OnDestroy {
   showCharacterHpChange = false;
   characterHpChanged = 0;
 
+  showNewLoot = false;
+  newLoot: any;
+
+  progressInterval: any;
+  progress: number = 0;
+
+  monsterProgressInterval: any;
+  monsterProgress: number = 0;
+
+  monsterSubscription: Subscription = new Subscription();
+  lootSubscription: Subscription = new Subscription();
+  playerSubscription: Subscription = new Subscription();
+
   constructor(
     private store: Store,
     private combatService: CombatService,
-    private backpackService: BackpackService
+    private backpackService: BackpackService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private toast: ToastService
   ) {}
 
   ngOnDestroy(): void {
@@ -65,66 +82,87 @@ export class CombatComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
+    await this.initializeCombat();
+  }
+
+  startProgressBar(): void {
+    clearInterval(this.progressInterval);
+    this.progress = 0;
+    const interval = 100; // ms
+
+    const step =
+      (interval /
+        (this.playerCharacter.character.combatStats.combat.attackSpeed *
+          1000)) *
+      100;
+
+    this.progressInterval = setInterval(() => {
+      if (!this.loading) {
+        this.progress += step;
+
+        if (this.progress >= 100) {
+          this.progress = 100;
+        }
+      }
+    }, interval);
+  }
+
+  startMonsterProgressBar(): void {
+    clearInterval(this.monsterProgressInterval);
+    this.monsterProgress = 0;
+
+    let duration = this.monster?.attackSpeed;
+
+    const interval = 100; // ms
+    const step = (interval / (duration * 1000)) * 100;
+
+    this.monsterProgressInterval = setInterval(() => {
+      if (!this.loading) {
+        this.monsterProgress += step;
+
+        if (this.monsterProgress >= 94) {
+          this.monsterProgress = 100;
+          clearInterval(this.monsterProgressInterval);
+        }
+      }
+    }, interval);
+  }
+
+  async initializeCombat() {
     this.combatService.flee();
 
-    this.combatService.playerData().subscribe((player) => {
-      this.playerCharacter = player;
-      this.store.dispatch(new CreateCharacter(player));
-    });
+    this.subscribeToLootUpdates();
+    this.subscribeToLevelUpdates();
+
+    this.combatService
+      .playerData()
+      .pipe(take(1))
+      .subscribe((player) => {
+        this.playerCharacter = player;
+        this.store.dispatch(new CreateCharacter(player));
+      })
+      .unsubscribe();
 
     this.store
       .select(CharacterState.selectCharacterStats)
-      .pipe(untilDestroyed(this))
+      .pipe(take(1))
       .subscribe((character) => {
         this.playerCharacter = JSON.parse(JSON.stringify(character));
       });
 
-    this.combatService.getMonsterListData().subscribe((monsterList: any) => {
-      this.monsterList = monsterList;
-    });
-
-    this.combatService.getUpdatedMonster().subscribe(async (updatedMonster) => {
-      const { monster } = updatedMonster;
-      const currentMonsterHealth = this.monster?.health ?? 0;
-      const updatedMonsterHealth = monster.health;
-
-      if (updatedMonsterHealth <= 0) {
-        this.loading = true;
-        this.monster = undefined;
-
-
-        if (this.autoFight) {
-          await new Promise((resolve) => setTimeout(resolve, 500));
-          this.combatService.startMonsterCombat(monster);
-          this.loading = false;
-        }
-      } else {
-        if (monster.maxHealth !== monster.health) {
-          this.displayHpChange(
-            'monster',
-            currentMonsterHealth - updatedMonsterHealth
+    this.combatService
+      .getMonsterListData()
+      .pipe(take(1))
+      .subscribe((monsterList: any) => {
+        this.route.queryParams.subscribe((params: any) => {
+          this.monster = monsterList.find(
+            (m: { name: string }) => m.name === params.monster
           );
-        }
+        });
+      });
 
-        this.monster = monster;
-        this.timeUntilFinish =
-          Math.floor(Date.now() / 1000) +
-          this.playerCharacter.character.combatStats.combat.attackSpeed;
-      }
-    });
-
-    this.combatService.getUpdatedPlayer().subscribe((updatedPlayer: any) => {
-      const { player } = updatedPlayer;
-      const { combatStats } = player.character;
-      const { health } = combatStats.stats;
-
-      this.monsterTimeUntilFinish =
-        Math.floor(Date.now() / 1000) + (this.monster?.attackSpeed ?? 4);
-
-      const hpChange = this.calculateHpChange(health);
-      if (hpChange !== 0) {
-        this.displayHpChange('character', hpChange);
-      }
+    this.route.queryParams.pipe(take(1)).subscribe((params: any) => {
+      this.spawnMonster(params.monster);
     });
   }
 
@@ -136,15 +174,23 @@ export class CombatComponent implements OnInit, OnDestroy {
 
   spawnMonster(monster: string) {
     this.loading = true;
-    this.combatService.startMonsterCombat(monster);
-    this.monsterTimeUntilFinish = Math.floor(Date.now() / 1000) + 4;
-    this.timeUntilFinish =
-      Math.floor(Date.now() / 1000) +
-      this.playerCharacter.character.combatStats.combat.attackSpeed;
+    this.progress = 0;
+    clearInterval(this.progressInterval);
+    this.monsterProgress = 0;
+    clearInterval(this.monsterProgressInterval);
+
+    //clear subscriptions
+    this.monsterSubscription.unsubscribe();
+    this.playerSubscription.unsubscribe();
+    this.subscribeToMonsterUpdates();
+    this.subscribeToPlayerUpdates();
+
 
     setTimeout(() => {
       this.loading = false;
-    }, 500);
+      this.combatService.startMonsterCombat(monster);
+      this.startMonsterProgressBar();
+    }, 1500);
   }
 
   setOpen(isOpen: boolean, monster: any) {
@@ -153,15 +199,8 @@ export class CombatComponent implements OnInit, OnDestroy {
   }
 
   flee() {
-    console.log('flee');
     this.combatService.flee();
-    this.timeUntilFinish = 0;
-    this.monsterTimeUntilFinish = 0;
-    this.monster = undefined;
-  }
-
-  getMonsterListData() {
-    this.combatService.getMonsterListData();
+    this.router.navigate(['/app/Town/Main']);
   }
 
   displayHpChange(entityType: string, hpChange: number) {
@@ -180,36 +219,138 @@ export class CombatComponent implements OnInit, OnDestroy {
     }
   }
 
-  getMonsterHpChange() {
-    return this.monsterHpChanged;
-  }
-
-  getCharacterHpChange() {
-    return this.characterHpChanged;
-  }
-
-  calculateChanceToHit() {
+  calculateChanceToHit(): number {
     const monsterAccuracy = this.monster?.accuracy ?? 0;
     const playerEvasion =
       this.playerCharacter?.character?.combatStats?.defenses?.evasion ?? 0;
 
     if (!this.monster) {
-      return '-';
+      return 0;
     }
 
     if (monsterAccuracy <= playerEvasion) {
-      return ((monsterAccuracy / (2 * playerEvasion)) * 100).toFixed(0);
+      return (monsterAccuracy / (2 * playerEvasion)) * 100;
     }
 
-    return ((1 - playerEvasion / (monsterAccuracy * 2)) * 100).toFixed(0);
+    return (1 - playerEvasion / (monsterAccuracy * 2)) * 100;
+  }
+
+  calculatePlayerChanceToHit(): number {
+    const playerAccuracy =
+      this.playerCharacter.character.combatStats.combat.accuracy ?? 0;
+    const monsterEvasion = this.monster?.evasion ?? 0;
+
+    if (!this.monster) {
+      return 0;
+    }
+
+    if (playerAccuracy <= monsterEvasion) {
+      return (playerAccuracy / (2 * monsterEvasion)) * 100;
+    }
+
+    return (1 - monsterEvasion / (playerAccuracy * 2)) * 100;
   }
 
   unequipItem(type: string) {
     this.backpackService.unequipItem(type);
   }
 
-  showBackup(filename: string, extension: string) {
-    console.log(this.showBackup);
-    return filename + '.' + extension;
+  showLoot(loot: any) {
+    this.showNewLoot = true;
+    this.newLoot = loot;
+    setTimeout(() => {
+      this.showNewLoot = false;
+    }, 2000);
+  }
+
+  calculateXpForLevel() {
+    let total = 0;
+    for (
+      let i = 0;
+      i < this.playerCharacter.character.combatStats.progression.level;
+      i++
+    ) {
+      total += Math.floor(i + 300 * Math.pow(2, i / 7));
+    }
+
+    if (
+      this.playerCharacter.character.combatStats.progression.experiencePoints >=
+      total
+    ) {
+      this.playerCharacter.character.combatStats.progression.level++;
+    }
+
+    return total;
+  }
+
+  private subscribeToMonsterUpdates() {
+    this.monsterSubscription = this.combatService
+      .getUpdatedMonster()
+      .pipe(untilDestroyed(this))
+      .subscribe(async (updatedMonster) => {
+        const { monster } = updatedMonster;
+        const currentMonsterHealth = this.monster?.health ?? 0;
+        const updatedMonsterHealth = monster.health;
+
+        if (updatedMonsterHealth <= 0) {
+          this.spawnMonster(monster.name);
+        } else {
+          if (monster.maxHealth !== monster.health) {
+            this.displayHpChange(
+              'monster',
+              currentMonsterHealth - updatedMonsterHealth
+            );
+          }
+
+          this.monster = monster;
+          this.progress = 0;
+          clearInterval(this.progressInterval);
+          this.startProgressBar();
+        }
+      });
+  }
+
+  private subscribeToLootUpdates() {
+    this.lootSubscription = this.combatService
+      .getMonsterLoot()
+      .pipe(untilDestroyed(this))
+      .subscribe((loot: any) => {
+        console.log(loot);
+        this.showLoot(loot);
+      });
+  }
+
+  private subscribeToPlayerUpdates() {
+    this.playerSubscription = this.combatService
+      .getUpdatedPlayer()
+      .pipe(untilDestroyed(this))
+      .subscribe((updatedPlayer) => {
+        const player = updatedPlayer;
+        const { combatStats } = player.character;
+        const { health } = combatStats.stats;
+
+        const hpChange = this.calculateHpChange(health);
+        if (hpChange !== 0) {
+          this.displayHpChange('character', hpChange);
+        }
+
+        this.playerCharacter = player;
+        this.store.dispatch(new UpdateCharacter(player));
+
+        this.monsterProgress = 0;
+        clearInterval(this.monsterProgressInterval);
+        this.startMonsterProgressBar();
+      });
+  }
+
+  private subscribeToLevelUpdates() {
+    this.combatService
+      .checkIfLevelUp()
+      .pipe(untilDestroyed(this))
+      .subscribe((levelUp: boolean) => {
+        if (levelUp) {
+          this.toast.getSuccessToast('Level Up!');
+        }
+      });
   }
 }

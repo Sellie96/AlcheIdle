@@ -1,13 +1,7 @@
-<ion-grid>
+<ion-grid class="stats-text">
   <ion-row>
-    <ion-col size="4" size-md="4" size-lg="4">
+    <ion-col size="3" size-md="3" size-lg="3">
       <h3 class="subheading">Offense</h3>
-      HP: {{ playerCharacter.character.combatStats.stats.health }} /
-      {{ playerCharacter.character.combatStats.stats.maxHealth }}
-      <br />
-      Mana: {{ playerCharacter.character.combatStats.stats.mana }} /
-      {{ playerCharacter.character.combatStats.stats.maxMana }}
-      <br />
       Crit Chance:
       {{ playerCharacter.character.combatStats.combat.criticalHitChance }}
       <br />
@@ -18,7 +12,8 @@
       {{ playerCharacter.character.combatStats.combat.attackSpeed }}
       <br />
       Accuracy: {{ playerCharacter.character.combatStats.combat.accuracy }}
-      <br />
+    </ion-col>
+    <ion-col size="3" size-md="3" size-lg="3">
       <h3 class="subheading">Attributes</h3>
       Strength: {{ playerCharacter.character.combatStats.stats.strength }}
       <br />
@@ -33,7 +28,7 @@
       <br />
       Luck: {{ playerCharacter.character.combatStats.stats.luck }}
     </ion-col>
-    <ion-col size="4" size-md="4" size-lg="4">
+    <ion-col size="3" size-md="3" size-lg="3">
       <h3 class="subheading">Defence</h3>
       Armor: {{ playerCharacter.character.combatStats.defenses.armor }}
       <br />
@@ -47,7 +42,8 @@
       <br />
       Parry Chance:
       {{ playerCharacter.character.combatStats.combat.parryChance }}
-      <br />
+    </ion-col>
+    <ion-col size="3" size-md="3" size-lg="3">
       <h3 class="subheading">Resists</h3>
       Fire Res:
       {{ playerCharacter.character.combatStats.resistances.fireResistance }}
@@ -74,26 +70,6 @@
       <br />
       Silence Res:
       {{ playerCharacter.character.combatStats.resistances.silenceResistance }}
-    </ion-col>
-    <ion-col size="4" size-md="4" size-lg="4">
-      <h3 class="subheading">Progression</h3>
-      XP:
-      {{ playerCharacter.character.combatStats.progression.experiencePoints }} /
-      {{ calculateXpForLevel() }}
-      <br />
-      Level: {{ playerCharacter.character.combatStats.progression.level }}
-      <br />
-      Invent Size:
-      {{ playerCharacter.character.combatStats.progression.inventorySize }}
-      <br />
-      Skill Points:
-      {{ playerCharacter.character.combatStats.progression.skillPoints }}
-      <br />
-      Talent Points:
-      {{ playerCharacter.character.combatStats.progression.talentPoints }}
-      <br />
-      Evasion: {{ playerCharacter.character.combatStats.defenses.evasion }}
-      <br />
     </ion-col>
   </ion-row>
 </ion-grid>

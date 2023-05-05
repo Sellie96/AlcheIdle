@@ -30,6 +30,7 @@ const userDefault_1 = require("./userDefault");
 const messages_gateway_1 = require("../Modules/messages/messages.gateway");
 const messages_service_1 = require("../Modules/messages/messages.service");
 const message_entity_1 = require("../Modules/skills/woodcutting/entities/message.entity");
+const items_service_1 = require("../Modules/combat/items.service");
 let UsersService = class UsersService {
     constructor(usersRepository, messagesService, messagesGateway) {
         this.usersRepository = usersRepository;
@@ -219,13 +220,25 @@ let UsersService = class UsersService {
             user.character.backpack.push(reward);
         }
     }
-    removeItemFromBackpack(user, skill) {
-        const item = user.character.backpack.find((item) => item.name === skill.type.name);
-        if (item) {
-            item.amount -= 1;
+    useItem(user, item) {
+        const itemToUse = user.character.backpack.find((backpackItem) => item.itemName === backpackItem.name);
+        if (itemToUse) {
+            if (user.character.combatStats.stats.health >= user.character.combatStats.stats.maxHealth) {
+                return "You are already at full health!";
+            }
+            else {
+                itemToUse.amount -= 1;
+                user.character.combatStats.stats.health += itemToUse.healAmount;
+                if (user.character.combatStats.stats.health > user.character.combatStats.stats.maxHealth) {
+                    user.character.combatStats.stats.health = user.character.combatStats.stats.maxHealth;
+                }
+            }
         }
         else {
             return "You have no more items!";
+        }
+        if (itemToUse.amount <= 0) {
+            user.character.backpack = user.character.backpack.filter((item) => item.name !== itemToUse.name);
         }
     }
 };

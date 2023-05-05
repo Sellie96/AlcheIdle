@@ -30,6 +30,7 @@ const user_entity_1 = require("../../user/user.entity");
 const users_service_1 = require("../../user/users.service");
 const combat_service_1 = require("./combat.service");
 const monster_service_1 = require("./monster/monster.service");
+const common_1 = require("@nestjs/common");
 let CombatGateway = class CombatGateway {
     constructor(authService, usersService, monsterService, combatService) {
         this.authService = authService;
@@ -40,6 +41,7 @@ let CombatGateway = class CombatGateway {
         this.sendResponse = true;
         this.clientFightInProgress = new Map();
         this.ongoingCombatPlayers = [];
+        this.usedConsumable = false;
     }
     handleConnection(client) {
         var _a;
@@ -80,8 +82,8 @@ let CombatGateway = class CombatGateway {
                     console.log(`User with username ${decodedToken.username} not found`);
                 }
                 else {
-                    clearInterval(this.playerInterval);
-                    clearInterval(this.monsterInterval);
+                    clearInterval(this.combatInterval);
+                    clearInterval(this.combatIntervalMonster);
                     this.clientFightInProgress.set(client.id, false);
                 }
             }
@@ -98,29 +100,37 @@ let CombatGateway = class CombatGateway {
             const decodedToken = yield this.authService.verifyJwt(client.handshake.headers.authorization.slice(7));
             this.player = yield this.usersService.findOneByUsername(decodedToken.username);
             if (this.ongoingCombatPlayers.includes(this.player.username)) {
-                client.emit('combatError', { message: `You are already engaged in a combat` });
+                client.emit('combatError', {
+                    message: `You are already engaged in a combat`,
+                });
                 return;
             }
             this.ongoingCombatPlayers.push(this.player.username);
             let monster = yield this.findMonsterById(monsterId);
             if (!monster) {
-                client.emit('combatError', { message: `Monster with ID ${monsterId} not found` });
+                client.emit('combatError', {
+                    message: `Monster with ID ${monsterId} not found`,
+                });
                 return;
             }
             client.emit('updateMonster', { monster: monster });
             client.emit('fightResult', { player: this.player, monster: monster });
             this.combatInterval = setInterval(() => __awaiter(this, void 0, void 0, function* () {
                 this.player = yield this.usersService.findOneByUsername(decodedToken.username);
-                monster = this.combatService.calculateMonsterHealth(this.player, monster);
-                if (monster.health <= 0) {
-                    monster.health = 0;
+                if (this.usedConsumable) {
+                    this.usedConsumable = false;
+                }
+                else {
+                    monster = this.combatService.calculateMonsterHealth(this.player, monster);
+                    if (monster.health <= 0) {
+                        monster.health = 0;
+                    }
                 }
                 client.emit('updateMonster', { monster: monster });
                 if (monster.health <= 0) {
-                    const loot = 0;
-                    const gold = 5;
-                    const xp = 5;
-                    this.player = this.combatService.updatePlayerLoot(gold, xp, this.player, monster);
+                    const gold = monster.gold;
+                    const xp = monster.xp;
+                    let loot = yield this.combatService.updatePlayerLoot(gold, xp, this.player, monster, client);
                     client.emit('monsterDeath', { loot, gold, xp });
                     this.resetFight(client, monsterId);
                     const index = this.ongoingCombatPlayers.indexOf(this.player.username);
@@ -128,18 +138,16 @@ let CombatGateway = class CombatGateway {
                         this.ongoingCombatPlayers.splice(index, 1);
                     }
                 }
-                this.getPlayerData(client);
+                this.player = yield this.usersService.findOneByUsername(this.player.username);
+                client.emit('updatePlayer', this.player);
             }), this.player.character.combatStats.combat.attackSpeed * 1000);
             this.combatIntervalMonster = setInterval(() => __awaiter(this, void 0, void 0, function* () {
-                this.player = yield this.usersService.findOneByUsername(decodedToken.username);
-                this.player = this.combatService.calculatePlayerHealth(this.player, monster);
-                console.log(this.player.character.combatStats.stats.health);
-                client.emit('updatePlayer', { player: this.player });
+                let player = yield this.usersService.findOneByUsername(this.player.username);
+                this.player = this.combatService.calculatePlayerHealth(player, monster);
                 if (this.player.character.combatStats.stats.health <= 0) {
                     this.playerDied(client);
                 }
-                this.usersService.updateOne(this.player);
-                this.getPlayerData(client);
+                client.emit('updatePlayer', this.player);
             }), monster.attackSpeed * 1000);
         });
     }
@@ -170,7 +178,15 @@ let CombatGateway = class CombatGateway {
     updatePlayer(client) {
         return __awaiter(this, void 0, void 0, function* () {
             let updatedData = yield this.usersService.findOneByUsername(this.player.username);
-            this.server.to(client.id).emit('updatePlayer', updatedData);
+            client.emit('getPlayerData', updatedData);
+        });
+    }
+    useItem(client, itemName) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.usersService.useItem(this.player, itemName);
+            this.usedConsumable = true;
+            yield this.usersService.updateOne(this.player);
+            this.updatePlayer(client);
         });
     }
     resetFight(client, monsterId) {
@@ -180,7 +196,6 @@ let CombatGateway = class CombatGateway {
         if (index > -1) {
             this.ongoingCombatPlayers.splice(index, 1);
         }
-        this.startMonsterCombat(client, monsterId);
     }
     findMonsterById(id) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -247,6 +262,14 @@ __decorate([
     __metadata("design:paramtypes", [socket_io_1.Socket]),
     __metadata("design:returntype", Promise)
 ], CombatGateway.prototype, "updatePlayer", null);
+__decorate([
+    (0, websockets_1.SubscribeMessage)('useItem'),
+    __param(0, (0, decorators_1.ConnectedSocket)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [socket_io_1.Socket, Object]),
+    __metadata("design:returntype", Promise)
+], CombatGateway.prototype, "useItem", null);
 CombatGateway = __decorate([
     (0, websockets_1.WebSocketGateway)({ cors: true }),
     __metadata("design:paramtypes", [auth_service_1.AuthService,

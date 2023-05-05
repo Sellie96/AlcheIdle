@@ -1,0 +1,65 @@
+.stats {
+    height: 0.5rem;
+    border-radius: 10px;
+}
+
+.no-background {
+    --background: transparent;
+}
+
+.icon-image {
+    border-radius: 360px;
+    border: 3px rgba($color: red, $alpha: 0.8) solid;
+    padding: 0.75rem;
+    background-color: rgba($color: rgb(163, 29, 29), $alpha: 0.8);
+}
+
+.icon-image-health {
+    border-radius: 360px;
+    border: 3px red solid;
+    padding: 0.75rem;
+    background-color: rgba($color: rgb(163, 29, 29), $alpha: 0.8);
+}
+
+.icon-image-defence {
+    border-radius: 360px;
+    border: 3px blue solid;
+    padding: 0.75rem;
+    background-color: rgba($color: rgb(29, 29, 163), $alpha: 0.8);
+}
+
+.icon-image-attack {
+    border-radius: 360px;
+    border: 3px yellow solid;
+    background-color: rgba($color: rgb(163, 163, 29), $alpha: 0.8);
+}
+
+.icon-image-accuracy {
+    border-radius: 360px;
+    border: 3px purple solid;
+    background-color: rgba($color: rgb(163, 29, 163), $alpha: 0.8);
+}
+
+.icon-image-vulnerability {
+    border-radius: 360px;
+    border: 3px orange solid;
+    background-color: rgba($color: rgb(218, 123, 0), $alpha: 0.8);
+}
+
+.icon-image-probability {
+    border-radius: 360px;
+    border: 3px green solid;
+    background-color: rgba($color: rgb(53, 177, 53), $alpha: 0.8);
+}
+
+.icon-image-evasion {
+    border-radius: 360px;
+    border: 3px brown solid;
+    background-color: rgba($color: rgb(163, 29, 29), $alpha: 0.8);
+}
+
+.icon-image-attack-speed {
+    border-radius: 360px;
+    border: 3px pink solid;
+    background-color: rgba($color: rgb(209, 49, 209), $alpha: 0.8);
+}

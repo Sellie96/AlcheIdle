@@ -1,56 +1,272 @@
-<div style="display: flex; flex-direction: row; flex-wrap: wrap; width: 100%;">
+<div style="display: flex; flex-direction: row; flex-wrap: wrap; width: 100%">
   <div
-    (click)="equipItem(item)"
     style="margin: 0.5rem"
     *ngFor="let item of playerCharacter.character.backpack"
-    [myTooltip]="template"
-    #tooltipContent
   >
+    <div
+      style="position: relative; cursor: pointer"
+      [myTooltip]="template"
+      #tooltipContent
+      (click)="setItem(item)"
+      id="open-modal"
+    >
+      <img
+        style="width: 4rem"
+        src="../../../../assets/equipment/EquipmentEmpty.png"
+      />
+      <img
+        style="width: 4rem; position: absolute; left: -0rem; z-index: 5"
+        src="../../../../assets/equipment/{{ item.name }}.png"
+      />
+      <div
+        *ngIf="item.stackable"
+        style="
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          border-radius: 50%;
+          height: 1.5rem;
+          text-align: center;
+          z-index: 10;
+        "
+      >
+        <ion-note
+          style="
+            font-style: italic;
+            font-weight: 600;
+            font-size: large;
+            text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000,
+              -1px 0 0 #000;
+          "
+          >{{ item.amount | number }}</ion-note
+        >
+      </div>
 
-  <div style="position: relative; cursor: pointer;">
-    <img
-      style="width: 4rem"
-      src="../../../../assets/equipment/EquipmentEmpty.png"
-    />
-    <img
-      style="width: 4rem; position: absolute; left: -0rem; z-index: 5;"
-      src="../../../../assets/equipment/{{item.name}}.png"
-    />
-  </div>
-
-    <ng-template #template>
-      <div class="my-tooltip">
-        <div>
+      <ng-template #template>
+        <div class="my-tooltip">
           <div>
-            <h3 style="text-align: center">{{ item.name }}</h3>
-            <span style="font-style: italic">
-              <p>{{ item.itemType }}</p>
-              <p *ngIf="item.equipable">Equipable</p>
-              <p *ngIf="item.stackable">Stackable</p>
-            </span>
-            <div style="text-align: center">
-              <ul>
-                <h3 style="text-decoration: underline; font-style: italic;" *ngIf="item.stats.offense">Offense</h3>
-                <li *ngFor="let offenseStat of item.stats.offense">
-                  {{ offenseStat.name }}: {{ offenseStat.value }}
-                </li>
-                <h3 style="text-decoration: underline; font-style: italic;" *ngIf="item.stats.offense">Attributes</h3>
-                <li *ngFor="let attributes of item.stats.attributes">
-                  {{ attributes.name }}: {{ attributes.value }}
-                </li>
-                <h3 style="text-decoration: underline; font-style: italic;" *ngIf="item.stats.defence">Defence</h3>
-                <li *ngFor="let defence of item.stats.defence">
-                  {{ defence.name }}: {{ defence.value }}
-                </li>
-                <h3 style="text-decoration: underline; font-style: italic;" *ngIf="item.stats.defence">Resists</h3>
-                <li *ngFor="let resists of item.stats.resists">
-                  {{ resists.name }}: {{ resists.value }}
-                </li>
-              </ul>
+            <div>
+              <h3 style="text-align: center">{{ item.name }}</h3>
+              <span style="font-style: italic">
+                <p>{{ item.itemType }}</p>
+                <p *ngIf="item.equipable">Equipable</p>
+                <p *ngIf="item.stackable">Stackable</p>
+              </span>
+              <div style="text-align: center">
+                <ul>
+                  <h3
+                    style="text-decoration: underline; font-style: italic"
+                    *ngIf="item.stats.offense"
+                  >
+                    Offense
+                  </h3>
+                  <li *ngFor="let offenseStat of item.stats.offense">
+                    {{ offenseStat.name }}: {{ offenseStat.value }}
+                  </li>
+                  <h3
+                    style="text-decoration: underline; font-style: italic"
+                    *ngIf="item.stats.offense"
+                  >
+                    Attributes
+                  </h3>
+                  <li *ngFor="let attributes of item.stats.attributes">
+                    {{ attributes.name }}: {{ attributes.value }}
+                  </li>
+                  <h3
+                    style="text-decoration: underline; font-style: italic"
+                    *ngIf="item.stats.defence"
+                  >
+                    Defence
+                  </h3>
+                  <li *ngFor="let defence of item.stats.defence">
+                    {{ defence.name }}: {{ defence.value }}
+                  </li>
+                  <h3
+                    style="text-decoration: underline; font-style: italic"
+                    *ngIf="item.stats.defence"
+                  >
+                    Resists
+                  </h3>
+                  <li *ngFor="let resists of item.stats.resists">
+                    {{ resists.name }}: {{ resists.value }}
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </ng-template>
+      </ng-template>
+    </div>
   </div>
+
+  <ion-modal [isOpen]="isModalItemCompareOpen">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="cancel()">Cancel</ion-button>
+          </ion-buttons>
+          <ion-title style="text-align: center">Item Comparison</ion-title>
+          <ion-buttons slot="end">
+            <ion-button
+              *ngIf="selectedItem.itemType.toString() !== 'Consumable'"
+              (click)="confirm()"
+              [strong]="true"
+              >Equip Item</ion-button
+            >
+            <ion-button
+              *ngIf="selectedItem.itemType.toString() === 'Consumable'"
+              (click)="useItem(selectedItem, 1)"
+              [strong]="true"
+              >Use Item</ion-button
+            >
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <div
+          style="
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+          "
+        >
+          <div
+            *ngIf="
+              selectedItem.itemType !== 'Consumable' &&
+              selectedItem !== undefined
+            "
+            style="width: 50%; border-right: 1px gray solid"
+          >
+            <ion-note style="font-style: italic">Currently Equipped</ion-note>
+            <div>
+              <h3 style="text-align: center">{{ equippedItem.name }}</h3>
+              <span style="font-style: italic">
+                <ion-note>{{ equippedItem.itemType }}</ion-note>
+                <br />
+                <ion-note *ngIf="equippedItem.equipable">Equipable</ion-note>
+                <br />
+                <ion-note *ngIf="equippedItem.stackable">Stackable</ion-note>
+              </span>
+              <div style="text-align: center">
+                <ul>
+                  <h3
+                    style="text-decoration: underline; font-style: italic"
+                    *ngIf="equippedItem.stats?.offense"
+                  >
+                    Offense
+                  </h3>
+                  <p *ngFor="let offenseStat of equippedItem.stats?.offense">
+                    {{ offenseStat.name }}: {{ offenseStat.value }}
+                  </p>
+                  <h3
+                    style="text-decoration: underline; font-style: italic"
+                    *ngIf="equippedItem.stats?.attributes"
+                  >
+                    Attributes
+                  </h3>
+                  <p *ngFor="let attributes of equippedItem.stats?.attributes">
+                    {{ attributes.name }}: {{ attributes.value }}
+                  </p>
+                  <h3
+                    style="text-decoration: underline; font-style: italic"
+                    *ngIf="equippedItem.stats?.defence"
+                  >
+                    Defence
+                  </h3>
+                  <p *ngFor="let defence of equippedItem.stats?.defence">
+                    {{ defence.name }}: {{ defence.value }}
+                  </p>
+                  <h3
+                    style="text-decoration: underline; font-style: italic"
+                    *ngIf="equippedItem.stats?.defence"
+                  >
+                    Resists
+                  </h3>
+                  <p *ngFor="let resists of equippedItem.stats?.resists">
+                    {{ resists.name }}: {{ resists.value }}
+                  </p>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div style="width: 50%">
+            <span>
+              <h3 style="text-align: center">{{ selectedItem.name }}</h3>
+              <ion-note>{{ selectedItem.itemType }}</ion-note>
+              <br />
+              <ion-note
+                style="font-style: italic"
+                *ngIf="selectedItem.equipable"
+                >Equipable</ion-note
+              >
+              <br />
+              <ion-note
+                style="font-style: italic"
+                *ngIf="selectedItem.stackable"
+                >Stackable</ion-note
+              >
+            </span>
+            <div style="text-align: center">
+              <span style="font-style: italic">
+                <h3
+                  style="text-decoration: underline; font-style: italic"
+                  *ngIf="selectedItem.stats.offense"
+                >
+                  Offense
+                </h3>
+                <p *ngFor="let offenseStat of selectedItem.stats.offense">
+                  {{ offenseStat.name }}: {{ offenseStat.value }}
+                </p>
+                <h3
+                  style="text-decoration: underline; font-style: italic"
+                  *ngIf="selectedItem.stats.offense"
+                >
+                  Attributes
+                </h3>
+                <p *ngFor="let attributes of selectedItem.stats.attributes">
+                  {{ attributes.name }}: {{ attributes.value }}
+                </p>
+                <h3
+                  style="text-decoration: underline; font-style: italic"
+                  *ngIf="selectedItem.stats.defence"
+                >
+                  Defence
+                </h3>
+                <p *ngFor="let defence of selectedItem.stats.defence">
+                  {{ defence.name }}: {{ defence.value }}
+                </p>
+                <h3
+                  style="text-decoration: underline; font-style: italic"
+                  *ngIf="selectedItem.stats.defence"
+                >
+                  Resists
+                </h3>
+                <p *ngFor="let resists of selectedItem.stats.resists">
+                  {{ resists.name }}: {{ resists.value }}
+                </p>
+              </span>
+            </div>
+
+            <ion-note>Value: {{ selectedItem.value }} Gold</ion-note>
+            <br />
+            <ion-range
+              value="0"
+              pin="true"
+              min="1"
+              max="{{ selectedItem.amount }}"
+              step="1"
+            ></ion-range>
+            <ion-button
+              color="warning"
+              (click)="sellItem(selectedItem)"
+              expand="full"
+              >Sell</ion-button
+            >
+          </div>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </div>

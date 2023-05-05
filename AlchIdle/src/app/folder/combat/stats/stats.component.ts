@@ -24,19 +24,4 @@ export class StatsComponent implements OnInit {
       this.playerCharacter = JSON.parse(JSON.stringify(character));
     });
   }
-
-
-  calculateXpForLevel() {
-    let total = 0;
-    for(let i = 0; i < this.playerCharacter.character.combatStats.progression.level; i++) {
-      total += Math.floor(i + 300 * Math.pow(2, i / 7))
-    }
-
-    if(this.playerCharacter.character.combatStats.progression.experiencePoints >= total) {
-      this.playerCharacter.character.combatStats.progression.level++
-    }
-
-    return total;
-  }
-
 }

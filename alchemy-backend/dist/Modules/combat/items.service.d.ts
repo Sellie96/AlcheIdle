@@ -7,7 +7,8 @@ export declare enum ItemType {
     RING = "Ring",
     BOOTS = "Boots",
     WEAPON = "Weapon",
-    SHIELD = "Shield"
+    SHIELD = "Shield",
+    CONSUMABLE = "Consumable"
 }
 export declare enum OffenseStat {
     HP = "HP",
@@ -62,5 +63,6 @@ export declare class RPGItems {
     special: boolean;
     amount: number;
     value: number;
-    constructor(name: string, itemType: ItemType, equipable: boolean, stackable: boolean, stats: Stats, dropChance: number, special: boolean, amount: number, value: number);
+    healAmount?: number;
+    constructor(name: string, itemType: ItemType, equipable: boolean, stackable: boolean, stats: Stats, dropChance: number, special: boolean, amount: number, value: number, healAmount?: number);
 }

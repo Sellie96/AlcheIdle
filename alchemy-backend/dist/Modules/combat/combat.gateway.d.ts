@@ -13,13 +13,12 @@ export declare class CombatGateway implements OnGatewayConnection, OnGatewayDisc
     users: number;
     sendResponse: boolean;
     private clientFightInProgress;
-    private playerInterval;
-    private monsterInterval;
     private player;
     private combatInterval;
     private combatIntervalMonster;
     private ongoingCombatPlayers;
     private currentClient;
+    private usedConsumable;
     constructor(authService: AuthService, usersService: UsersService, monsterService: MonsterService, combatService: CombatService);
     handleConnection(client: Socket): Promise<void>;
     handleDisconnect(client: Socket): Promise<void>;
@@ -28,6 +27,7 @@ export declare class CombatGateway implements OnGatewayConnection, OnGatewayDisc
     handleFlee(client: Socket): Promise<void>;
     getPlayerData(client: Socket): Promise<void>;
     updatePlayer(client: Socket): Promise<void>;
+    useItem(client: Socket, itemName: any): Promise<void>;
     private resetFight;
     private findMonsterById;
     playerDied(client: any): void;

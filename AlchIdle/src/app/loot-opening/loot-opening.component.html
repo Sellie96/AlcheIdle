@@ -1,0 +1,15 @@
+<div class="overlay"></div>
+<div class="container">
+  <div class="loot-opening-wrapper">
+    <div class="blur-item"></div>
+    <div class="loot-items">
+      <ng-container *ngFor="let i of [].constructor(50)">
+        <!-- This template will be repeated 5 times -->
+        <img class="loot-item" src="../../assets/icon/LootBox.png">
+      </ng-container>
+    </div>
+  </div>
+
+  <ion-button (click)="openBox()">Open</ion-button>
+  
+</div>

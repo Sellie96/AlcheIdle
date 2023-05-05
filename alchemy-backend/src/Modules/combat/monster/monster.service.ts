@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DustDevil, FireSerpent, FireSpirit, FrostTroll, FrozenTerror, Goblin, GoblinArcher, GoblinBerserker, GoblinChief, Hobgoblin, LavaGolem, Mammoth, Manticore, SandBeast, SandCrab, SandGolem, SolTheProtector, TheEye } from './monster.utils';
+import { Breads, DustDevil, FireSerpent, FireSpirit, FrostTroll, FrozenTerror, Goblin, GoblinArcher, GoblinBerserker, GoblinChief, Hobgoblin, LavaGolem, Mammoth, Manticore, Meats, Onions, Potatoes, SandBeast, SandCrab, SandGolem, SolTheProtector, TheEye } from './monster.utils';
 import { IceGiant } from './monster.utils';
 import { IceWyvern } from './monster.utils';
 import { Tangleroot } from './monster.utils';
@@ -13,6 +13,10 @@ export class MonsterService {
   constructor() {}
 
   monsters = [
+    Onions,
+    Potatoes,
+    Breads,
+    Meats,
     Goblin,
     GoblinArcher,
     Hobgoblin,

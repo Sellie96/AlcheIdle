@@ -1,0 +1,114 @@
+.dungeon-select {
+    width: 11rem; 
+    min-height: 40vh; 
+    border: black solid 3px;
+    box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    margin: 0.1rem;
+    text-align: center;
+    align-items:  center;
+    transform: skew(-15deg);
+}
+
+@media only screen and (max-width: 1000px) {
+    .dungeon-select {
+        width: 17.5rem; 
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .dungeon-select {
+        width: 100%; 
+    }
+}
+
+.dungeon-select:hover {
+    box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.8);
+    border: gold 3px solid;
+    cursor: pointer;
+    transform: skew(-15deg);
+}
+
+.Alchemybackground {
+    background-image: url("../../../../assets/general/AlchemyBackground.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+
+
+//title class for dungeon select in a game
+.dungeon-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-top: 4rem;
+    font-family: Cinzel Decorative, serif;
+    text-shadow: 0 0 8px #15ac67, 0 0 18px #15ac67;
+}
+
+.return-text {
+    position: absolute; left: 10px; top: 10px; align-items: center;
+    font-size: 1rem;
+    font-weight: bold;
+    font-family: Cinzel Decorative, serif;
+    text-shadow: 0 0 8px #15ac67, 0 0 18px #15ac67;
+    cursor: pointer;
+}
+
+.OvergrownFarm {
+    background-image: url("../../../../assets/areas/Overgrown Farm.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.GoblinCamp {
+    background-image: url("../../../../assets/areas/Goblin Camp.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.ChaoticBeach {
+    background-image: url("../../../../assets/areas/Chaotic Beach.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.FrozenWastes {
+    background-image: url("../../../../assets/areas/Frozen Wastes.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.MysticForest {
+    background-image: url("../../../../assets/areas/Mystic Forest.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.VolcanicPlains {
+    background-image: url("../../../../assets/areas/Volcanic Plains.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.area-text {
+    color: white;
+    font-family: 'Zona Pro';
+    text-shadow: 0 0 8px #000000, 0 0 18px #000000;
+    font-size: large;
+    font-weight: bold;
+}

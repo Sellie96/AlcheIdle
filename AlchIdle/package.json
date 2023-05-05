@@ -26,6 +26,7 @@
     "@capacitor/status-bar": "4.1.1",
     "@ionic/angular": "^6.1.9",
     "@ngneat/until-destroy": "^9.2.2",
+    "@ngx-loading-bar/router": "^6.0.2",
     "@ngxs/storage-plugin": "^3.7.6-dev.master-5f9405c",
     "@ngxs/store": "^3.7.6-dev.master-6835a28",
     "@swimlane/ngx-datatable": "^20.1.0",

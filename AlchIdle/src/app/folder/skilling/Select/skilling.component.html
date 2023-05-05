@@ -1,0 +1,34 @@
+<div>
+  <span
+    routerDirection="root"
+    [routerLink]="['/app/Town/Main']"
+    lines="none"
+    detail="false"
+    routerLinkActive="selected"
+    class="return-text"
+  >
+    <ion-icon name="return-down-back-outline"> </ion-icon> Return
+  </span>
+
+  <img
+    style="position: absolute; left: 18.5%"
+    src="../../../../assets/dungeons/border-element.png"
+  />
+
+  <ion-title class="dungeon-title" style="text-align: center">
+    Select Skill
+  </ion-title>
+
+  <div style="display: flex; flex-wrap: wrap; margin-left: 30rem; margin-right: 30rem;">
+    <div *ngFor="let skill of appPages" class="dungeon-select {{skill.title + 'background'}}">
+      <div style="min-height: 35%"></div>
+      <img width="100%" src="../../../../assets/icon/skills/{{skill.title.toLowerCase()}}.png">
+      <ion-label>
+        <h2 class="skill-title">{{skill.title}}</h2>
+      </ion-label>
+      <ion-note>
+        <ion-icon size="large" name="lock-closed"></ion-icon>
+      </ion-note>
+    </div>
+  </div>
+</div>

@@ -1,13 +1,33 @@
 <div class="chat-ui">
   <div class="chat-ui-text-area">
-
     <div class="chat-box">
-      <div tabindex="1" #chatDiv class="chat-text {{message.name}}" *ngFor="let message of messages">
-        [{{message.time}}] <img *ngIf="message.name !== 'Server' " width="20rem" src="../../../assets/chat-icons/normal.png"> {{message.name}}: {{ message.message }}
+      <div
+        tabindex="1"
+        #chatDiv
+        class="chat-text {{ message.name }}"
+        *ngFor="let message of messages"
+      >
+        [{{ message.time }}]
+        <img
+          *ngIf="message.name !== 'Server'"
+          width="20rem"
+          src="../../../assets/chat-icons/normal.png"
+        />
+        [{{ message.name }}]:
+        <ion-note>
+          {{ message.message }}
+        </ion-note>
       </div>
     </div>
-    <ion-item>
-      <ion-textarea (keyup.enter)="addChat()" [formControl]="message" placeholder="Type to chat..."></ion-textarea>
-    </ion-item>
   </div>
 </div>
+
+<ion-item style="position: absolute; bottom: -75px; right: 0; width: 100%;">
+  <ion-label>{{ playerCharacter.character.characterName }}:</ion-label>
+  <ion-textarea
+    (keyup.enter)="addChat()"
+    [formControl]="message"
+    maxlength="60"
+    placeholder="Type something here"
+  ></ion-textarea>
+</ion-item>

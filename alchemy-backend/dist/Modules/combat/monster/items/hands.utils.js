@@ -16,5 +16,5 @@ exports.LeatherGloves = new items_service_1.RPGItems('Leather Gloves', items_ser
         { name: items_service_1.ResistStat.POISON_RES, value: 1 },
         { name: items_service_1.ResistStat.BLEED_RES, value: 1 },
     ],
-}, 0.005, false, 1, 1);
+}, 0.006, false, 1, 1);
 //# sourceMappingURL=hands.utils.js.map

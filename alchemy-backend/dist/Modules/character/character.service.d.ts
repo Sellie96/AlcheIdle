@@ -17,6 +17,7 @@ export declare class CharacterService {
     constructor(usersRepository: Repository<User>);
     equipItem(username: string, item: any): Promise<User>;
     unequipItem(username: string, type: any): Promise<User>;
+    sellItem(username: string, item: any): Promise<User>;
     addStats(item: RPGItems, player: User): User;
     removeStats(item: any, player: User): User;
 }

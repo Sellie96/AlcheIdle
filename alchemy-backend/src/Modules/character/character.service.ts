@@ -158,8 +158,10 @@ export class CharacterService {
 
     let prevItem = userData.character.equipment[type.type];
 
-    if((Object.keys(prevItem).length === 0)) {
-      console.log("empty item");
+    console.log(type)
+
+    if (Object.keys(prevItem).length === 0) {
+      console.log('empty item');
     } else {
       this.removeStats(prevItem, userData);
     }
@@ -171,7 +173,39 @@ export class CharacterService {
 
     userData.character.equipment[type.type] = {};
 
+    await this.usersRepository.update(
+      { username: userData.username },
+      {
+        character: userData.character,
+      },
+    );
+
+    return await this.usersRepository.findOneBy({
+      username: username,
+    });
+  }
+
+  async sellItem(username: string, item: any) {
+    let userData: User = await this.usersRepository.findOneBy({
+      username: username,
+    });
+
+    let itemSold = false;
+
+    for (let i = 0; i < userData.character.backpack.length; i++) {
+      const backpackItem = userData.character.backpack[i];
+      
+      if (backpackItem.name === item.item.name) {
+        userData.character.backpack.splice(i, 1);
+        userData.character.combatStats.progression.gold += backpackItem.value;
+        itemSold = true;
+        break;
+      }
+    }
     
+    if (!itemSold) {
+      // handle the case where no matching item was found in the backpack
+    }
 
     await this.usersRepository.update(
       { username: userData.username },
@@ -302,10 +336,12 @@ export class CharacterService {
         item.stats.offense.map((stat) => {
           switch (stat.name) {
             case OffenseStat.CRIT_CHANCE:
-              player.character.combatStats.combat.criticalHitChance -= stat.value;
+              player.character.combatStats.combat.criticalHitChance -=
+                stat.value;
               break;
             case OffenseStat.CRIT_DAMAGE:
-              player.character.combatStats.combat.criticalHitDamage -= stat.value;
+              player.character.combatStats.combat.criticalHitDamage -=
+                stat.value;
               break;
             case OffenseStat.ATTACK_SPEED:
               player.character.combatStats.combat.attackSpeed -= stat.value;
@@ -316,7 +352,7 @@ export class CharacterService {
           }
         });
       }
-  
+
       if (item?.stats.defence) {
         item.stats.defence.map((stat) => {
           switch (stat.name) {
@@ -327,7 +363,8 @@ export class CharacterService {
               player.character.combatStats.defenses.evasion -= stat.value;
               break;
             case DefenceStat.MAGIC_RESIST:
-              player.character.combatStats.defenses.magicResistance -= stat.value;
+              player.character.combatStats.defenses.magicResistance -=
+                stat.value;
               break;
             case DefenceStat.BLOCK_CHANCE:
               player.character.combatStats.combat.blockChance -= stat.value;
@@ -338,7 +375,7 @@ export class CharacterService {
           }
         });
       }
-  
+
       if (item?.stats.attributes) {
         item.stats.attributes.map((stat) => {
           switch (stat.name) {
@@ -363,7 +400,7 @@ export class CharacterService {
           }
         });
       }
-  
+
       if (item?.stats.resists) {
         item.stats.resists.map((stat) => {
           switch (stat.name) {

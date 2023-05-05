@@ -1,12 +1,13 @@
 import { UsersService } from './../../user/users.service';
 import { User } from 'src/user/user.entity';
+import { RPGItems } from './items.service';
 import { MessagesGateway } from '../messages/messages.gateway';
 export declare class CombatService {
     private messagesService;
     private usersService;
     constructor(messagesService: MessagesGateway, usersService: UsersService);
-    updatePlayerLoot(gold: number, xp: number, player: User, monster: any): User;
-    checkIfLevelUp(player: User): User;
+    updatePlayerLoot(gold: number, xp: number, player: User, monster: any, client: any): Promise<RPGItems[]>;
+    checkIfLevelUp(player: User, client: any): Promise<void>;
     addItemToBackpack(user: User, skill: {
         type: {
             name: any;

@@ -8,6 +8,7 @@ export enum ItemType {
   BOOTS = 'Boots',
   WEAPON = 'Weapon',
   SHIELD = 'Shield',
+  CONSUMABLE = 'Consumable',
 }
 
 export enum OffenseStat {
@@ -69,6 +70,7 @@ export class RPGItems {
   special: boolean;
   amount: number;
   value: number;
+  healAmount?: number;
 
   constructor(
     name: string,
@@ -79,7 +81,8 @@ export class RPGItems {
     dropChance: number,
     special: boolean,
     amount: number,
-    value: number
+    value: number,
+    healAmount?: number,
   ) {
     this.name = name;
     this.itemType = itemType;
@@ -95,5 +98,6 @@ export class RPGItems {
     this.special = special;
     this.amount = amount;
     this.value = value;
+    this.healAmount = healAmount;
   }
 }

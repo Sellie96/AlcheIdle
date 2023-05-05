@@ -1,0 +1,226 @@
+.dungeon-select {
+    width: 11rem; 
+    min-height: 40vh; 
+    border: black solid 3px;
+    box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    margin: 0.1rem;
+    text-align: center;
+    align-items:  center;
+}
+
+@media only screen and (max-width: 1000px) {
+    .dungeon-select {
+        width: 17.5rem; 
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .dungeon-select {
+        width: 100%; 
+    }
+}
+
+.dungeon-select:hover {
+    box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.8);
+    border: gold 3px solid;
+    cursor: pointer;
+}
+
+.Alchemy {
+    //white text with green outline title for game
+    color: white;
+    text-shadow: 0 0 20px #019b01;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.Alchemybackground {
+    background-image: url("../../../../assets/general/AlchemyBackground.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.Woodcutting {
+    //white text with green outline title for game
+    color: white;
+    text-shadow: 0 0 20px #008000;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.Woodcuttingbackground {
+    background-image: url("../../../../assets/general/WoodCuttingBackground.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.Fishing {
+    //white text with green outline title for game
+    color: white;
+    text-shadow: 0 0 20px #007786;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.Fishingbackground {
+    background-image: url("../../../../assets/general/FishingBackground.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.Firemaking {
+    //white text with green outline title for game
+    color: white;
+    text-shadow: 0 0 20px #bd0000;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.Firemakingbackground {
+    background-image: url("../../../../assets/general/FiremakingBackground.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.Cooking {
+    //white text with green outline title for game
+    color: white;
+    text-shadow: 0 0 20px #d64400;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.Cookingbackground {
+    background-image: url("../../../../assets/general/CookingBackground.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.Runecrafting {
+    //white text with green outline title for game
+    color: white;
+    text-shadow: 0 0 20px #c3d100;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.Runecraftingbackground {
+    background-image: url("../../../../assets/general/RunecraftingBackground.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.Mining {
+    //white text with green outline title for game
+    color: white;
+    text-shadow: 0 0 20px #6d2800;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.Miningbackground {
+    background-image: url("../../../../assets/general/MiningBackground.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.Thieving {
+    //white text with green outline title for game
+    color: white;
+    text-shadow: 0 0 20px #000000;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.Thievingbackground {
+    background-image: url("../../../../assets/general/ThievingBackground.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+
+.Agility {
+    //white text with green outline title for game
+    color: white;
+    text-shadow: 0 0 20px #00087e;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.Agilitybackground {
+    background-image: url("../../../../assets/general/AgilityBackground.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.Forging {
+    //white text with green outline title for game
+    color: white;
+    text-shadow: 0 0 20px #383838;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.Forgingbackground {
+    background-image: url("../../../../assets/general/ForgingBackground.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.Slayer {
+    //white text with green outline title for game
+    color: white;
+    text-shadow: 0 0 20px #000000;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+
+
+
+//title class for dungeon select in a game
+.dungeon-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-top: 4rem;
+    font-family: Cinzel Decorative, serif;
+    text-shadow: 0 0 8px #15ac67, 0 0 18px #15ac67;
+}
+
+.return-text {
+    position: absolute; left: 10px; top: 10px; align-items: center;
+    font-size: 1rem;
+    font-weight: bold;
+    font-family: Cinzel Decorative, serif;
+    text-shadow: 0 0 8px #15ac67, 0 0 18px #15ac67;
+    cursor: pointer;
+}
+
+.skill-title {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-top: 1rem;
+    font-family: Cinzel Decorative, serif;
+    text-shadow: 0 0 16px #000000, 0 0 32px #000000;
+}

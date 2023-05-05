@@ -35,9 +35,5 @@ export declare class UsersService {
             name: any;
         };
     }, reward: any, rewardAmount: number): void;
-    removeItemFromBackpack(user: User, skill: {
-        type: {
-            name: any;
-        };
-    }): string;
+    useItem(user: User, item: any): "You are already at full health!" | "You have no more items!";
 }

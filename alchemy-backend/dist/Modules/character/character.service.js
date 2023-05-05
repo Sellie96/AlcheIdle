@@ -144,8 +144,9 @@ let CharacterService = class CharacterService {
                 username: username,
             });
             let prevItem = userData.character.equipment[type.type];
-            if ((Object.keys(prevItem).length === 0)) {
-                console.log("empty item");
+            console.log(type);
+            if (Object.keys(prevItem).length === 0) {
+                console.log('empty item');
             }
             else {
                 this.removeStats(prevItem, userData);
@@ -154,6 +155,31 @@ let CharacterService = class CharacterService {
                 userData.character.backpack.push(prevItem);
             }
             userData.character.equipment[type.type] = {};
+            yield this.usersRepository.update({ username: userData.username }, {
+                character: userData.character,
+            });
+            return yield this.usersRepository.findOneBy({
+                username: username,
+            });
+        });
+    }
+    sellItem(username, item) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let userData = yield this.usersRepository.findOneBy({
+                username: username,
+            });
+            let itemSold = false;
+            for (let i = 0; i < userData.character.backpack.length; i++) {
+                const backpackItem = userData.character.backpack[i];
+                if (backpackItem.name === item.item.name) {
+                    userData.character.backpack.splice(i, 1);
+                    userData.character.combatStats.progression.gold += backpackItem.value;
+                    itemSold = true;
+                    break;
+                }
+            }
+            if (!itemSold) {
+            }
             yield this.usersRepository.update({ username: userData.username }, {
                 character: userData.character,
             });
@@ -275,10 +301,12 @@ let CharacterService = class CharacterService {
                 item.stats.offense.map((stat) => {
                     switch (stat.name) {
                         case items_service_1.OffenseStat.CRIT_CHANCE:
-                            player.character.combatStats.combat.criticalHitChance -= stat.value;
+                            player.character.combatStats.combat.criticalHitChance -=
+                                stat.value;
                             break;
                         case items_service_1.OffenseStat.CRIT_DAMAGE:
-                            player.character.combatStats.combat.criticalHitDamage -= stat.value;
+                            player.character.combatStats.combat.criticalHitDamage -=
+                                stat.value;
                             break;
                         case items_service_1.OffenseStat.ATTACK_SPEED:
                             player.character.combatStats.combat.attackSpeed -= stat.value;
@@ -299,7 +327,8 @@ let CharacterService = class CharacterService {
                             player.character.combatStats.defenses.evasion -= stat.value;
                             break;
                         case items_service_1.DefenceStat.MAGIC_RESIST:
-                            player.character.combatStats.defenses.magicResistance -= stat.value;
+                            player.character.combatStats.defenses.magicResistance -=
+                                stat.value;
                             break;
                         case items_service_1.DefenceStat.BLOCK_CHANCE:
                             player.character.combatStats.combat.blockChance -= stat.value;

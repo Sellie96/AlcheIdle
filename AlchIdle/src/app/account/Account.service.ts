@@ -1,12 +1,13 @@
+import { PlayerData } from './../state/CharacterDataTypes';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { catchError, Subject, switchMap, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { CreateCharacter } from '../state/character.actions';
-import { PlayerData } from '../state/CharacterDataTypes';
 import { ToastService } from '../utils/toast.service';
 import { LoginForm, LoginResponse, RegisterForm } from './Account';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +23,8 @@ export class AccountService {
   constructor(
     private httpClient: HttpClient,
     private toastr: ToastService,
-    private store: Store
+    private store: Store,
+    private router: Router
   ) {}
 
   async login(loginModel: LoginForm) {
@@ -37,8 +39,11 @@ export class AccountService {
               this.authStatusListener.next(true);
               this.saveAuthData(this.token);
               this.store.dispatch(new CreateCharacter(response.userData));
-              window.location.reload();
               (await this.toastr.getSuccessToast(response.message)).present();
+              this.router.navigate(['/app/Town/Main'])
+              setTimeout(() => {
+                window.location.reload()
+              }, 250)
             }
           }
         ),
@@ -81,14 +86,11 @@ export class AccountService {
       .post<{ playerData: PlayerData }>(`${this.baseUrl}/users/profile`, {
         username: username,
       })
-      .subscribe(
-        (response) => {
-          this.store.dispatch(new CreateCharacter(response.playerData));
-        },
-        async (_) => {
-          (await this.toastr.getErrorToast()).present();
-        }
-      );
+      .subscribe( {
+        next: (v) => this.store.dispatch(new CreateCharacter(v.playerData)),
+        error: async (e) => (await this.toastr.getErrorToast()).present(),
+        complete: () => console.log("")
+      })
   }
 
   logout() {

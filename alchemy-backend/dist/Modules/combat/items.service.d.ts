@@ -8,7 +8,8 @@ export declare enum ItemType {
     BOOTS = "Boots",
     WEAPON = "Weapon",
     SHIELD = "Shield",
-    CONSUMABLE = "Consumable"
+    CONSUMABLE = "Consumable",
+    CHEST = "Chest"
 }
 export declare enum OffenseStat {
     HP = "HP",

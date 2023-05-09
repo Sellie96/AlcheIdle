@@ -164,7 +164,7 @@
               {{ resists.name }}: {{ resists.value }}
             </ion-note>
           </div>
-          <div *ngIf="selectedItem.itemType !== 'Consumable'" style="margin: auto">
+          <div *ngIf="selectedItem.itemType !== 'Consumable' || 'Chest' " style="margin: auto">
             <h3
               style="text-decoration: underline; font-style: italic"
               *ngIf="equippedItem.stats.offense"
@@ -210,7 +210,9 @@
       </div>
 
       <div>
-        <ion-button expand="full" color="warning" (click)="equipItem(selectedItem)">Equip Item</ion-button>
+        <ion-button *ngIf="selectedItem.itemType !== 'Consumable' || 'Chest' " expand="full" color="warning" (click)="equipItem(selectedItem)">Equip Item</ion-button>
+        <ion-button *ngIf="selectedItem.itemType === 'Consumable' " expand="full" color="warning" (click)="equipItem(selectedItem)">Use Item</ion-button>
+        <ion-button *ngIf="selectedItem.itemType === 'Consumable' " expand="full" color="warning" (click)="equipItem(selectedItem)">Open Chest</ion-button>
       </div>
 
       <div>

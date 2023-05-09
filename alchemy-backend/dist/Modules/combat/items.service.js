@@ -13,6 +13,7 @@ var ItemType;
     ItemType["WEAPON"] = "Weapon";
     ItemType["SHIELD"] = "Shield";
     ItemType["CONSUMABLE"] = "Consumable";
+    ItemType["CHEST"] = "Chest";
 })(ItemType = exports.ItemType || (exports.ItemType = {}));
 var OffenseStat;
 (function (OffenseStat) {

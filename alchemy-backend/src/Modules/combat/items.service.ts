@@ -9,6 +9,7 @@ export enum ItemType {
   WEAPON = 'Weapon',
   SHIELD = 'Shield',
   CONSUMABLE = 'Consumable',
+  CHEST = 'Chest',
 }
 
 export enum OffenseStat {

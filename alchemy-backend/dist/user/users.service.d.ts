@@ -35,5 +35,5 @@ export declare class UsersService {
             name: any;
         };
     }, reward: any, rewardAmount: number): void;
-    useItem(user: User, item: any): "You are already at full health!" | "You have no more items!";
+    useItem(user: User, item: any): "You have no more items!" | "You are already at full health!";
 }

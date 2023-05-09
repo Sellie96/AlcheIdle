@@ -1,4 +1,5 @@
 import { AncientBody, BodyOfTheFallen, DragonboneBody, LeatherBody } from './items/body.utils';
+import { WoodenChest } from './items/chests.utils';
 import { Bread, Meat, Onion, Potato } from './items/consumable.utils';
 import { LeatherGloves } from './items/hands.utils';
 import { AncientHelm, DragonboneHelm, HelmOfTheFallen } from './items/head.utils';
@@ -23,7 +24,7 @@ export const Onions = Object.freeze({
   xp: 30,
   gold: 1,
   attackSpeed: 3,
-  loot: Object.freeze([Onion]),
+  loot: Object.freeze([Onion, WoodenChest]),
   area: 0,
   description: `
   The Onion was born in a humble garden plot, nestled between rows of carrots and potatoes. It was a small and unremarkable onion, with a modest bulb and thin green shoots that reached toward the sun.`

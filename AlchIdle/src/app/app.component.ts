@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { Store } from '@ngxs/store';
 import { AccountService } from './account/Account.service';
-import { CharacterState } from './state/character.state';
+import { CharacterState, CharacterStateModel } from './state/character.state';
 import { PlayerData } from './state/CharacterDataTypes';
 import { Router } from '@angular/router';
 import { take } from 'rxjs';
@@ -37,7 +37,7 @@ export class AppComponent {
       this.loggedIn = true;
       this.router.navigate(['app/Town/Main']);
       this.store
-      .select((state) => CharacterState.selectCharacterStats(state.character))
+      .select((state: { character: CharacterStateModel; }) => CharacterState.selectCharacterStats(state.character))
       .pipe(take(1))
       .subscribe((character: PlayerData) => {
         this.playerCharacter = character;

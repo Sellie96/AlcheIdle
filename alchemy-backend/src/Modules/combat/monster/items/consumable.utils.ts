@@ -6,7 +6,7 @@ export const Onion: RPGItems = new RPGItems(
     false,
     true,
     {},
-    1,
+    0,
     false,
     3,
     1,

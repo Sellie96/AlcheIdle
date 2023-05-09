@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SolTheProtector = exports.FireSerpent = exports.FireSpirit = exports.TheEye = exports.LavaGolem = exports.ChaoticDragon = exports.SpiderQueen = exports.VampireLord = exports.CarnivorousPlant = exports.Tangleroot = exports.IceWyvern = exports.IceGiant = exports.FrozenTerror = exports.FrostTroll = exports.Mammoth = exports.Manticore = exports.SandGolem = exports.DustDevil = exports.SandBeast = exports.SandCrab = exports.GoblinChief = exports.GoblinBerserker = exports.Hobgoblin = exports.GoblinArcher = exports.Goblin = exports.Meats = exports.Breads = exports.Potatoes = exports.Onions = void 0;
 const body_utils_1 = require("./items/body.utils");
+const chests_utils_1 = require("./items/chests.utils");
 const consumable_utils_1 = require("./items/consumable.utils");
 const hands_utils_1 = require("./items/hands.utils");
 const head_utils_1 = require("./items/head.utils");
@@ -20,7 +21,7 @@ exports.Onions = Object.freeze({
     xp: 30,
     gold: 1,
     attackSpeed: 3,
-    loot: Object.freeze([consumable_utils_1.Onion]),
+    loot: Object.freeze([consumable_utils_1.Onion, chests_utils_1.WoodenChest]),
     area: 0,
     description: `
   The Onion was born in a humble garden plot, nestled between rows of carrots and potatoes. It was a small and unremarkable onion, with a modest bulb and thin green shoots that reached toward the sun.`

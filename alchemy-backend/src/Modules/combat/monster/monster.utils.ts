@@ -1,7 +1,8 @@
-import { LeatherBody } from './items/body.utils';
+import { AncientBody, BodyOfTheFallen, DragonboneBody, LeatherBody } from './items/body.utils';
 import { Bread, Meat, Onion, Potato } from './items/consumable.utils';
 import { LeatherGloves } from './items/hands.utils';
-import { LeatherChaps } from './items/legs.utils';
+import { AncientHelm, DragonboneHelm, HelmOfTheFallen } from './items/head.utils';
+import { LeatherChaps, AncientLegs, LegsOfTheFallen, DragonboneLegs } from './items/legs.utils';
 import { BronzeShield } from './items/offhand.utils';
 import {
   BronzeAxe,
@@ -135,11 +136,9 @@ export const Hobgoblin = Object.freeze({
   gold: 35,
   attackSpeed: 4,
   loot: Object.freeze([
-    Shortbow,
-    Longbow,
-    LeatherBody,
-    LeatherChaps,
-    LeatherGloves,
+    DragonboneHelm,
+    DragonboneBody,
+    DragonboneLegs,
   ]),
   area: 1,
   description: `A hobgoblin is a larger and more powerful cousin to the goblin, typically standing over six feet tall and possessing a muscular build. They have reddish-brown or dark green skin, prominent fangs, and often wear crude armor and wield weapons like axes or maces. Hobgoblins are known for their intelligence and cunning, and are often leaders or commanders of goblin tribes. They are more disciplined and organized than their smaller counterparts, and can form effective military units on the battlefield. Hobgoblins are also skilled in hand-to-hand combat, and can overpower their opponents with their strength and ferocity. Despite their brutish appearance, hobgoblins can be shrewd negotiators and are often found working as mercenaries or agents for more powerful factions.`
@@ -158,11 +157,9 @@ export const GoblinBerserker = Object.freeze({
   gold: 55,
   attackSpeed: 4,
   loot: Object.freeze([
-    Shortbow,
-    Longbow,
-    LeatherBody,
-    LeatherChaps,
-    LeatherGloves,
+    AncientBody,
+    AncientHelm,
+    AncientLegs,
   ]),
   area: 1,
   description: `A goblin berserker is a ferocious and unpredictable monster that specializes in close combat. They are smaller than hobgoblins, but more muscular and aggressive, with bulging muscles and wild, unkempt hair. Goblin berserkers are often adorned with warpaint and bone jewelry, and they charge into battle with reckless abandon, wielding large weapons like two-handed swords or battle axes. They are known for their bloodlust and lack of fear, often pushing themselves to the brink of exhaustion in order to overwhelm their opponents. In battle, goblin berserkers are difficult to control, sometimes attacking their own allies in their frenzied state. Despite their lack of discipline, goblin berserkers can be formidable foes, especially in large numbers, and they are often used as shock troops by goblin tribes.`
@@ -181,11 +178,9 @@ export const GoblinChief = Object.freeze({
   gold: 150,
   attackSpeed: 4,
   loot: Object.freeze([
-    Shortbow,
-    Longbow,
-    LeatherBody,
-    LeatherChaps,
-    LeatherGloves,
+    HelmOfTheFallen,
+    LegsOfTheFallen,
+    BodyOfTheFallen
   ]),
   area: 1,
   description: `A goblin chief is a cunning and ruthless leader that commands respect and fear from their subordinates. They are often larger and more imposing than other goblins, with ornate armor and weapons that distinguish them from their underlings. Goblin chiefs are skilled in both combat and strategy, and they are able to rally their troops and inspire them to fight with greater ferocity. They are also known for their treachery and betrayal, and will not hesitate to backstab allies or enemies if it benefits their own interests. Goblin chiefs often rely on subterfuge and deception to achieve their goals, using their wits and guile to outmaneuver their opponents. Despite their small stature, goblin chiefs are formidable foes, and their armies can be a significant threat to larger and more organized factions.`

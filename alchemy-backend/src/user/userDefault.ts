@@ -51,7 +51,7 @@ export async function UserDataCreation(registerData: RegisterData) {
           experiencePoints: 0,
           level: 1,
           gold: 0,
-          inventorySize: 20,
+          inventorySize: 50,
           skillPoints: 0,
           talentPoints: 0,
         },

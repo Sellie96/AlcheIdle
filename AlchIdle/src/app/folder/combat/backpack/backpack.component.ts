@@ -7,6 +7,9 @@ import { CharacterState } from 'src/app/state/character.state';
 import { BackpackService } from './backpack.service';
 import { IonModal } from '@ionic/angular';
 import { RPGItems } from '../../../../../../alchemy-backend/src/Modules/combat/items.service';
+import { CombatService } from '../combat.service';
+import { take } from 'rxjs';
+import { UpdateCharacter } from 'src/app/state/character.actions';
 
 @UntilDestroy()
 @Component({
@@ -25,7 +28,11 @@ export class BackpackComponent implements OnInit {
   message = 'This modal example uses triggers to automatically open a modal when the button is clicked.';
   name!: string;
   
-  constructor(private store: Store, private backpackService: BackpackService) { }
+  constructor(
+    private store: Store,
+    private backpackService: BackpackService,
+    private combatService: CombatService
+    ) { }
 
   ngOnInit() {
     this.store
@@ -39,15 +46,43 @@ export class BackpackComponent implements OnInit {
 
   equipItem(item: RPGItems) {
     this.backpackService.equipItem(item);
+
+    this.combatService
+    .playerData()
+    .pipe(take(1))
+    .subscribe((player) => {
+      this.playerCharacter = player;
+      this.store.dispatch(new UpdateCharacter(player));
+    })
+    .unsubscribe();
   }
 
   sellItem(item: RPGItems) {
-    this.backpackService.sellItem(item);
+    this.backpackService.sellItem(item, 1);
+
+    this.combatService
+    .playerData()
+    .pipe(take(1))
+    .subscribe((player) => {
+      this.playerCharacter = player;
+      this.store.dispatch(new UpdateCharacter(player));
+    })
+    .unsubscribe();
+
     return this.modal.dismiss(null, 'cancel');
   }
 
   useItem(item: RPGItems, amount: number) {
     this.backpackService.useItem(item, amount);
+
+    this.combatService
+    .playerData()
+    .pipe(take(1))
+    .subscribe((player) => {
+      this.playerCharacter = player;
+      this.store.dispatch(new UpdateCharacter(player));
+    })
+    .unsubscribe();
   }
 
   async openModal() {

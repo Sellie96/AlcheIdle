@@ -136,16 +136,15 @@ export class CombatComponent implements OnInit, OnDestroy {
 
     this.combatService
       .playerData()
-      .pipe(take(1))
+      .pipe(untilDestroyed(this))
       .subscribe((player) => {
         this.playerCharacter = player;
-        this.store.dispatch(new CreateCharacter(player));
-      })
-      .unsubscribe();
+        this.store.dispatch(new UpdateCharacter(player));
+      });
 
     this.store
       .select(CharacterState.selectCharacterStats)
-      .pipe(take(1))
+      .pipe(untilDestroyed(this))
       .subscribe((character) => {
         this.playerCharacter = JSON.parse(JSON.stringify(character));
       });
@@ -315,7 +314,6 @@ export class CombatComponent implements OnInit, OnDestroy {
       .getMonsterLoot()
       .pipe(untilDestroyed(this))
       .subscribe((loot: any) => {
-        console.log(loot);
         this.showLoot(loot);
       });
   }
@@ -348,8 +346,8 @@ export class CombatComponent implements OnInit, OnDestroy {
       .checkIfLevelUp()
       .pipe(untilDestroyed(this))
       .subscribe((levelUp: boolean) => {
+        console.log(levelUp);
         if (levelUp) {
-          this.toast.getSuccessToast('Level Up!');
         }
       });
   }

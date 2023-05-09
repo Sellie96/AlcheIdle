@@ -21,6 +21,7 @@ export class LeaderboardsService {
     .toPromise()
     .then(res => {
       if (res) {
+        console.log(res);
         return res.playerData;
       } else {
         this.toastr.getErrorToast("Failed to fetch leaderboard")

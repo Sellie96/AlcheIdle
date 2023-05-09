@@ -129,7 +129,7 @@ export class CombatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     //Player combat interval
     //
     //
-    
+
     this.combatInterval = setInterval(async () => {
       // Update the monster's health
       this.player = await this.usersService.findOneByUsername(
@@ -159,7 +159,7 @@ export class CombatGateway implements OnGatewayConnection, OnGatewayDisconnect {
           xp,
           this.player,
           monster,
-          client
+          client,
         );
 
         client.emit('monsterDeath', { loot, gold, xp });
@@ -170,7 +170,9 @@ export class CombatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         }
       }
 
-      this.player = await this.usersService.findOneByUsername(this.player.username);
+      this.player = await this.usersService.findOneByUsername(
+        this.player.username,
+      );
       client.emit('updatePlayer', this.player);
     }, this.player.character.combatStats.combat.attackSpeed * 1000);
 
@@ -181,17 +183,18 @@ export class CombatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.combatIntervalMonster = setInterval(async () => {
       // Update the player's health
 
-      let player = await this.usersService.findOneByUsername(this.player.username);
-
-      this.player = this.combatService.calculatePlayerHealth(
-        player,
-        monster,
+      let player = await this.usersService.findOneByUsername(
+        this.player.username,
       );
+
+      this.player = this.combatService.calculatePlayerHealth(player, monster);
 
       // If the player is dead, end the fight and remove them from the list of ongoing combat players
       if (this.player.character.combatStats.stats.health <= 0) {
         this.playerDied(client);
       }
+
+      await this.usersService.updateOne(this.player);
 
       client.emit('updatePlayer', this.player);
       // Update the player's data on the client side

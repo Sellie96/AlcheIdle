@@ -4,7 +4,7 @@ import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { ToastService } from 'src/app/utils/toast.service';
 import { Store } from '@ngxs/store';
-import { CreateCharacter } from 'src/app/state/character.actions';
+import { CreateCharacter, UpdateCharacter } from 'src/app/state/character.actions';
 import { PlayerData } from 'src/app/state/CharacterDataTypes';
 import { RPGItems } from '../../../../../../alchemy-backend/src/Modules/combat/items.service';
 
@@ -31,9 +31,8 @@ export class BackpackService {
       )
       .subscribe(
         async (response) => {
+          this.store.dispatch(new UpdateCharacter(response.player));
           (await this.toastr.getSuccessToast(response.message)).present();
-          console.log(response.player);
-          this.store.dispatch(new CreateCharacter(response.player));
         },
         async (_) => {
           (await this.toastr.getErrorToast()).present();
@@ -51,9 +50,9 @@ export class BackpackService {
       )
       .subscribe(
         async (response) => {
-          (await this.toastr.getSuccessToast(response.message)).present();
           console.log(response);
-          this.store.dispatch(new CreateCharacter(response.player));
+          this.store.dispatch(new UpdateCharacter(response.player));
+          (await this.toastr.getSuccessToast(response.message)).present();
         },
         async (_) => {
           (await this.toastr.getErrorToast()).present();
@@ -61,12 +60,13 @@ export class BackpackService {
       );
   }
 
-  sellItem(item: RPGItems) {
+  sellItem(item: RPGItems, amount: number) {
     this.httpClient
       .post<{ message: string; player: PlayerData }>(
         `${this.baseUrl}/character/sellItem`,
         {
           item: item,
+          amount: amount,
         }
       )
       .subscribe(

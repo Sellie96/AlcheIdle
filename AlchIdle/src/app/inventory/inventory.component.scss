@@ -1,0 +1,148 @@
+.inventory {
+  max-height: 45rem;
+  min-height: 45rem;
+  padding: 1rem;
+  border-radius: 0.375rem;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.25);
+  overflow-y: scroll;
+  border-bottom: 1px solid rgb(36, 78, 1);
+}
+
+.inventory-item {
+  margin: 0.5rem;
+  padding: 1rem;
+  background-image: url("../../assets/equipment/EquipmentEmpty.png");
+  background-size: cover;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 5px;
+}
+
+.inventory-item:hover {
+  border: 1px solid greenyellow;
+}
+
+//thin scrollbar
+.inventory::-webkit-scrollbar {
+  width: 0.3rem;
+}
+
+.inventory::-webkit-scrollbar-track {
+  background: rgba(55, 65, 81, 1);
+}
+
+.inventory::-webkit-scrollbar-thumb {
+  background: rgb(0, 75, 25);
+}
+
+.inventory::-webkit-scrollbar-thumb:hover {
+  background: rgba(36, 78, 1, 1);
+}
+
+.no-background {
+  --background: transparent;
+}
+
+.icon-image {
+  border-radius: 360px;
+  border: 3px rgba($color: red, $alpha: 0.8) solid;
+  padding: 0.75rem;
+  background-color: rgba($color: rgb(163, 29, 29), $alpha: 0.8);
+}
+
+.icon-image-health {
+  border-radius: 360px;
+  border: 3px red solid;
+  padding: 0.75rem;
+  background-color: rgba($color: rgb(163, 29, 29), $alpha: 0.8);
+}
+
+.icon-image-defence {
+  border-radius: 360px;
+  border: 3px blue solid;
+  padding: 0.75rem;
+  background-color: rgba($color: rgb(29, 29, 163), $alpha: 0.8);
+}
+
+.icon-image-attack {
+  border-radius: 360px;
+  border: 3px yellow solid;
+  background-color: rgba($color: rgb(163, 163, 29), $alpha: 0.8);
+}
+
+.icon-image-accuracy {
+  border-radius: 360px;
+  border: 3px purple solid;
+  background-color: rgba($color: rgb(163, 29, 163), $alpha: 0.8);
+}
+
+.icon-image-vulnerability {
+  border-radius: 360px;
+  border: 3px orange solid;
+  background-color: rgba($color: rgb(218, 123, 0), $alpha: 0.8);
+}
+
+.icon-image-probability {
+  border-radius: 360px;
+  border: 3px green solid;
+  background-color: rgba($color: rgb(53, 177, 53), $alpha: 0.8);
+}
+
+.icon-image-evasion {
+  border-radius: 360px;
+  border: 3px brown solid;
+  background-color: rgba($color: rgb(163, 29, 29), $alpha: 0.8);
+}
+
+.icon-image-attack-speed {
+  border-radius: 360px;
+  border: 3px pink solid;
+  background-color: rgba($color: rgb(209, 49, 209), $alpha: 0.8);
+}
+
+.equipment-icon {
+  width: 5rem;
+}
+
+ion-range::part(tick) {
+  background: #a2d2ff;
+}
+
+ion-range::part(tick-active) {
+  background: #bde0fe;
+}
+
+ion-range::part(pin) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #075500;
+  color: #fff;
+
+  border-radius: 50%;
+  transform: scale(1.01);
+
+  top: -20px;
+
+  min-width: 28px;
+  height: 28px;
+  transition: transform 120ms ease;
+}
+
+ion-range::part(pin)::before {
+  content: none;
+}
+
+ion-range::part(knob) {
+  background: #ffc8dd;
+}
+
+ion-range::part(bar) {
+  background: #a2d2ff;
+}
+
+ion-range::part(bar-active) {
+  background: #bde0fe;
+}

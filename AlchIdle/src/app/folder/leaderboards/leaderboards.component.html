@@ -1,49 +1,45 @@
-<ion-searchbar
+
+<div style="margin: 5rem; height: 100%;">
+  <ion-searchbar
   placeholder="Search for a player..."
-  style="padding: 8px; margin: auto; width: 75%"
+  style="padding: 8px; margin: auto;"
   (keyup)="updateFilter($event)"
   show-clear-button="focus"
 ></ion-searchbar>
 
 <ion-segment [scrollable]="true" value="all">
   <ion-segment-button (click)="setSearch('all')" value="all">
-    <ion-icon name="home"></ion-icon>
+    Total
+  </ion-segment-button>
+  <ion-segment-button (click)="setSearch('alchemy')" value="alchemy">
+    <img style="width: 2rem;" src="../../../assets/icon/skills/alchemy.png">
   </ion-segment-button>
   <ion-segment-button (click)="setSearch('woodcutting')" value="woodcutting">
-    <ion-icon name="home"></ion-icon>
+    <img style="width: 2rem;" src="../../../assets/icon/skills/woodcutting.png">
   </ion-segment-button>
-  <ion-segment-button (click)="setSearch('firemaking')" value="heart">
-    <ion-icon name="heart"></ion-icon>
+  <ion-segment-button (click)="setSearch('fishing')" value="fishing">
+    <img style="width: 2rem;" src="../../../assets/icon/skills/fishing.png">
   </ion-segment-button>
-  <ion-segment-button (click)="setSearch('fishing')" value="pin">
-    <ion-icon name="pin"></ion-icon>
+  <ion-segment-button (click)="setSearch('firemaking')" value="firemaking">
+    <img style="width: 2rem;" src="../../../assets/icon/skills/firemaking.png">
   </ion-segment-button>
-  <ion-segment-button (click)="setSearch('cooking')" value="star">
-    <ion-icon name="star"></ion-icon>
+  <ion-segment-button (click)="setSearch('cooking')" value="cooking">
+    <img style="width: 2rem;" src="../../../assets/icon/skills/cooking.png">
   </ion-segment-button>
-  <ion-segment-button (click)="setSearch('runecrafting')" value="call">
-    <ion-icon name="call"></ion-icon>
+  <ion-segment-button (click)="setSearch('runecrafting')" value="runecrafting">
+    <img style="width: 2rem;" src="../../../assets/icon/skills/runecrafting.png">
   </ion-segment-button>
-  <ion-segment-button (click)="setSearch('mining')" value="globe">
-    <ion-icon name="globe"></ion-icon>
+  <ion-segment-button (click)="setSearch('mining')" value="mining">
+    <img style="width: 2rem;" src="../../../assets/icon/skills/mining.png">
   </ion-segment-button>
-  <ion-segment-button (click)="setSearch('smithing')" value="basket">
-    <ion-icon name="basket"></ion-icon>
+  <ion-segment-button (click)="setSearch('thieving')" value="thieving">
+    <img style="width: 2rem;" src="../../../assets/icon/skills/thieving.png">
   </ion-segment-button>
-  <ion-segment-button (click)="setSearch('thieving')" value="barbell">
-    <ion-icon name="barbell"></ion-icon>
+  <ion-segment-button (click)="setSearch('agility')" value="agility">
+    <img style="width: 2rem;" src="../../../assets/icon/skills/agility.png">
   </ion-segment-button>
-  <ion-segment-button (click)="setSearch('fletching')" value="trash">
-    <ion-icon name="trash"></ion-icon>
-  </ion-segment-button>
-  <ion-segment-button (click)="setSearch('crafting')" value="person">
-    <ion-icon name="person"></ion-icon>
-  </ion-segment-button>
-  <ion-segment-button (click)="setSearch('herblore')" value="person">
-    <ion-icon name="person"></ion-icon>
-  </ion-segment-button>
-  <ion-segment-button (click)="setSearch('agility')" value="person">
-    <ion-icon name="person"></ion-icon>
+  <ion-segment-button (click)="setSearch('forging')" value="forging">
+    <img style="width: 2rem;" src="../../../assets/icon/skills/forging.png">
   </ion-segment-button>
 </ion-segment>
 
@@ -68,3 +64,4 @@
     </ngx-datatable>
   </div>
 </ion-content>
+</div>

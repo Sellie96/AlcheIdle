@@ -13,7 +13,7 @@
 .display-character-hp {
   color: red;
   position: absolute;
-  left: 200px;
+  left: 150px;
   animation-name: display-monster-hp;
   animation-duration: 3s;
   animation-iteration-count: infinite;
@@ -23,11 +23,9 @@
 }
 
 .display-loot {
-  font-style: italic;
-  font-weight: 500;
+  font-weight: 400;
   font-size: xx-large;
   font-family: Cinzel Decorative, serif;
-  text-shadow: 0 0 8px #15ac67, 0 0 18px #15ac67;
   position: fixed;
   bottom: 30px;
   left: 45vw;
@@ -35,14 +33,18 @@
   animation-duration: 3s;
   animation-iteration-count: infinite;
   z-index: 1000;
+  background-color: rgba(6, 77, 0, 0.3);
+  padding: 0.5rem;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 10px 0px;
 }
 
 @keyframes display-monster-hp {
   0% {
-    transform: translate(0, 0);
+    transform: translate(0, -35px);
   }
   100% {
-    transform: translate(0, 15px);
+    transform: translate(0, -60px);
   }
 }
 
@@ -91,16 +93,20 @@
 
 .combat-background {
   background-image: url("../../../assets/general/combat-background.svg");
-  min-height: 60vh;
+  min-height: 50vh;
   background-repeat: no-repeat;
   position: fixed;
   width: 100vw;
-  height: 60vh;
+  height: 50vh;
   z-index: 0;
 }
 
 .combat-area {
   z-index: 1000;
+  margin-left: 3rem;
+  margin-right: 3rem;
+  margin-top: 1rem;
+
 }
 
 .player-section,
@@ -160,13 +166,13 @@ progress {
 }
 
 .player-image {
-  width: 20rem;
-  height: 20rem;
+  width: 18rem;
+  height: 18rem;
+  z-index: 1000;
 }
 
 .container {
   position: relative;
-  min-height: 31rem;
   display: flex;
   justify-content: center;
   align-items: center;

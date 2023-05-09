@@ -51,4 +51,10 @@ export class AppComponent {
   openChat() {
     this.showChat = !this.showChat;
   }
+
+  logout() {
+    this.accountService.logout();
+    this.loggedIn = false;
+    this.router.navigate(['']);
+  }
 }

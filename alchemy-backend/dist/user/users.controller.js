@@ -73,17 +73,18 @@ let UsersController = class UsersController {
     }
     getLeaderboard(res, skill) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!skill || !skills.includes(skill.toLowerCase())) {
+            if (!skill || (!skills.includes(skill.toLowerCase()) && skill !== 'all')) {
                 return res.status(400).send({ error: 'Invalid skill specified' });
             }
             const returnedData = yield this.usersService.findAll();
             let leaderboardData;
+            console.log(skill);
             if (skill === 'all') {
                 leaderboardData = returnedData.map((obj, index) => ({
                     name: obj.character.characterName,
                     mode: obj.character.characterAlignment,
-                    level: this.getTotalLevel(obj.character.skills),
-                    xp: this.getTotalXp(obj.character.skills),
+                    level: obj.character.combatStats.progression.level,
+                    xp: obj.character.combatStats.progression.experiencePoints,
                 }));
             }
             else {

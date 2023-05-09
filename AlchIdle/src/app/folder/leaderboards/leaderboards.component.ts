@@ -33,7 +33,7 @@ export class LeaderboardsComponent implements OnInit {
         this.setSearch();
     }
 
-    setSearch(searchBy: string = 'Woodcutting') {
+    setSearch(searchBy: string = 'all') {
       this.leaderboardService.getLeaderboard(searchBy).then(data => {
         this.data = data.map((item) => {
           return {

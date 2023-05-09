@@ -66,4 +66,20 @@ export class ToastService {
     });
   }
 
+
+  getLootToast(
+    shownMessage: string = "Success",
+    duration: number = 2000,
+    css: string = "loot-toast",
+    location: any = "bottom") {
+    return this.toastController.create({
+      message: shownMessage,
+      duration: duration,
+      position: location,
+      cssClass: css,
+      buttons: [],
+    });
+  }
+
+
 }

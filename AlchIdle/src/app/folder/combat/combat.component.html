@@ -88,9 +88,9 @@
             (onUnequip)="unequipItem('feet')"
           ></app-equipment-thumbnail>
         </div>
-        <div>
-          <img class="player-image" src="../../../assets/knight.png" />
-        </div>
+      
+        <img style="z-index: 1001;" class="player-image" src="../../../assets/knight.png" />
+        <img style="position: absolute; width: 23rem; z-index: 1;" src="../../../assets/icon/Flags/flag_02_blue02.png" />
         <div class="equipment-container">
           <div class="right-side">
             <app-equipment-thumbnail
@@ -144,7 +144,7 @@
       </div>
     </ion-col>
     <ion-col size="12" size-md="5" size-lg="5">
-      <div style="min-height: 31rem; text-align: center;">
+      <div style="min-height: 22rem; text-align: center;">
         <div class="fighter-container">
           <img
             *ngIf="monster && monster.health && !loading"
@@ -152,6 +152,7 @@
             class="player-image"
             src="../../../assets/monsters/{{ monster?.name }}.png"
           />
+          <img *ngIf="monster && monster.health && !loading" style="position: absolute; width: 23rem;" src="../../../assets/icon/Flags/flag_{{monster.area}}.png" />
           <ion-spinner
             *ngIf="loading"
             name="circles"
@@ -185,6 +186,7 @@
     </ion-col>
     <ion-col style="text-align: center; align-items: center"> </ion-col>
     <ion-col size-md="5" size-lg="5">
+      <br/>
       <ion-button
         expand="block"
         [disabled]="!monster"
@@ -207,16 +209,16 @@
 <span *ngIf="showNewLoot" class="display-loot">
   <div>
     <img style="width: 2rem" src="../../../assets/menu-icons/gold.png" />
-    {{ this.newLoot.gold }}
+    + {{ this.newLoot.gold }}
   </div>
   <div>
     <ion-icon name="stats-chart"></ion-icon>
-    {{ this.newLoot.xp }}
+    + {{ this.newLoot.xp }}
   </div>
   <div *ngIf="this.newLoot.loot">
     <div *ngFor="let items of this.newLoot.loot">
       <img style="width: 2rem" src="../../../assets/equipment/{{items.name}}.png" />
-      x {{ items.amount }} {{ items.name }}
+    + x {{ items.amount }}
     </div>
   </div>
 </span>

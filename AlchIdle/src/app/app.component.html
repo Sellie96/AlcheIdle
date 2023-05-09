@@ -14,21 +14,22 @@
 </ion-app>
 
 <ion-app *ngIf="loggedIn" no-padding no-margin>
-  <div class="flex-container space-start">
+  <div class="flex-container">
     <span
       style="margin: 1rem; padding-right: 2rem; border-right: #017440 1px solid"
       class="main-text"
     >
       Alchemy Idle
     </span>
-    <ion-note
+    <div class="space-start">
+      <ion-note
       routerDirection="root"
       [routerLink]="['/app/Town/Main']"
       lines="none"
       detail="false"
       routerLinkActive="selected"
       class="flex-item"
-      >Profile</ion-note
+      >Town</ion-note
     >
     <ion-note
       routerDirection="root"
@@ -48,15 +49,14 @@
     class="flex-item"
     >Inventory</ion-note
   >
-    <ion-note class="flex-item">Profile</ion-note>
-    <ion-note class="flex-item">Settings</ion-note>
     <ion-note       
     routerDirection="root"
     [routerLink]="['/']"
     lines="none"
     detail="false"
     routerLinkActive="selected"
-    class="flex-item">Sign Out</ion-note>
+    class="flex-item" (click)="logout()">Sign Out</ion-note>
+    </div>
   </div>
 
 

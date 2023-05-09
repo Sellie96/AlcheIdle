@@ -96,7 +96,7 @@ export class UsersController {
     @Query('skill') skill: string,
   ): Promise<User> {
     // Validate the skill query parameter
-    if (!skill || !skills.includes(skill.toLowerCase())) {
+    if (!skill || (!skills.includes(skill.toLowerCase()) && skill !== 'all')) {
       return res.status(400).send({ error: 'Invalid skill specified' });
     }
   
@@ -108,12 +108,14 @@ export class UsersController {
     // Return only the CharacterName, characterAlignment, Skill Total level and skill total xp properties of each user object
     let leaderboardData;
 
+    console.log(skill);
+
     if(skill === 'all') {
       leaderboardData = returnedData.map((obj, index) => ({
         name: obj.character.characterName,
         mode: obj.character.characterAlignment,
-        level: this.getTotalLevel(obj.character.skills),
-        xp: this.getTotalXp(obj.character.skills),
+        level: obj.character.combatStats.progression.level,
+        xp: obj.character.combatStats.progression.experiencePoints,
       }));
     } else {
       leaderboardData = returnedData.map((obj, index) => ({

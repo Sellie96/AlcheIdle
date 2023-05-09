@@ -1,3 +1,239 @@
-<div style="color: whitesmoke;">
-  hi
+<div style="margin: 5rem; z-index: 1000; display: flex; flex-wrap: wrap">
+  <div style="width: 60%">
+    <ion-segment [(ngModel)]="segment" value="default">
+      <ion-segment-button value="all">
+        <ion-label>All</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="equipment">
+        <ion-label>Equipment</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="consumable">
+        <ion-label>Consumable</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
+    <div [ngSwitch]="segment" class="inventory">
+      <div style="display: flex; flex-wrap: wrap">
+        <div *ngSwitchCase="'all'" style="display: flex; flex-wrap: wrap">
+          <div
+            (click)="selectItem(item)"
+            class="inventory-item"
+            *ngFor="let item of playerCharacter.character.backpack"
+            style="margin-right: 10px"
+          >
+            <img
+              style="width: 3.5rem"
+              src="../../assets/equipment/{{ item.name }}.png"
+              [alt]="item.name"
+            />
+          </div>
+        </div>
+        <div *ngSwitchCase="'equipment'" style="display: flex; flex-wrap: wrap">
+          <div
+            (click)="selectItem(item)"
+            *ngFor="let item of playerCharacter.character.backpack"
+          >
+            <div
+              class="inventory-item"
+              *ngIf="item.itemType !== 'Consumable'"
+              style="margin-right: 10px"
+            >
+              <img
+                style="width: 3.5rem"
+                src="../../assets/equipment/{{ item.name }}.png"
+                [alt]="item.name"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          *ngSwitchCase="'consumable'"
+          style="display: flex; flex-wrap: wrap"
+        >
+          <div
+            (click)="selectItem(item)"
+            *ngFor="let item of playerCharacter.character.backpack"
+          >
+            <div
+              class="inventory-item"
+              *ngIf="item.itemType === 'Consumable'"
+              style="margin-right: 10px"
+            >
+              <img
+                style="width: 3.5rem"
+                src="../../assets/equipment/{{ item.name }}.png"
+                [alt]="item.name"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <ion-item class="no-background" lines="none">
+        <ion-icon name="bag-outline"></ion-icon>
+        <ion-label style="margin: 0.5rem">
+          <p>Inventory</p>
+          <h4>
+            {{ playerCharacter.character.backpack.length }} /
+            {{
+              playerCharacter.character.combatStats.progression.inventorySize
+                | number
+            }}
+          </h4>
+        </ion-label>
+      </ion-item>
+    </div>
+  </div>
+
+  <div
+    style="
+      flex-grow: 1;
+      margin-left: 1rem;
+      flex-wrap: wrap;
+      z-index: 1000;
+      color: whitesmoke;
+      border: 1px whitesmoke solid;
+      border-radius: 10px;
+      box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);
+    "
+  >
+    <div style="margin: 2rem;" *ngIf="selectedItem">
+      <ion-item class="no-background" lines="none">
+        <img
+          class="equipment-icon"
+          src="../../assets/equipment/{{ selectedItem.name }}.png"
+        />
+        <ion-label style="margin: 0.5rem">
+          <p>{{ selectedItem.name }}</p>
+          <h4>{{ selectedItem.description ?? "No item description" }}</h4>
+        </ion-label>
+        <ion-label style="font-style: italic">
+          <p>{{ selectedItem.itemType }}</p>
+          <p *ngIf="selectedItem.equipable">Equipable</p>
+          <p *ngIf="selectedItem.stackable">Stackable</p>
+        </ion-label>
+      </ion-item>
+
+      <div>
+        <h2>Equip Item</h2>
+        <ion-note *ngIf="selectedItem.itemType !== 'Consumable'">New Item</ion-note>
+      </div>
+
+      <div>
+        <ion-item class="no-background" lines="none">
+          <div>
+            <h3
+              style="text-decoration: underline; font-style: italic"
+              *ngIf="selectedItem.stats.offense"
+            >
+              Offense
+            </h3>
+            <ion-note *ngFor="let offenseStat of selectedItem.stats.offense">
+              <br />
+              {{ offenseStat.name }}: {{ offenseStat.value }}
+            </ion-note>
+            <h3
+              style="text-decoration: underline; font-style: italic"
+              *ngIf="selectedItem.stats.attributes"
+            >
+              Attributes
+            </h3>
+            <ion-note *ngFor="let attributes of selectedItem.stats.attributes">
+              <br />
+              {{ attributes.name }}: {{ attributes.value }}
+            </ion-note>
+            <h3
+              style="text-decoration: underline; font-style: italic"
+              *ngIf="selectedItem.stats.defence"
+            >
+              Defence
+            </h3>
+            <ion-note *ngFor="let defence of selectedItem.stats.defence">
+              <br />
+              {{ defence.name }}: {{ defence.value }}
+            </ion-note>
+            <h3
+              style="text-decoration: underline; font-style: italic"
+              *ngIf="selectedItem.stats.defence"
+            >
+              Resists
+            </h3>
+            <ion-note *ngFor="let resists of selectedItem.stats.resists">
+              <br />
+              {{ resists.name }}: {{ resists.value }}
+            </ion-note>
+          </div>
+          <div *ngIf="selectedItem.itemType !== 'Consumable'" style="margin: auto">
+            <h3
+              style="text-decoration: underline; font-style: italic"
+              *ngIf="equippedItem.stats.offense"
+            >
+              Offense
+            </h3>
+            <ion-note *ngFor="let offenseStat of equippedItem.stats.offense">
+              <br />
+              {{ offenseStat.name }}: {{ offenseStat.value }}
+            </ion-note>
+            <h3
+              style="text-decoration: underline; font-style: italic"
+              *ngIf="equippedItem.stats.attributes"
+            >
+              Attributes
+            </h3>
+            <ion-note *ngFor="let attributes of equippedItem.stats.attributes">
+              <br />
+              {{ attributes.name }}: {{ attributes.value }}
+            </ion-note>
+            <h3
+              style="text-decoration: underline; font-style: italic"
+              *ngIf="equippedItem.stats.defence"
+            >
+              Defence
+            </h3>
+            <ion-note *ngFor="let defence of equippedItem.stats.defence">
+              <br />
+              {{ defence.name }}: {{ defence.value }}
+            </ion-note>
+            <h3
+              style="text-decoration: underline; font-style: italic"
+              *ngIf="selectedItem.stats.defence"
+            >
+              Resists
+            </h3>
+            <ion-note *ngFor="let resists of equippedItem.stats.resists">
+              <br />
+              {{ resists.name }}: {{ resists.value }}
+            </ion-note>
+          </div>
+        </ion-item>
+      </div>
+
+      <div>
+        <ion-button expand="full" color="warning" (click)="equipItem(selectedItem)">Equip Item</ion-button>
+      </div>
+
+      <div>
+        <ion-item class="no-background" lines="none">
+          <h2>Sell Item</h2>
+        </ion-item>
+        <ion-note>Sells for: {{selectedItem.value * 1}}</ion-note>
+      <br/>
+      <br/>
+        <ion-range
+          style="height: 2rem"
+          aria-label="Custom range"
+          [min]="0"
+          [max]="selectedItem.amount"
+          [value]="0"
+          [pin]="true"
+          [ticks]="true"
+          [snaps]="true"
+        ></ion-range>
+      </div>
+      <div>
+        <ion-button expand="full" (click)="sellItem(selectedItem, 1)">Sell Item</ion-button>
+      </div>
+    </div>
+  </div>
 </div>

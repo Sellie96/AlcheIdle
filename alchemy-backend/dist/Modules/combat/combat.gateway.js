@@ -147,6 +147,7 @@ let CombatGateway = class CombatGateway {
                 if (this.player.character.combatStats.stats.health <= 0) {
                     this.playerDied(client);
                 }
+                yield this.usersService.updateOne(this.player);
                 client.emit('updatePlayer', this.player);
             }), monster.attackSpeed * 1000);
         });
